@@ -1,3 +1,4 @@
+// Model definition for Users
 var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;

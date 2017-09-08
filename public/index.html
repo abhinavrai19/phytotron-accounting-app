@@ -1,26 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="phytotronAccountingApp">
 <head>
     <meta charset="UTF-8">
     <title>Phytotron Accounting Application</title>
 
     <!-- Angular Material style sheet -->
     <link rel="stylesheet" href="./stylesheets/angular-material.css">
-</head>
-<body ng-app="phytotronAccountingApp">
-    <h4>NCSU PHYTOTRON</h4>
-    <div ng-view></div>
 
     <!-- Angular Material requires Angular.js Libraries -->
-    <script src="./javascripts/angular.js"></script>
-    <script src="./javascripts/angular-route.js"></script>
-    <script src="./javascripts/angular-animate.js"></script>
-    <script src="./javascripts/angular-aria.js"></script>
-    <script src="./javascripts/angular-messages.js"></script>
+    <script src="./angular/angular.js"></script>
+    <script src="./angular/angular-animate.js"></script>
+    <script src="./angular/angular-aria.js"></script>
+    <script src="./angular/angular-messages.js"></script>
+    <script src="./angular/angular-route.js"></script>
 
     <!-- Angular Material Library -->
-    <script src="./javascripts/angular-material.js"></script>
+    <script src="./angular/angular-material.js"></script>
 
-    <script src="application.module.js"></script>
+    <!--Project specific scripts-->
+    <script src="client.application.module.js"></script>
+    <script src="client.application.config.js"></script>
+
+    <!--services-->
+    <script src="service/client.chamber.service.js"></script>
+
+    <!--components/pages-->
+    <script src="top-information-bar/client.top-information-bar.component.js"></script>
+    <script src="top-navigation-bar/client.top-navigation-bar.component.js"></script>
+
+    <script src="login-page/client.login-page.component.js"></script><!--Login Page-->
+    <script src="home-page/client.home-page.component.js"></script>
+    <script src="chamber-list-page/client.chamber-list-page.component.js"></script>
+
+</head>
+<body>
+    <div ng-view></div>
 </body>
 </html>

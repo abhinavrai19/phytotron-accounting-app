@@ -1,6 +1,8 @@
+// Set up database connection
 var mongoose = require('mongoose');
 
 module.exports = function(){
+    mongoose.Promise = global.Promise;
     mongoose.connect('mongodb://127.0.0.1/phytotron_accounts',{
         useMongoClient: true
     });

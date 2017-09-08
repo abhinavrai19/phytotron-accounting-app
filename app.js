@@ -4,20 +4,24 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var expressValidator = require('express-validator');
+var helmet = require('helmet');
 
 // get passport and pass it for configuration: -Abhinav
-var passport = require('passport');
-require('./config/passport')(passport);
+//var passport = require('passport');
+//require('./config/passport')(passport);
 
 //routes
 var index = require('./routes/index');
-var authenticate = require('./routes/authenticate')
+//var authenticate = require('./routes/authenticate')
 
 var app = express();
 
+app.use(helmet());
+
 //Set up mongoose connection
 var mongoose = require('./config/mongoose');
-var db=mongoose();
+mongoose();
 
 
 // view engine setup
@@ -29,9 +33,10 @@ app.use(favicon(path.join(__dirname, 'public/favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(expressValidator()); // Hello Future Coder: This must be added after bodyParser
 app.use(cookieParser());
 
-
+/*
 // User authentication code
 app.use(require('express-session')({
     secret: 'the lion king',
@@ -40,13 +45,14 @@ app.use(require('express-session')({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+*/
 
 // Host public content
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Call respective routers
+// Call respective ROUTERS
 app.use('/', index);
-app.use('/authenticate', authenticate);
+//app.use('/authenticate', authenticate);
 
 
 // catch 404 and forward to error handler

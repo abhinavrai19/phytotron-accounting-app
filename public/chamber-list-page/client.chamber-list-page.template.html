@@ -1,0 +1,48 @@
+<div layout="column">
+    <top-information-bar></top-information-bar>
+    <top-navigation-bar></top-navigation-bar>
+    <div layout="row" layout-fill>
+        <md-sidenav class="md-sidenav-left"
+                    md-is-locked-open="true"
+                    md-whiteframe="16">
+            <md-content>
+                <md-list flex >
+                    <md-list-item class="md-list-item-inner">
+                        <md-button class="md-raised" ng-click="$ctrl.addChamber()"> Add New Chamber </md-button>
+                    </md-list-item>
+
+                    <md-divider></md-divider>
+
+                    <label>Search Chambers By:</label>
+                    <md-list-item class="md-list-item-inner" >
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label for="searchChamberName">Chamber Name :</label>
+                            <input type="text" id="searchChamberName"/>
+                        </md-input-container>
+                    </md-list-item>
+                    <md-list-item class="md-list-item-inner">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label for="searchChamberCarts">Carts :</label>
+                            <input type="text" id="searchChamberCarts"/>
+                        </md-input-container>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </md-sidenav>
+        <div layout="column" layout-fill>
+            <table>
+                <thead>
+                <th>ChamberName</th>
+                <th>Carts</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="chamber in $ctrl.chambersList">
+                    <td>{{chamber.chamber_name}}</td>
+                    <td>{{chamber.carts_count}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
