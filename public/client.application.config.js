@@ -14,7 +14,7 @@ angular.module('phytotronAccountingApp')
                 template: '<home-page></home-page>'
             }).
             when('/chamber-list',{
-                template: '<chamber-list></chamber-list>'
+                template: '<chamber-list-page></chamber-list-page>'
     });
 }]);
 

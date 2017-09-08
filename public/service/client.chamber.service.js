@@ -2,18 +2,25 @@
 
 angular.module('phytotronAccountingApp')
     .factory('ChamberService',['$http',function($http){
-        return{
+        return {
+            // Get all chambers
             getChamberList: function(){
                 return $http.get('/chambers');
             },
+
+            //Get a chamber by name
             getChamberByName: function(chamberName){
                 return $http.get('/chamber/'+chamberName);
             },
+
+            //Create a chamber
             createChamber: function(chamber){
-                return $http.post('/chamber/',chamber);
+                return $http.post('/chamber/create',chamber);
             },
+
+            //update an existing chamber
             updateChamber: function(chamberName,chamber){
-                return $http.post('/chamber/'+chamberName,chamber);
+                return $http.post('/chamber/update/'+chamberName,chamber);
             }
-        }
+        };
     }]);
