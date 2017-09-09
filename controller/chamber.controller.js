@@ -17,7 +17,7 @@ exports.getChamberList = function(req, res){
 };
 
 // Get Chamber By Name
-exports.getChambeByName = function(req, res){
+exports.getChamberByName = function(req, res){
     Chamber.findOne({chamber_name: req.params.id})
         .exec(function(err, chamber){
             if(err){
@@ -32,8 +32,6 @@ exports.getChambeByName = function(req, res){
 
 // Create Chamber
 exports.createChamber = function(req, res){
-    //console.log('Logging from SERVER chamber controller');
-    //console.log(req.body);
 
     var chamberInstance = new Chamber({
         chamber_name: req.body.chamber_name,
@@ -44,7 +42,7 @@ exports.createChamber = function(req, res){
         if(err){
             res.status(500);
             res.send('Error creating chamber: either duplicate name or missing fields: '+err);
-        }else {
+        }else{
             res.send('Chamber Successfully Created');
         }
 
@@ -65,7 +63,7 @@ exports.updateChamber = function(req,res){
                 }else{
                     res.send('Chamber updated successfully');
                 }
-            })
+            });
         }
 
     });

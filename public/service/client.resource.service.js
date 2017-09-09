@@ -5,7 +5,7 @@ angular.module('phytotronAccountingApp')
         return {
 
             // Get all Resources
-            getAllResources: function(){
+            getResourceList: function(){
                 return $http.get('/resources');
             },
 

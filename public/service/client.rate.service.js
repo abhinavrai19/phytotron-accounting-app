@@ -5,7 +5,7 @@ angular.module('phytotronAccountingApp')
         return {
 
             // Get all Rates
-            getAllRates: function(){
+            getRateList: function(){
                 return $http.get('/rates');
             },
 
@@ -20,8 +20,8 @@ angular.module('phytotronAccountingApp')
             },
 
             //update a rate
-            updateRate: function(rateType, rate){
-                return $http.post('/rate/update/'+rateType,rate);
+            updateRate: function(rate){
+                return $http.post('/rate/update',rate);
             }
 
         };

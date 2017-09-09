@@ -5,7 +5,6 @@ angular.module('phytotronAccountingApp').
         controller: function TopNavigationBarController($location){
 
             this.navigateTo = function(locationPath){
-                console.log("Navigating through Top Nav Bar to: "+locationPath);
                 $location.path(locationPath);
             }
         }

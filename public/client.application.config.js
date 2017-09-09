@@ -18,6 +18,12 @@ angular.module('phytotronAccountingApp')
             })
             .when('/chamber-update/:id',{
                 template: '<chamber-update-page></chamber-update-page>'
+            })
+            .when('/rate-list',{
+                template: '<rate-list-page></rate-list-page>'
+            })
+            .when('/rate-update/:id',{
+                template: '<rate-update-page></rate-update-page>'
             });
 }]);
 

@@ -3,6 +3,7 @@ var router = express.Router();
 
 // Including respective controllers to route to map requests to functions.
 var ChamberController = require('../controller/chamber.controller');
+var RateController = require('../controller/rate.controller');
 
 // Open AngularJS index.html //
 router.get('/', function(req, res, next) {
@@ -11,17 +12,32 @@ router.get('/', function(req, res, next) {
 
 // Chamber Routes //
 
-// Get All chambers List
+// Get chamber List
 router.get('/chambers', ChamberController.getChamberList);
 
 // Get A Single Chamber by Name
-router.get('/chamber/:id', ChamberController.getChambeByName);
+router.get('/chamber/:id', ChamberController.getChamberByName);
 
 // Create a Chamber
 router.post('/chamber/create', ChamberController.createChamber);
 
 // Update a Chamber
-router.post('/chamber/update/', ChamberController.updateChamber);
+router.post('/chamber/update', ChamberController.updateChamber);
+
+// Rate Routes //
+
+//Get Rate List
+router.get('/rates', RateController.getRateList);
+
+// Get a Single Rate by Name
+router.get('/rate/:id', RateController.getRateByType);
+
+// Create a Rate
+router.post('/rate/create', RateController.createRate);
+
+// Update a Rate
+router.post('/rate/update', RateController.updateRate);
+
 
 
 
