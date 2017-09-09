@@ -17,6 +17,12 @@ router.get('/chambers', ChamberController.getChamberList);
 // Get A Single Chamber by Name
 router.get('/chamber/:id', ChamberController.getChambeByName);
 
+// Create a Chamber
+router.post('/chamber/create', ChamberController.createChamber);
+
+// Update a Chamber
+router.post('/chamber/update/', ChamberController.updateChamber);
+
 
 
 module.exports = router;

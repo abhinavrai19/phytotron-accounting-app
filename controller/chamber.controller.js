@@ -4,37 +4,70 @@ var async = require('async');
 
 // Get Chamber List
 exports.getChamberList = function(req, res){
-    Chamber.find({})
-        .sort({chamber_name: 'ascending'})
+    Chamber.find()
         .exec(function(err, chamberList){
            if(err){
-               res.send(err);
+               res.status(500);
+               res.send('Error fetching chamber List'+err);
+           } else{
+               res.send(chamberList);
            }
-           res.send(chamberList);
+
         });
 };
 
 // Get Chamber By Name
 exports.getChambeByName = function(req, res){
-    Chamber.find({chamber_name: req.params.id})
+    Chamber.findOne({chamber_name: req.params.id})
         .exec(function(err, chamber){
             if(err){
-                res.send(err);
+                res.status(500);
+                res.send('Cannot find the requested chamber: '+err);
+            } else{
+                res.send(chamber);
             }
-            res.send(chamber);
+
         });
 };
 
 // Create Chamber
 exports.createChamber = function(req, res){
-    //req.check('chamber_name').notEmpty().withMessage('Chamber Name cannot be empty');
-    console.log(req.body);
-    /*
+    //console.log('Logging from SERVER chamber controller');
+    //console.log(req.body);
 
-    var ChamberInstance = new Chamber({
+    var chamberInstance = new Chamber({
         chamber_name: req.body.chamber_name,
         carts_count: req.body.carts_count
     });
-*/
 
+    chamberInstance.save(function(err){
+        if(err){
+            res.status(500);
+            res.send('Error creating chamber: either duplicate name or missing fields: '+err);
+        }else {
+            res.send('Chamber Successfully Created');
+        }
+
+    });
 };
+
+exports.updateChamber = function(req,res){
+    Chamber.findOne({chamber_name: req.body.chamber_name}, function(err,chamber){
+        if(err){
+            res.status(500);
+            res.send('Cannot find chamber to update');
+        } else{
+            chamber.set(req.body);
+            chamber.save( function (err){
+                if(err){
+                    res.status(500);
+                    res.send('Error Updating chamber: '+err);
+                }else{
+                    res.send('Chamber updated successfully');
+                }
+            })
+        }
+
+    });
+
+}

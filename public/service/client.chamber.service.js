@@ -19,8 +19,8 @@ angular.module('phytotronAccountingApp')
             },
 
             //update an existing chamber
-            updateChamber: function(chamberName,chamber){
-                return $http.post('/chamber/update/'+chamberName,chamber);
+            updateChamber: function(chamber){
+                return $http.post('/chamber/update/',chamber);
             }
         };
     }]);

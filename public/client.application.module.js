@@ -2,5 +2,8 @@
 //declaring the module for your main application
 angular.module('phytotronAccountingApp', [
     'ngRoute',
-    'ngMaterial'
+    'ngMaterial',
+    'ngFlash',
+    'md.data.table'
+
 ]);
