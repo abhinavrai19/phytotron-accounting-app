@@ -20,8 +20,8 @@ angular.module('phytotronAccountingApp')
             },
 
             //update a Resource
-            updateResource: function(cropName, resource){
-                return $http.post('/resource/update/'+resourceName,resource);
+            updateResource: function(resource){
+                return $http.post('/resource/update',resource);
             }
 
         };

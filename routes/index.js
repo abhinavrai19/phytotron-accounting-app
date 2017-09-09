@@ -6,9 +6,10 @@ var ChamberController = require('../controller/chamber.controller');
 var RateController = require('../controller/rate.controller');
 var DepartmentController = require('../controller/department.controller');
 var CropController = require('../controller/crop.controller');
+var ResourceController = require('../controller/resource.controller');
 
 // Open AngularJS index.html //
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
   res.render('index');
 });
 
@@ -67,6 +68,20 @@ router.post('/crop/create', CropController.createCrop);
 
 // Update Crop
 router.post('/crop/update', CropController.updateCrop);
+
+// Resource Routes //-------------------------------------------------
+
+// Get Resource List
+router.get('/resources', ResourceController.getResourceList);
+
+// Get Resource by name
+router.get('/resource/:id', ResourceController.getResourceByName);
+
+// Create Resource
+router.post('/resource/create', ResourceController.createResource);
+
+// Update Resource
+router.post('/resource/update', ResourceController.updateResource);
 
 
 
