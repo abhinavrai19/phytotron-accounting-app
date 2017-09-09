@@ -5,7 +5,7 @@ angular.module('phytotronAccountingApp')
         return {
 
             // Get all Crops
-            getAllCrops: function(){
+            getCropList: function(){
                 return $http.get('/crops');
             },
 
@@ -20,8 +20,8 @@ angular.module('phytotronAccountingApp')
             },
 
             //update a Crop
-            updateCrop: function(cropName, crop){
-                return $http.post('/crop/update/'+cropName,crop);
+            updateCrop: function(crop){
+                return $http.post('/crop/update',crop);
             }
 
         };

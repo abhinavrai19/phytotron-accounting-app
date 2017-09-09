@@ -5,13 +5,14 @@ var router = express.Router();
 var ChamberController = require('../controller/chamber.controller');
 var RateController = require('../controller/rate.controller');
 var DepartmentController = require('../controller/department.controller');
+var CropController = require('../controller/crop.controller');
 
 // Open AngularJS index.html //
 router.get('/', function(req, res, next) {
   res.render('index');
 });
 
-// Chamber Routes //
+// Chamber Routes //-------------------------------------------------
 
 // Get chamber List
 router.get('/chambers', ChamberController.getChamberList);
@@ -25,7 +26,7 @@ router.post('/chamber/create', ChamberController.createChamber);
 // Update a Chamber
 router.post('/chamber/update', ChamberController.updateChamber);
 
-// Rate Routes //
+// Rate Routes //-------------------------------------------------
 
 // Get Rate List
 router.get('/rates', RateController.getRateList);
@@ -39,7 +40,7 @@ router.post('/rate/create', RateController.createRate);
 // Update a Rate
 router.post('/rate/update', RateController.updateRate);
 
-// Department Routes
+// Department Routes //-------------------------------------------------
 
 // Get Department List
 router.get('/departments', DepartmentController.getDepartmentList);
@@ -52,6 +53,20 @@ router.post('/department/create', DepartmentController.createDepartment);
 
 // Update Department
 router.post('/department/update', DepartmentController.updateDepartment);
+
+// Crop Routes //-------------------------------------------------
+
+// Get Crop List
+router.get('/crops', CropController.getCropList);
+
+// Get Crop by name
+router.get('/crop/:id', CropController.getCropByName);
+
+// Create Crop
+router.post('/crop/create', CropController.createCrop);
+
+// Update Crop
+router.post('/crop/update', CropController.updateCrop);
 
 
 

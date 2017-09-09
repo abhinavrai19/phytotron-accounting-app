@@ -13,6 +13,7 @@ exports.getRateList = function(req, res){
         });
 };
 
+// Get Rate by Type
 exports.getRateByType = function(req, res){
     Rate.findOne({rate_type: req.params.id})
         .exec(function(err, rate){
@@ -25,6 +26,7 @@ exports.getRateByType = function(req, res){
         });
 };
 
+// Create Rate
 exports.createRate = function(req, res){
     var rateInstance = new Rate({
         rate_type: req.body.rate_type,
@@ -43,6 +45,7 @@ exports.createRate = function(req, res){
 
 };
 
+// Update Rate
 exports.updateRate = function(req,res){
     Rate.findOne({rate_type: req.body.rate_type}, function(err, rate){
         if(err){

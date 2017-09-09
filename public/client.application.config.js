@@ -30,6 +30,18 @@ angular.module('phytotronAccountingApp')
             })
             .when('/department-update/:id',{
                 template: '<department-update-page></department-update-page>'
+            })
+            .when('/crop-list',{
+                template: '<crop-list-page></crop-list-page>'
+            })
+            .when('/crop-update/:id',{
+                template: '<crop-update-page></crop-update-page>'
+            })
+            .when('/resource-list',{
+                template: '<resource-list-page></resource-list-page>'
+            })
+            .when('/resource-update/:id',{
+                template: '<resource-update-page></resource-update-page>'
             });
 }]);
 
