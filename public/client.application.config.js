@@ -24,6 +24,12 @@ angular.module('phytotronAccountingApp')
             })
             .when('/rate-update/:id',{
                 template: '<rate-update-page></rate-update-page>'
+            })
+            .when('/department-list',{
+                template: '<department-list-page></department-list-page>'
+            })
+            .when('/department-update/:id',{
+                template: '<department-update-page></department-update-page>'
             });
 }]);
 

@@ -26,8 +26,6 @@ exports.getRateByType = function(req, res){
 };
 
 exports.createRate = function(req, res){
-    console.log("From Server Rate controller");
-    console.log(req.body);
     var rateInstance = new Rate({
         rate_type: req.body.rate_type,
         rate_value: req.body.rate_value
@@ -57,7 +55,7 @@ exports.updateRate = function(req,res){
                     res.status(500);
                     res.send('Error updating rate :'+err);
                 }else{
-                    res.send('Rate updated successfully');
+                    res.send('Rate successfully updated');
                 }
             });
         }

@@ -5,8 +5,8 @@ angular.module('phytotronAccountingApp')
         return {
 
             // Get all Departments
-            getAllDepartments: function(){
-                return $http.get('/department');
+            getDepartmentList: function(){
+                return $http.get('/departments');
             },
 
             //Get Department by name
@@ -20,8 +20,8 @@ angular.module('phytotronAccountingApp')
             },
 
             //update a Department
-            updateDepartment: function(departmentId, department){
-                return $http.post('/department/update/'+departmentId,department);
+            updateDepartment: function(department){
+                return $http.post('/department/update',department);
             }
 
         };

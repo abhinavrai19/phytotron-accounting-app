@@ -13,18 +13,18 @@
                 <md-list flex >
                     <md-list-item class="md-list-item-inner" >
                         <md-input-container class="md-block" flex-gt-xs>
-                            <label>Rate Type</label>
-                            <input type="text" ng-model="$ctrl.newRate.rate_type">
+                            <label>Department Id</label>
+                            <input type="text" ng-model="$ctrl.newDepartment.department_id">
                         </md-input-container>
                     </md-list-item>
                     <md-list-item class="md-list-item-inner" >
                         <md-input-container class="md-block" flex-gt-xs>
-                            <label>Rate Value</label>
-                            <input type="number" ng-model="$ctrl.newRate.rate_value">
+                            <label>Department Name</label>
+                            <input type="text" ng-model="$ctrl.newDepartment.department_name">
                         </md-input-container>
                     </md-list-item>
                     <md-list-item class="md-list-item-inner" >
-                        <md-button class="md-primary" ng-click="$ctrl.addRate()"> Add New Rate </md-button>
+                        <md-button class="md-primary" ng-click="$ctrl.addDepartment()"> Add New Department </md-button>
                     </md-list-item>
 
                 </md-list>
@@ -35,14 +35,14 @@
                 <md-list flex >
                     <md-list-item class="md-list-item-inner" >
                         <md-input-container class="md-block" flex-gt-xs>
-                            <label>Rate Type :</label>
+                            <label>Department Id:</label>
                             <input type="text" />
                         </md-input-container>
                     </md-list-item>
                     <md-list-item class="md-list-item-inner">
                         <md-input-container class="md-block" flex-gt-xs>
-                            <label>Rate Value :</label>
-                            <input type="number"/>
+                            <label>Department Name:</label>
+                            <input type="text"/>
                         </md-input-container>
                     </md-list-item>
                 </md-list>
@@ -53,22 +53,22 @@
             <md-table-pagination
                     md-limit="$ctrl.tableQuery.limit"
                     md-page="$ctrl.tableQuery.page"
-                    md-total="{{$ctrl.rateList.length}}"
+                    md-total="{{$ctrl.departmentList.length}}"
                     md-boundary-links="true"
                     md-page-select="true">
             </md-table-pagination>
             <md-table-container>
                 <table md-table>
                     <thead md-head md-order="$ctrl.tableQuery.order">
-                    <th md-column md-order-by="rate_type">Rate Type</th>
-                    <th md-column md-order-by="rate_value">Rate Value($)</th>
+                    <th md-column md-order-by="department_id">Department Id</th>
+                    <th md-column md-order-by="department_name">Department Name</th>
                     </thead>
                     <tbody md-body>
-                    <tr md-row ng-repeat="rate in $ctrl.rateList |
+                    <tr md-row ng-repeat="department in $ctrl.departmentList |
                         orderBy: $ctrl.tableQuery.order |
                         limitTo: $ctrl.tableQuery.limit : ($ctrl.tableQuery.page -1)*$ctrl.tableQuery.limit">
-                        <td md-cell><a ng-href="#/rate-update/{{rate.rate_type}}">{{rate.rate_type}}</a></td>
-                        <td md-cell><a ng-href="#/rate-update/{{rate.rate_type}}">{{rate.rate_value}}</a></td>
+                        <td md-cell><a ng-href="#/department-update/{{department.department_id}}">{{department.department_id}}</a></td>
+                        <td md-cell><a ng-href="#/department-update/{{department.department_id}}">{{department.department_name}}</a></td>
                     </tr>
                     </tbody>
                 </table>
