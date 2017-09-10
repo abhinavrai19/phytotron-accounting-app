@@ -1,0 +1,78 @@
+<div layout="column">
+    <top-information-bar></top-information-bar>
+    <top-navigation-bar></top-navigation-bar>
+
+    <md-divider></md-divider>
+    <div layout="row" layout-fill>
+        <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16">
+            <md-content>
+                <md-toolbar class="md-theme-light">
+                    <md-button class="md-raised" ng-click="$ctrl.updateClient()"> Update Client </md-button>
+                    <md-button class="md-raised" ng-click="$ctrl.reinitializeClient()"> Clear All Fields</md-button>
+                </md-toolbar>
+            </md-content>
+        </md-sidenav>
+        <div layout ="column" layout-fill>
+            <div layout-gt-xs="row">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>First Name*</label>
+                    <input ng-model="$ctrl.client.first_name">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Last Name</label>
+                    <input ng-model="$ctrl.client.last_name">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Email</label>
+                    <input ng-model="$ctrl.client.email">
+                </md-input-container>
+            </div>
+            <div layout-gt-xs="row">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Contact Number</label>
+                    <input ng-model="$ctrl.client.contact_number">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Department</label>
+                    <md-select ng-model="$ctrl.client.department" >
+                        <md-option ng-repeat="department in $ctrl.clientDepartmentList" value="{{department.department_name}}">
+                            {{department.department_name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Status</label>
+                    <md-select ng-model="$ctrl.client.status">
+                        <md-option ng-repeat="status in $ctrl.clientStatusList" value="{{status}}">
+                            {{status}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <md-input-container class="md-block">
+                <label>Address</label>
+                <input ng-model="$ctrl.client.address">
+            </md-input-container>
+            <md-table-container>
+                <table md-table>
+                    <thead md-head>
+                    <th md-column>
+                        <md-input-container class="md-block">
+                            <label>Account Number</label>
+                            <input ng-model="$ctrl.accountNumber">
+                        </md-input-container>
+                    </th>
+                    <th md-column><md-button class="md-raised" ng-disabled="!$ctrl.accountNumber" ng-click="$ctrl.addAccount()"> Add</md-button></th>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row ng-repeat="accountNumber in $ctrl.client.account_numbers track by $index">
+                        <td md-cell><p>{{accountNumber}}</p></td>
+                        <td md-cell><md-button class="md-raised" ng-click="$ctrl.removeAccount($index)">X</md-button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </div>
+    </div>
+    <flash-message></flash-message>
+</div>

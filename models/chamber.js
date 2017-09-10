@@ -7,7 +7,8 @@ var ChamberSchema = new Schema({
     chamber_name: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true
     },
     carts_count: {
         type: Number,

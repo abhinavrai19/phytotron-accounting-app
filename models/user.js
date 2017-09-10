@@ -23,7 +23,7 @@ var UserSchema =  new Schema({
 
 });
 
-UserSchema.methods.validPassword = function(password) {
+UserSchema.methods.validPassword = function(password){
     return this.password === password;
 };
 

@@ -7,7 +7,8 @@ var ResourceSchema = new Schema({
     resource_name: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true
     },
     unit_of_measure: {
         type: String,

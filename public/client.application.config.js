@@ -6,13 +6,25 @@ angular.module('phytotronAccountingApp')
     function config($routeProvider,$locationProvider){
         $locationProvider.hashPrefix('');
 
+        // URL-Component mappings: home and login
         $routeProvider
             .when('/',{
                 template: '<login-page></login-page>'
             })
-            .when('/home-page',{
+            .when('/home',{
                 template: '<home-page></home-page>'
+            });
+        // URL-Component mappings: client
+        $routeProvider
+            .when('/client-list',{
+                template: '<client-list-page></client-list-page>'
             })
+            .when('/client-update/:id',{
+                template: '<client-update-page></client-update-page>'
+            });
+
+        // URL-Component mappings: space usage parameters
+        $routeProvider
             .when('/chamber-list',{
                 template: '<chamber-list-page></chamber-list-page>'
             })

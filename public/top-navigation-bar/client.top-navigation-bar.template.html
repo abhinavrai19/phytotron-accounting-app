@@ -1,17 +1,19 @@
 <md-toolbar layout="row">
     <div layout-alight="left center">
-        <md-button>Project Information</md-button>
+        <md-button ng-click="$ctrl.navigateTo('/home')">Home</md-button>
     </div>
     <div layout-alight="left center">
-        <md-button>Client Information</md-button>
+        <md-button ng-click="$ctrl.navigateTo('/project-list')">Projects</md-button>
+    </div>
+    <div layout-alight="left center">
+        <md-button ng-click="$ctrl.navigateTo('/client-list')">Clients</md-button>
     </div>
     <div layout-alight="left center">
         <md-menu>
-            <md-button ng-mouseenter="$mdMenu.open()">Invoicing
-            </md-button>
+            <md-button ng-mouseenter="$mdMenu.open()">Invoicing</md-button>
             <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
                 <md-menu-item>
-                    <md-button>Invoice Quarterly</md-button>
+                    <md-button>Generate Invoice</md-button>
                 </md-menu-item>
             </md-menu-content>
         </md-menu>
@@ -19,8 +21,7 @@
 
     <div layout-align="left center">
         <md-menu>
-            <md-button ng-mouseenter="$mdMenu.open()">Space Usage Parameters
-            </md-button>
+            <md-button ng-mouseenter="$mdMenu.open()">Space Usage Parameters</md-button>
             <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
                 <md-menu-item>
                     <md-button ng-click="$ctrl.navigateTo('/chamber-list')">Chambers</md-button>

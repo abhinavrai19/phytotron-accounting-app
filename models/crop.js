@@ -7,7 +7,8 @@ var CropSchema = new Schema({
     scientific_name: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true
     },
     common_name:{
         type: String,

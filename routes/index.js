@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 // Including respective controllers to route to map requests to functions.
+var ClientController = require('../controller/client.controller');
+
 var ChamberController = require('../controller/chamber.controller');
 var RateController = require('../controller/rate.controller');
 var DepartmentController = require('../controller/department.controller');
@@ -12,6 +14,20 @@ var ResourceController = require('../controller/resource.controller');
 router.get('/', function(req, res) {
   res.render('index');
 });
+
+// Client Routes //-------------------------------------------------
+
+// Get Client List
+router.get('/clients', ClientController.getClientList);
+
+// Get Client by Id
+router.get('/client/:id', ClientController.getClientById);
+
+// Create Client
+router.post('/client/create', ClientController.createClient);
+
+// Update Client
+router.post('/client/update', ClientController.updateClient);
 
 // Chamber Routes //-------------------------------------------------
 

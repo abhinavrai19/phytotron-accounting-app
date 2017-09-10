@@ -7,7 +7,8 @@ var RateSchema = new Schema({
     rate_type: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true
     },
     rate_value: {
         type: Number,
