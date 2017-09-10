@@ -9,7 +9,7 @@ angular.module('phytotronAccountingApp').
 
             this.authenticateUser = function(){
                 console.log("Authenticating user: "+this.user.username);
-                $location.path( '/home-page' );
+                $location.path( '/home' );
             };
         }
     });
