@@ -14,6 +14,16 @@ angular.module('phytotronAccountingApp')
             .when('/home',{
                 template: '<home-page></home-page>'
             });
+
+        // URL-Component mappings: project
+        $routeProvider
+            .when('/project-list', {
+                template: '<project-list-page></project-list-page>'
+            })
+            .when('/project-update/:id', {
+                template: '<project-update-page></project-update-page>'
+            });
+
         // URL-Component mappings: client
         $routeProvider
             .when('/client-list',{

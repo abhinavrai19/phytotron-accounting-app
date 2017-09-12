@@ -4,9 +4,6 @@ angular.module('phytotronAccountingApp')
         controller: function ClientListPageController(ClientService, DepartmentService, Flash){
             var ctrl = this;
 
-            // Array to populate client status
-            ctrl.clientStatusList = ['ACTIVE', 'INACTIVE'];
-
             // Parameters for table pagination
             ctrl.tableQuery = {
                 order: 'first_name',
@@ -18,6 +15,9 @@ angular.module('phytotronAccountingApp')
                 ctrl.getClientList();
                 ctrl.getClientDepartmentList();
                 ctrl.initializeNewClient();
+
+                // Array to populate client status
+                ctrl.clientStatusList = ['ACTIVE', 'INACTIVE'];
             };
 
             // Get Client List
@@ -66,7 +66,7 @@ angular.module('phytotronAccountingApp')
                     },function failure(res){
                         Flash.create('danger',res.data);
                     });
-            }
+            };
 
             // Add and Remove account numbers to newClient
             ctrl.addAccount = function () {
