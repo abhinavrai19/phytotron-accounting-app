@@ -3,6 +3,9 @@ var Project = require('../models/project');
 // Get Project list
 exports.getProjectList = function(req, res){
     Project.find()
+        .populate('clients')
+        .populate('chambers.chamber')
+        .populate('additional_resources.resource')
         .exec(function(err, projectList){
             if(err){
                 res.status(500);
@@ -16,6 +19,9 @@ exports.getProjectList = function(req, res){
 // Get Project by Project Id
 exports.getProjectById = function(req, res){
     Project.findOne({project_id: req.params.id})
+        .populate('clients')
+        .populate('chambers.chamber')
+        .populate('additional_resources.resource')
         .exec(function(err, project){
             if(err){
                 res.status(500);
@@ -28,20 +34,25 @@ exports.getProjectById = function(req, res){
 
 // Create Project
 exports.createProject = function(req, res){
+    // Parse response for ids before saving project
+    var project = parseClientIdsInProject(req.body);
+    project = parseChamberIdsInProject(project);
+    project = parseResourceIdsInProject(project);
+
     var projectInstance = new Project({
-        project_id:                     req.body.project_id,
-        project_title:                  req.body.project_title,
-        project_start_date:             req.body.project_start_date,
-        project_end_date:               req.body.project_end_date,
-        clients:                        req.body.clients,
-        chamber_rate:                   req.body.chamber_rate,
-        chambers:                       req.body.chambers,
-        requires_additional_resources:  req.body.requires_additional_resources,
-        additional_resources:           req.body.additional_resources,
-        project_status:                 req.body.project_status,
-        invoices:                       req.body.invoices,
-        last_invoice_date:              req.body.last_invoice_date,
-        payments:                       req.body.payments
+        project_id:                     project.project_id,
+        project_title:                  project.project_title,
+        project_start_date:             project.project_start_date,
+        project_end_date:               project.project_end_date,
+        clients:                        project.clients,
+        chamber_rate:                   project.chamber_rate,
+        chambers:                       project.chambers,
+        requires_additional_resources:  project.requires_additional_resources,
+        additional_resources:           project.additional_resources,
+        project_status:                 project.project_status,
+        invoices:                       project.invoices,
+        last_invoice_date:              project.last_invoice_date,
+        payments:                       project.payments
     });
 
     projectInstance.save(function(err){
@@ -63,7 +74,10 @@ exports.updateProject = function(req,res){
             res.status(500);
             res.send('Cannot find Project to update');
         }else{
-            project.set(req.body);
+            var updatedProject = parseClientIdsInProject(req.body);
+            updatedProject = parseChamberIdsInProject(updatedProject);
+            updatedProject = parseResourceIdsInProject(updatedProject);
+            project.set(updatedProject);
             project.save(function(err){
                 if(err){
                     res.status(500);
@@ -74,4 +88,27 @@ exports.updateProject = function(req,res){
             });
         }
     });
+};
+
+// Get Client _ids and replace with respective client objects in request.
+
+var parseClientIdsInProject = function(project){
+    project.clients.forEach(function(client){
+        client = client._id;
+    });
+    return project;
+};
+
+var parseChamberIdsInProject = function(project){
+    project.chambers.forEach(function(chamberEntry){
+        chamberEntry.chamber = chamberEntry.chamber._id;
+    });
+    return project;
+};
+
+var parseResourceIdsInProject = function(project){
+    project.additional_resources.forEach(function(resourceEntry){
+        resourceEntry.resource = resourceEntry.resource._id;
+    });
+    return project;
 };

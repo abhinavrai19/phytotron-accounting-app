@@ -1,0 +1,245 @@
+<div layout="column">
+    <top-information-bar></top-information-bar>
+    <top-navigation-bar></top-navigation-bar>
+
+    <md-divider></md-divider>
+
+    <md-tabs md-border-bottom md-center-tabs md-dynamic-height>
+        <md-tab label="Project ID: {{$ctrl.project.project_id}}" ng-disabled="true"></md-tab>
+        <md-tab label="Update Project and Chamber Details">
+            <div layout ="column" layout-fill>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Project Title</label>
+                        <input ng-model="$ctrl.project.project_title">
+                    </md-input-container>
+                </div>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Project Start Date</label>
+                        <md-datepicker ng-model="$ctrl.project.project_start_date" md-placeholder="Enter date"></md-datepicker>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Project End Date</label>
+                        <md-datepicker ng-model="$ctrl.project.project_end_date" md-placeholder="Enter date"></md-datepicker>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Project Status</label>
+                        <md-select ng-model="$ctrl.project.project_status">
+                            <md-option ng-repeat="status in $ctrl.projectStatusList" value="{{status}}">
+                                {{status}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Chamber Rate</label>
+                        <md-select ng-model="$ctrl.project.chamber_rate" >
+                            <md-option ng-repeat="rate in $ctrl.availableChamberRates" value="{{rate._id}}">
+                                {{rate.rate_type}} / / {{rate.rate_value}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Chamber</label>
+                        <md-select ng-model="$ctrl.selectedChamber" ng-model-options="{trackBy: '$value._id'}">
+                            <md-option ng-repeat="chamber in $ctrl.availableChambers" ng-value="{{chamber}}">
+                                {{chamber.chamber_name}} / / {{chamber.carts_count}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Carts Allocated</label>
+                        <input type="number" ng-model="$ctrl.carts_allocated">
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Chamber Allocation Date</label>
+                        <md-datepicker ng-model="$ctrl.chamber_allocation_date" md-placeholder="Enter date"></md-datepicker>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Chamber Deallocation Date</label>
+                        <md-datepicker ng-model="$ctrl.chamber_deallocation_date" md-placeholder="Enter date"></md-datepicker>
+                    </md-input-container>
+                </div>
+                <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedChamber" ng-click="$ctrl.addChamberToProject()">Add Chamber</md-button>
+                <md-table-container>
+                    <table md-table>
+                        <thead md-head>
+                        <th md-column>Chamber</th>
+                        <th md-column>Carts Allocated</th>
+                        <th md-column>Chamber Allocation Date</th>
+                        <th md-column>Chamber Deallocation Date</th>
+                        <th md-column>Action</th>
+                        </thead>
+                        <tbody md-body>
+                        <tr md-row ng-repeat="addedChamber in $ctrl.project.chambers track by $index">
+                            <td md-cell><p>{{addedChamber.chamber.chamber_name}}</p></td>
+                            <td md-cell><p>{{addedChamber.carts_allocated}}</p></td>
+                            <td md-cell><p>{{addedChamber.chamber_allocation_date}}</p></td>
+                            <td md-cell><p>{{addedChamber.chamber_deallocation_date}}</p></td>
+                            <td md-cell><md-button class="md-raised md-warn" ng-click="$ctrl.removeChamberFromProject($index)">X</md-button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+            </div>
+        </md-tab>
+        <md-tab label="Update Client Details" md-on-select="$ctrl.updateAvailableClients()">
+            <div layout="row">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Global Search:</label>
+                    <input type="text" />
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>First Name:</label>
+                    <input type="text"/>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Last Name:</label>
+                    <input type="text"/>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Email:</label>
+                    <input type="text"/>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Status:</label>
+                    <input type="text"/>
+                </md-input-container>
+            </div>
+            <div layout="row" layout-fill>
+                <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16" flex="33">
+                    <md-content>
+                        <md-toolbar class="md-theme-light">
+                            <h4 class="md-toolbar-tools">Added Clients:</h4>
+                        </md-toolbar>
+                        <md-list flex >
+                            <md-list-item class="md-list-item-inner" ng-repeat="client in $ctrl.project.clients track by $index">
+                                <div layout="row">
+                                    <md-button class="md-raised md-warn" ng-click="$ctrl.removeClientsFromProject(client)">X</md-button>
+                                    <p>{{client.first_name}} {{client.last_name}} {{client.email}}</p>
+                                </div>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </md-sidenav>
+                <div layout="column" layout-fill>
+                    <md-table-pagination
+                            md-limit="$ctrl.clientTableQuery.limit"
+                            md-page="$ctrl.clientTableQuery.page"
+                            md-total="{{$ctrl.availableClients.length}}"
+                            md-boundary-links="true"
+                            md-page-select="true">
+                    </md-table-pagination>
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head md-order="$ctrl.clientTableQuery.order">
+                            <th md-column md-order-by="first_name">First Name</th>
+                            <th md-column md-order-by="last_name">Last Name</th>
+                            <th md-column md-order-by="email">Email</th>
+                            <th md-column md-order-by="department">Department/Company</th>
+                            <th md-column md-order-by="status">Status</th>
+                            <th md-column>Add to Project</th>
+                            </thead>
+                            <tbody md-body>
+                            <tr md-row ng-repeat="client in $ctrl.availableClients |
+                            orderBy: $ctrl.clientTableQuery.order |
+                            limitTo: $ctrl.clientTableQuery.limit : ($ctrl.clientTableQuery.page -1)*$ctrl.clientTableQuery.limit">
+                                <td md-cell>{{client.first_name}}</td>
+                                <td md-cell>{{client.last_name}}</td>
+                                <td md-cell>{{client.email}}</td>
+                                <td md-cell>{{client.department}}</td>
+                                <td md-cell>{{client.status}}</td>
+                                <td md-cell><md-button class="md-raised md-primary" ng-click="$ctrl.addClientsToProject(client)"><h1>+</h1></md-button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </div>
+            </div>
+        </md-tab>
+        <md-tab label="Update Resource Details">
+            <md-switch md- invert
+                       ng-model="$ctrl.project.requires_additional_resources"
+                       aria-label="Requires Additional Resources"
+                       ng-disabled="!($ctrl.project.additional_resources.length==0)">
+                This Project Requires Additional Resources: {{$ctrl.project.requires_additional_resources}}
+            </md-switch>
+            <div ng-show="$ctrl.project.requires_additional_resources">
+                <div layout="column">
+                    <div layout="row">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Resource</label>
+                            <md-select ng-model="$ctrl.selectedResource" ng-model-options="{trackBy: '$value._id'}">
+                                <md-option ng-repeat="resource in $ctrl.availableResources" ng-value="{{resource}}">
+                                    {{resource.resource_name}} / / {{resource.unit_of_measure}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Unit Rate ($)</label>
+                            <input type="number" ng-model="$ctrl.unit_rate">
+                        </md-input-container>
+                        <md-input-container>
+                            <label>Units Consumed</label>
+                            <input type="number" ng-model="$ctrl.units_consumed">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Resource Allocation Date</label>
+                            <md-datepicker ng-model="$ctrl.resource_allocation_date" md-placeholder="Enter date"></md-datepicker>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Resource Deallocation Date</label>
+                            <md-datepicker ng-model="$ctrl.resource_deallocation_date" md-placeholder="Enter date"></md-datepicker>
+                        </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Resource Description</label>
+                            <input ng-model="$ctrl.resource_description">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Resource Comments</label>
+                            <input ng-model="$ctrl.resource_comments">
+                        </md-input-container>
+                    </div>
+                    <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedResource" ng-click="$ctrl.addResourceToProject()">Add</md-button>
+                </div>
+                <md-table-container>
+                    <table md-table>
+                        <thead md-head>
+                        <th md-column>Resource</th>
+                        <th md-column>Unit Rate ($)</th>
+                        <th md-column>Units Consumed</th>
+                        <th md-column>Resource Allocation Date</th>
+                        <th md-column>Resource Deallocation Date</th>
+                        <th md-column>Resource Description</th>
+                        <th md-column>Resource Comments</th>
+                        <th md-column>Action</th>
+                        </thead>
+                        <tbody md-body>
+                        <tr md-row ng-repeat="addedResource in $ctrl.project.additional_resources track by $index">
+                            <td md-cell><p>{{addedResource.resource.resource_name}}</p></td>
+                            <td md-cell><p>{{addedResource.unit_rate}}</p></td>
+                            <td md-cell><p>{{addedResource.units_consumed}}</p></td>
+                            <td md-cell><p>{{addedResource.resource_allocation_date}}</p></td>
+                            <td md-cell><p>{{addedResource.resource_deallocation_date}}</p></td>
+                            <td md-cell><p>{{addedResource.resource_description}}</p></td>
+                            <td md-cell><p>{{addedResource.resource_comments}}</p></td>
+                            <td md-cell><md-button class="md-raised md-warn" ng-click="$ctrl.removeResourceFromProject($index)">X</md-button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+            </div>
+
+        </md-tab>
+        <md-tab label="Review and Submit Update" md-on-select="$ctrl.verifyProject($ctrl.project)">
+            <div layout="column" ng-show="$ctrl.projectVerified">
+                <md-button class="md-primary md-raised" ng-click="$ctrl.updateProject()">Update Project</md-button>
+            </div>
+        </md-tab>
+    </md-tabs>
+    <flash-message></flash-message>
+</div>

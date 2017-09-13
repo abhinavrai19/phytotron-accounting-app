@@ -43,14 +43,15 @@ var ProjectSchema = new Schema({
 
     chambers: [
         {
-            chamber_id:{
+            chamber:{
                 type: Schema.Types.ObjectId,
                 ref: 'Chamber'
 
             },
             carts_allocated: {
                 type: Number,
-                min: 0
+                min: 0,
+                default: 0
             },
             chamber_allocation_date: {
                 type: Date,
@@ -68,18 +69,20 @@ var ProjectSchema = new Schema({
 
     additional_resources: [
         {
-            resource_id:{
+            resource:{
                 type: Schema.Types.ObjectId,
                 ref: 'Resource'
 
             },
             unit_rate: {
                 type: Number,
-                min: 0
+                min: 0,
+                default: 0
             },
             units_consumed: {
                 type: Number,
-                min: 0
+                min: 0,
+                default: 0
             },
             resource_allocation_date: {
                 type: Date,

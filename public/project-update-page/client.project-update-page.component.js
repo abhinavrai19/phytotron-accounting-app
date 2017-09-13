@@ -1,12 +1,14 @@
 angular.module('phytotronAccountingApp')
-    .component('projectListPage',{
-        templateUrl: 'project-list-page/client.project-list-page.template.html',
+    .component('projectUpdatePage',{
+        templateUrl: 'project-update-page/client.project-update-page.template.html',
         controller: function ProjectListPageController(
             ProjectService,
             ClientService,
             RateService,
             ChamberService,
             ResourceService,
+            $routeParams,
+            $location,
             Flash){
 
             var ctrl = this;
@@ -30,46 +32,29 @@ angular.module('phytotronAccountingApp')
             };
 
             ctrl.$onInit = function(){
-                ctrl.getProjectList();
+                ctrl.getProjectById();
 
-                //Pre Fetching data to Start a new PROJECT
-                ctrl.initializeNewProject();
+                //Pre Fetching data to Update PROJECT
+                ctrl.initializePageVariables();
                 ctrl.getAvailableClients();
                 ctrl.getAvailableChamberRates();
                 ctrl.getAvailableChambers();
                 ctrl.getAvailableResources();
             };
 
-            // Get Project List
-            ctrl.getProjectList = function(){
-                ProjectService.getProjectList()
+            // Get Project By ID
+            ctrl.getProjectById = function(){
+                ProjectService.getProjectById($routeParams.id)
                     .then(function success(res){
-                        ctrl.projectList = res.data;
+                        ctrl.project = res.data;
                     },function failure(res){
                         Flash.create('danger',res.data);
                     });
             };
 
             // -------- create new project------------
-            ctrl.initializeNewProject = function(){
-
+            ctrl.initializePageVariables = function(){
                 ctrl.projectVerified = false;
-
-                ctrl.newProject = {
-                    project_id: "",
-                    project_title: "",
-                    project_start_date: "",
-                    project_end_date: "",
-                    clients: [],
-                    chamber_rate: "",
-                    chambers: [],
-                    requires_additional_resources: false,
-                    additional_resources: [],
-                    project_status: "ACTIVE",
-                    invoices: [],
-                    last_invoice_date: "",
-                    payments: []
-                };
 
                 // add chamber details
                 ctrl.selectedChamber = null;
@@ -87,12 +72,14 @@ angular.module('phytotronAccountingApp')
                 ctrl.resource_comments = "";
             };
 
-            // Creating New Project after review
-            ctrl.createNewProject = function(){
-                ProjectService.createProject(ctrl.newProject)
+            // Update Project after review
+            ctrl.updateProject = function(){
+                console.log('Update Project controller: client side ');
+                console.log(ctrl.project);
+                ProjectService.updateProject(ctrl.project)
                     .then(function success(res){
-                        ctrl.$onInit();
                         Flash.create('success',res.data);
+                        $location.path( '/home' );
                     },function failure(res){
                         Flash.create('danger',res.data);
                     });
@@ -106,6 +93,17 @@ angular.module('phytotronAccountingApp')
                     }, function failure(res){
                         Flash.create('danger', res.data);
                     });
+            };
+
+            // Function to remove already added clients from available clients
+            ctrl.updateAvailableClients = function () {
+                ctrl.project.clients.forEach(function(existingClient){
+                    for(var i=0;i<ctrl.availableClients.length;i++){
+                        if(ctrl.availableClients[i]._id==existingClient._id){
+                            ctrl.availableClients.splice(i,1);
+                        }
+                    }
+                });
             };
 
             ctrl.getAvailableChamberRates = function (){
@@ -137,7 +135,7 @@ angular.module('phytotronAccountingApp')
 
             // Add and remove clients from project
             ctrl.addClientsToProject = function(client){
-                ctrl.newProject.clients.push(client);
+                ctrl.project.clients.push(client);
                 for(var i=0;i<ctrl.availableClients.length;i++){
                     if(ctrl.availableClients[i]._id==client._id){
                         ctrl.availableClients.splice(i,1);
@@ -148,9 +146,9 @@ angular.module('phytotronAccountingApp')
 
             ctrl.removeClientsFromProject = function(client){
                 ctrl.availableClients.push(client);
-                for(var i=0;i<ctrl.newProject.clients.length;i++){
-                    if(ctrl.newProject.clients[i]._id==client._id){
-                        ctrl.newProject.clients.splice(i,1);
+                for(var i=0;i<ctrl.project.clients.length;i++){
+                    if(ctrl.project.clients[i]._id==client._id){
+                        ctrl.project.clients.splice(i,1);
                         return;
                     }
                 }
@@ -165,13 +163,13 @@ angular.module('phytotronAccountingApp')
                     chamber_deallocation_date:  ctrl.chamber_deallocation_date
                 };
 
-                ctrl.newProject.chambers.push(chamber);
+                ctrl.project.chambers.push(chamber);
                 ctrl.selectedChamber = null;
                 ctrl.carts_allocated = "";
             };
 
             ctrl.removeChamberFromProject = function(index){
-                ctrl.newProject.chambers.splice(index,1);
+                ctrl.project.chambers.splice(index,1);
             }
 
             // Add and remove resources from project
@@ -184,9 +182,9 @@ angular.module('phytotronAccountingApp')
                     resource_deallocation_date: ctrl.resource_deallocation_date,
                     resource_description:       ctrl.resource_description,
                     resource_comments:          ctrl.resource_comments
-                };
+                }
 
-                ctrl.newProject.additional_resources.push(resource);
+                ctrl.project.additional_resources.push(resource);
                 ctrl.selectedResource = null;
                 ctrl.unit_rate = null;
                 ctrl.units_consumed = null;
@@ -195,7 +193,7 @@ angular.module('phytotronAccountingApp')
             };
 
             ctrl.removeResourceFromProject = function(index) {
-                ctrl.newProject.additional_resources.splice(index,1);
+                ctrl.project.additional_resources.splice(index,1);
             };
 
             ctrl.verifyProject = function(project){
@@ -207,14 +205,6 @@ angular.module('phytotronAccountingApp')
                 if (project.clients.length==0) {
                     ctrl.projectVerified=false;
                     Flash.create('danger','0 Clients: Project must have at least one client');
-                }
-                if (project.project_start_date==""){
-                    ctrl.projectVerified=false;
-                    Flash.create('danger','Project Start Date cannot be null');
-                }
-                if(project.chamber_rate==""){
-                    ctrl.projectVerified=false;
-                    Flash.create('danger','Project must have a chamber rate');
                 }
             };
         }

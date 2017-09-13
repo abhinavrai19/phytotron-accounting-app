@@ -93,80 +93,6 @@
 
             <md-tabs md-border-bottom md-center-tabs md-dynamic-height>
 
-                <md-tab label="Client Details">
-                    <div layout="row">
-                        <md-input-container class="md-block" flex-gt-xs>
-                            <label>Global Search:</label>
-                            <input type="text" />
-                        </md-input-container>
-                        <md-input-container class="md-block" flex-gt-xs>
-                            <label>First Name:</label>
-                            <input type="text"/>
-                        </md-input-container>
-                        <md-input-container class="md-block" flex-gt-xs>
-                            <label>Last Name:</label>
-                            <input type="text"/>
-                        </md-input-container>
-                        <md-input-container class="md-block" flex-gt-xs>
-                            <label>Email:</label>
-                            <input type="text"/>
-                        </md-input-container>
-                        <md-input-container class="md-block" flex-gt-xs>
-                            <label>Status:</label>
-                            <input type="text"/>
-                        </md-input-container>
-                    </div>
-                    <div layout="row" layout-fill>
-                        <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16" flex="33">
-                            <md-content>
-                                <md-toolbar class="md-theme-light">
-                                    <h4 class="md-toolbar-tools">Added Clients:</h4>
-                                </md-toolbar>
-                                <md-list flex >
-                                    <md-list-item class="md-list-item-inner" ng-repeat="client in $ctrl.addedClients track by $index">
-                                        <div layout="row">
-                                            <md-button class="md-raised md-warn" ng-click="$ctrl.removeClientsFromProject(client)">X</md-button>
-                                            <p>{{client.first_name}} {{client.last_name}} {{client.email}}</p>
-                                        </div>
-                                    </md-list-item>
-                                </md-list>
-                            </md-content>
-                        </md-sidenav>
-                        <div layout="column" layout-fill>
-                            <md-table-pagination
-                                    md-limit="$ctrl.clientTableQuery.limit"
-                                    md-page="$ctrl.clientTableQuery.page"
-                                    md-total="{{$ctrl.availableClients.length}}"
-                                    md-boundary-links="true"
-                                    md-page-select="true">
-                            </md-table-pagination>
-                            <md-table-container>
-                                <table md-table>
-                                    <thead md-head md-order="$ctrl.clientTableQuery.order">
-                                    <th md-column md-order-by="first_name">First Name</th>
-                                    <th md-column md-order-by="last_name">Last Name</th>
-                                    <th md-column md-order-by="email">Email</th>
-                                    <th md-column md-order-by="department">Department/Company</th>
-                                    <th md-column md-order-by="status">Status</th>
-                                    <th md-column>Add to Project</th>
-                                    </thead>
-                                    <tbody md-body>
-                                    <tr md-row ng-repeat="client in $ctrl.availableClients |
-                                    orderBy: $ctrl.clientTableQuery.order |
-                                    limitTo: $ctrl.clientTableQuery.limit : ($ctrl.clientTableQuery.page -1)*$ctrl.clientTableQuery.limit">
-                                        <td md-cell>{{client.first_name}}</td>
-                                        <td md-cell>{{client.last_name}}/td>
-                                        <td md-cell>{{client.email}}</td>
-                                        <td md-cell>{{client.department}}</td>
-                                        <td md-cell>{{client.status}}</td>
-                                        <td md-cell><md-button class="md-raised md-primary" ng-click="$ctrl.addClientsToProject(client)"><h1>+</h1></md-button></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </md-table-container>
-                        </div>
-                    </div>
-                </md-tab>
                 <md-tab label="Project and Chamber Details">
                     <div layout ="column" layout-fill>
                         <div layout-gt-xs="row">
@@ -239,7 +165,7 @@
                                 </thead>
                                 <tbody md-body>
                                 <tr md-row ng-repeat="addedChamber in $ctrl.newProject.chambers track by $index">
-                                    <td md-cell><p>{{addedChamber.display_chamber_name}}</p></td>
+                                    <td md-cell><p>{{addedChamber.chamber.chamber_name}}</p></td>
                                     <td md-cell><p>{{addedChamber.carts_allocated}}</p></td>
                                     <td md-cell><p>{{addedChamber.chamber_allocation_date}}</p></td>
                                     <td md-cell><p>{{addedChamber.chamber_deallocation_date}}</p></td>
@@ -248,6 +174,80 @@
                                 </tbody>
                             </table>
                         </md-table-container>
+                    </div>
+                </md-tab>
+                <md-tab label="Client Details">
+                    <div layout="row">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Global Search:</label>
+                            <input type="text" />
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>First Name:</label>
+                            <input type="text"/>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Last Name:</label>
+                            <input type="text"/>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Email:</label>
+                            <input type="text"/>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Status:</label>
+                            <input type="text"/>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-fill>
+                        <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16" flex="33">
+                            <md-content>
+                                <md-toolbar class="md-theme-light">
+                                    <h4 class="md-toolbar-tools">Added Clients:</h4>
+                                </md-toolbar>
+                                <md-list flex >
+                                    <md-list-item class="md-list-item-inner" ng-repeat="client in $ctrl.newProject.clients">
+                                        <div layout="row">
+                                            <md-button class="md-raised md-warn" ng-click="$ctrl.removeClientsFromProject(client)">X</md-button>
+                                            <p>{{client.first_name}} {{client.last_name}} {{client.email}}</p>
+                                        </div>
+                                    </md-list-item>
+                                </md-list>
+                            </md-content>
+                        </md-sidenav>
+                        <div layout="column" layout-fill>
+                            <md-table-pagination
+                                    md-limit="$ctrl.clientTableQuery.limit"
+                                    md-page="$ctrl.clientTableQuery.page"
+                                    md-total="{{$ctrl.availableClients.length}}"
+                                    md-boundary-links="true"
+                                    md-page-select="true">
+                            </md-table-pagination>
+                            <md-table-container>
+                                <table md-table>
+                                    <thead md-head md-order="$ctrl.clientTableQuery.order">
+                                    <th md-column md-order-by="first_name">First Name</th>
+                                    <th md-column md-order-by="last_name">Last Name</th>
+                                    <th md-column md-order-by="email">Email</th>
+                                    <th md-column md-order-by="department">Department/Company</th>
+                                    <th md-column md-order-by="status">Status</th>
+                                    <th md-column>Add to Project</th>
+                                    </thead>
+                                    <tbody md-body>
+                                    <tr md-row ng-repeat="client in $ctrl.availableClients |
+                                    orderBy: $ctrl.clientTableQuery.order |
+                                    limitTo: $ctrl.clientTableQuery.limit : ($ctrl.clientTableQuery.page -1)*$ctrl.clientTableQuery.limit">
+                                        <td md-cell>{{client.first_name}}</td>
+                                        <td md-cell>{{client.last_name}}</td>
+                                        <td md-cell>{{client.email}}</td>
+                                        <td md-cell>{{client.department}}</td>
+                                        <td md-cell>{{client.status}}</td>
+                                        <td md-cell><md-button class="md-raised md-primary" ng-click="$ctrl.addClientsToProject(client)"><h1>+</h1></md-button></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </md-table-container>
+                        </div>
                     </div>
                 </md-tab>
                 <md-tab label="Resource Details">
@@ -311,7 +311,7 @@
                                 </thead>
                                 <tbody md-body>
                                 <tr md-row ng-repeat="addedResource in $ctrl.newProject.additional_resources track by $index">
-                                    <td md-cell><p>{{addedResource.display_resource_name}}</p></td>
+                                    <td md-cell><p>{{addedResource.resource.resource_name}}</p></td>
                                     <td md-cell><p>{{addedResource.unit_rate}}</p></td>
                                     <td md-cell><p>{{addedResource.units_consumed}}</p></td>
                                     <td md-cell><p>{{addedResource.resource_allocation_date}}</p></td>
@@ -326,8 +326,8 @@
                     </div>
 
                 </md-tab>
-                <md-tab label="Review and Submit">
-                    <div layout="column">
+                <md-tab label="Review and Submit" md-on-select="$ctrl.verifyProject($ctrl.newProject)">
+                    <div layout="column" ng-show="$ctrl.projectVerified">
                         <md-button class="md-primary md-raised" ng-click="$ctrl.createNewProject()">Start New Project</md-button>
                     </div>
                 </md-tab>
