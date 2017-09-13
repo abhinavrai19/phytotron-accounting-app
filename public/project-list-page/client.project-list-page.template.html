@@ -1,10 +1,7 @@
 <div layout="column">
-    <top-information-bar></top-information-bar>
     <top-navigation-bar></top-navigation-bar>
 
-    <md-divider></md-divider>
-
-    <md-tabs md-border-bottom md-center-tabs md-dynamic-height>
+    <md-tabs md-border-bottom md-center-tabs md-dynamic-height md-no-ink>
 
         <md-tab label="Project List" layout-fill>
             <div layout="row" layout-fill>
@@ -131,7 +128,7 @@
                                 </md-select>
                             </md-input-container>
                         </div>
-                        <div layout-gt-xs="row">
+                        <div layout-gt-xs="row" md-whiteframe="4">
                             <md-input-container class="md-block" flex-gt-sm>
                                 <label>Chamber</label>
                                 <md-select ng-model="$ctrl.selectedChamber" ng-model-options="{trackBy: '$value._id'}">
@@ -152,8 +149,9 @@
                                 <label>Chamber Deallocation Date</label>
                                 <md-datepicker ng-model="$ctrl.chamber_deallocation_date" md-placeholder="Enter date"></md-datepicker>
                             </md-input-container>
+                            <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedChamber" ng-click="$ctrl.addChamberToProject()" flex="5"><h1>+</h1></md-button>
                         </div>
-                        <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedChamber" ng-click="$ctrl.addChamberToProject()">Add Chamber</md-button>
+
                         <md-table-container>
                             <table md-table>
                                 <thead md-head>
@@ -258,7 +256,7 @@
                         This Project Requires Additional Resources: {{$ctrl.newProject.requires_additional_resources}}
                     </md-switch>
                     <div ng-show="$ctrl.newProject.requires_additional_resources">
-                        <div layout="column">
+                        <div layout="column" md-whiteframe="4">
                             <div layout="row">
                                 <md-input-container class="md-block" flex-gt-sm>
                                     <label>Resource</label>
@@ -294,8 +292,9 @@
                                     <label>Resource Comments</label>
                                     <input ng-model="$ctrl.resource_comments">
                                 </md-input-container>
+                                <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedResource" ng-click="$ctrl.addResourceToProject()" flex="5"><h1>+</h1></md-button>
                             </div>
-                            <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedResource" ng-click="$ctrl.addResourceToProject()">Add</md-button>
+
                         </div>
                         <md-table-container>
                             <table md-table>

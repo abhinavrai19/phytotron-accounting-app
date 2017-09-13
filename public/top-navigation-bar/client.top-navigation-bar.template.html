@@ -1,45 +1,46 @@
-<md-toolbar layout="row">
-    <div layout-alight="left center">
-        <md-button ng-click="$ctrl.navigateTo('/home')">Home</md-button>
-    </div>
-    <div layout-alight="left center">
-        <md-button ng-click="$ctrl.navigateTo('/project-list')">Projects</md-button>
-    </div>
-    <div layout-alight="left center">
-        <md-button ng-click="$ctrl.navigateTo('/client-list')">Clients</md-button>
-    </div>
-    <div layout-alight="left center">
-        <md-menu>
-            <md-button ng-mouseenter="$mdMenu.open()">Invoicing</md-button>
-            <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
-                <md-menu-item>
-                    <md-button>Generate Invoice</md-button>
-                </md-menu-item>
-            </md-menu-content>
-        </md-menu>
-    </div>
-
-    <div layout-align="left center">
-        <md-menu>
-            <md-button ng-mouseenter="$mdMenu.open()">Space Usage Parameters</md-button>
-            <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
-                <md-menu-item>
-                    <md-button ng-click="$ctrl.navigateTo('/chamber-list')">Chambers</md-button>
-                </md-menu-item>
-                <md-menu-item>
-                    <md-button ng-click="$ctrl.navigateTo('/rate-list')">Rate</md-button>
-                </md-menu-item>
-                <md-menu-item>
-                    <md-button ng-click="$ctrl.navigateTo('/department-list')">Department</md-button>
-                </md-menu-item>
-                <md-menu-item>
-                    <md-button ng-click="$ctrl.navigateTo('/crop-list')">Crop</md-button>
-                </md-menu-item>
-                <md-menu-item>
-                    <md-button ng-click="$ctrl.navigateTo('/resource-list')">Resources</md-button>
-                </md-menu-item>
-            </md-menu-content>
-        </md-menu>
-    </div>
-
-</md-toolbar>
+<div layout="row">
+    <md-toolbar layout="row" layout-align="start start">
+        <div>
+            <md-button ng-click="$ctrl.navigateTo('/home')">Home</md-button>
+        </div>
+        <div>
+            <md-button ng-click="$ctrl.navigateTo('/project-list')">Projects</md-button>
+        </div>
+        <div>
+            <md-button ng-click="$ctrl.navigateTo('/client-list')">Clients</md-button>
+        </div>
+        <div>
+            <md-menu>
+                <md-button ng-click="$mdMenu.open($event)">Invoicing</md-button>
+                <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+                    <md-menu-item>
+                        <md-button>Generate Invoice</md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </div>
+        <div>
+            <md-menu>
+                <md-button ng-click="$mdMenu.open($event)">Space Usage Parameters</md-button>
+                <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.navigateTo('/chamber-list')">Chambers</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.navigateTo('/rate-list')">Rate</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.navigateTo('/department-list')">Department</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.navigateTo('/crop-list')">Crop</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.navigateTo('/resource-list')">Resources</md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </div>
+    </md-toolbar>
+    <top-information-bar flex="33"></top-information-bar>
+</div>
