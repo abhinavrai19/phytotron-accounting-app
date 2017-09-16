@@ -7,15 +7,23 @@ angular.module('phytotronAccountingApp')
         ){
             var ctrl = this;
 
+            // Parameters for table pagination
+            ctrl.tableQuery = {
+                order: 'project_id',
+                limit: 10,
+                page: 1
+            };
+
             // inputs
             ctrl.usageStartDate = '';
             ctrl.usageEndDate = '';
             ctrl.selectedChamber='';
 
             // outputs
-            ctrl.completeUsageReport = null;
-            ctrl.partialUsageReport = null;
+            ctrl.completeUsageReport = [];
             ctrl.chamberDropDownList=[];
+
+            ctrl.partialUsageReport = null;
 
             ctrl.getChamberUsageBetweenDates = function () {
                 var reportParams = {
@@ -24,9 +32,19 @@ angular.module('phytotronAccountingApp')
                 };
                 ChamberUsageReportService.getChamberUsageBetweenDates(reportParams)
                     .then(function success(res){
-                        //console.log(res.data);
+                        // clear drop down list
+                        ctrl.chamberDropDownList = [];
+                        // repopulate drop down and update complete usage report
                         ctrl.completeUsageReport = ctrl.parseChamberUsageBetweenDateReport(res.data);
-                        //console.log(ctrl.completeUsageReport);
+                        if(ctrl.completeUsageReport.length==0){
+                            Flash.create('success','No Chambers were in use during the selected period');
+                        }else{
+                            // select first option in sorted chamberDropDown and call drawChamberUsageChart function
+                            ctrl.chamberDropDownList.sort();
+                            ctrl.selectedChamber=ctrl.chamberDropDownList[0];
+                            ctrl.drawChamberUsageChart();
+                        }
+
                     }, function failure(res){
                         Flash.create('danger', res.data);
                     });
@@ -75,7 +93,9 @@ angular.module('phytotronAccountingApp')
             };
             
             ctrl.drawChamberUsageChart = function () {
+                // clear partial report
                 ctrl.partialUsageReport=[];
+                // Fill partial report with corresponding chamber data.
                 ctrl.completeUsageReport.forEach(function(reportEntry){
                     if(reportEntry.chamber_name==ctrl.selectedChamber){
                         ctrl.partialUsageReport.push(reportEntry);

@@ -15,19 +15,42 @@
                     <md-datepicker ng-model="$ctrl.usageEndDate" md-placeholder="Enter date"></md-datepicker>
                 </md-input-container>
                 <md-button ng-show="$ctrl.usageStartDate!='' && $ctrl.usageEndDate!=''" class="md-raised md-primary" ng-click="$ctrl.getChamberUsageBetweenDates()"> List Chamber Usage </md-button>
-                <md-toolbar class="md-theme-light">
-                    <h4 class="md-toolbar-tools">View By:</h4>
-                </md-toolbar>
             </md-content>
         </md-sidenav>
-        <div layout="column" ng-show="$ctrl.completeUsageReport">
-            <label>Select a chamber to view its usage report</label>
+        <div layout="column" ng-hide="$ctrl.completeUsageReport.length==0" layout-fill>
+            <div layout="row">
+                <h4 class="md-toolbar-tools">View By Chamber:</h4>
                 <md-select ng-model="$ctrl.selectedChamber" md-on-close="$ctrl.drawChamberUsageChart()">
                     <md-option ng-value="chamberName" ng-repeat="chamberName in $ctrl.chamberDropDownList">{{chamberName}}</md-option>
                 </md-select>
-            <div>
-                <p>{{$ctrl.partialUsageReport}}</p>
             </div>
+            <md-table-pagination
+                    md-limit="$ctrl.tableQuery.limit"
+                    md-page="$ctrl.tableQuery.page"
+                    md-total="{{$ctrl.partialUsageReport.length}}"
+                    md-boundary-links="true"
+                    md-page-select="true">
+            </md-table-pagination>
+            <md-table-container>
+                <table md-table>
+                    <thead md-head md-order="$ctrl.tableQuery.order">
+                    <th md-column md-order-by="project_id">Project Id</th>
+                    <th md-column md-order-by="start_date">Start Date</th>
+                    <th md-column md-order-by="end_date">End Date</th>
+                    <th md-column md-order-by="carts">Carts Used</th>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row ng-repeat="usageEntry in $ctrl.partialUsageReport |
+                        orderBy: $ctrl.tableQuery.order |
+                        limitTo: $ctrl.tableQuery.limit : ($ctrl.tableQuery.page -1)*$ctrl.tableQuery.limit">
+                        <td md-cell>{{usageEntry.project_id}}</td>
+                        <td md-cell>{{usageEntry.start_date}}</td>
+                        <td md-cell>{{usageEntry.end_date}}</td>
+                        <td md-cell>{{usageEntry.carts}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
         </div>
     </div>
     <flash-message></flash-message>
