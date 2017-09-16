@@ -1,0 +1,34 @@
+<div layout="column">
+    <top-navigation-bar></top-navigation-bar>
+    <div layout="row" layout-fill>
+        <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16">
+            <md-content>
+                <md-toolbar class="md-theme-light">
+                    <h4 class="md-toolbar-tools">Report Parameters</h4>
+                </md-toolbar>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Usage Start Date</label>
+                    <md-datepicker ng-model="$ctrl.usageStartDate" md-placeholder="Enter date"></md-datepicker>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Usage End Date</label>
+                    <md-datepicker ng-model="$ctrl.usageEndDate" md-placeholder="Enter date"></md-datepicker>
+                </md-input-container>
+                <md-button ng-show="$ctrl.usageStartDate!='' && $ctrl.usageEndDate!=''" class="md-raised md-primary" ng-click="$ctrl.getChamberUsageBetweenDates()"> List Chamber Usage </md-button>
+                <md-toolbar class="md-theme-light">
+                    <h4 class="md-toolbar-tools">View By:</h4>
+                </md-toolbar>
+            </md-content>
+        </md-sidenav>
+        <div layout="column" ng-show="$ctrl.completeUsageReport">
+            <label>Select a chamber to view its usage report</label>
+                <md-select ng-model="$ctrl.selectedChamber" md-on-close="$ctrl.drawChamberUsageChart()">
+                    <md-option ng-value="chamberName" ng-repeat="chamberName in $ctrl.chamberDropDownList">{{chamberName}}</md-option>
+                </md-select>
+            <div>
+                <p>{{$ctrl.partialUsageReport}}</p>
+            </div>
+        </div>
+    </div>
+    <flash-message></flash-message>
+</div>

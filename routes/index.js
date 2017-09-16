@@ -10,6 +10,7 @@ var RateController = require('../controller/rate.controller');
 var DepartmentController = require('../controller/department.controller');
 var CropController = require('../controller/crop.controller');
 var ResourceController = require('../controller/resource.controller');
+var ChamberUsageReportController = require('../controller/chamber-usage-report.controller');
 
 // Open AngularJS index.html //
 router.get('/', function(req, res) {
@@ -114,6 +115,10 @@ router.post('/resource/create', ResourceController.createResource);
 // Update Resource
 router.post('/resource/update', ResourceController.updateResource);
 
+// Usage Report Routes //-------------------------------------------------
+
+// Get Chamber Usage Report between Dates
+router.post('/usageReport/chamber/byDate', ChamberUsageReportController.getChamberUsageReportByDate);
 
 
 module.exports = router;

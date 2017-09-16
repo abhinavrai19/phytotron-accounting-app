@@ -65,6 +65,12 @@ angular.module('phytotronAccountingApp')
             .when('/resource-update/:id',{
                 template: '<resource-update-page></resource-update-page>'
             });
+
+        // URL-Component mappings: Chamber Usage
+        $routeProvider
+            .when('/chamber-usage',{
+                template:'<chamber-usage-page></chamber-usage-page>'
+            });
 }]);
 
 
