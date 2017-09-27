@@ -6,6 +6,7 @@ angular.module('phytotronAccountingApp')
             ClientService,
             RateService,
             ChamberService,
+            CropService,
             ResourceService,
             Flash){
 
@@ -37,7 +38,9 @@ angular.module('phytotronAccountingApp')
                 ctrl.getAvailableClients();
                 ctrl.getAvailableChamberRates();
                 ctrl.getAvailableChambers();
+                ctrl.getAvailableCrops();
                 ctrl.getAvailableResources();
+
             };
 
             // Get Project List
@@ -76,6 +79,7 @@ angular.module('phytotronAccountingApp')
                 // add chamber details
                 ctrl.selectedChamber = null;
                 ctrl.carts_allocated = "";
+                ctrl.crop = "";
                 ctrl.chamber_allocation_date = "";
                 ctrl.chamber_deallocation_date = "";
 
@@ -128,6 +132,15 @@ angular.module('phytotronAccountingApp')
                     });
             };
 
+            ctrl.getAvailableCrops = function(){
+                CropService.getCropList()
+                    .then(function success(res){
+                        ctrl.availableCrops = res.data;
+                    }, function failure(res){
+                        Flash.create('danger', res.data);
+                    });
+            };
+
             ctrl.getAvailableResources = function () {
                 ResourceService.getResourceList()
                     .then(function success(res){
@@ -163,6 +176,7 @@ angular.module('phytotronAccountingApp')
                 var chamber = {
                     chamber:                    ctrl.selectedChamber,
                     carts_allocated:            ctrl.carts_allocated,
+                    crop:                       ctrl.crop,
                     chamber_allocation_date:    ctrl.chamber_allocation_date,
                     chamber_deallocation_date:  ctrl.chamber_deallocation_date
                 };

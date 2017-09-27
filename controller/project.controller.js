@@ -5,6 +5,7 @@ exports.getProjectList = function(req, res){
     Project.find()
         .populate('clients')
         .populate('chambers.chamber')
+        .populate('chambers.crop')
         .populate('additional_resources.resource')
         .exec(function(err, projectList){
             if(err){
@@ -21,6 +22,7 @@ exports.getProjectById = function(req, res){
     Project.findOne({project_id: req.params.id})
         .populate('clients')
         .populate('chambers.chamber')
+        .populate('chambers.crop')
         .populate('additional_resources.resource')
         .exec(function(err, project){
             if(err){
@@ -102,6 +104,7 @@ var parseClientIdsInProject = function(project){
 var parseChamberIdsInProject = function(project){
     project.chambers.forEach(function(chamberEntry){
         chamberEntry.chamber = chamberEntry.chamber._id;
+        chamberEntry.crop = chamberEntry.crop._id;
     });
     return project;
 };

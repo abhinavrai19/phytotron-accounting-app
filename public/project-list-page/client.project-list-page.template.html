@@ -14,9 +14,10 @@
                             <md-list-item class="md-list-item-inner" >
                                 <md-input-container class="md-block" flex-gt-xs>
                                     <label>Global Search:</label>
-                                    <input type="text" />
+                                    <input type="text" ng-model="searchAllProjects.$"/>
                                 </md-input-container>
                             </md-list-item>
+                            <!--
                             <md-list-item class="md-list-item-inner">
                                 <md-input-container class="md-block" flex-gt-xs>
                                     <label>Client First Name:</label>
@@ -29,22 +30,23 @@
                                     <input type="text"/>
                                 </md-input-container>
                             </md-list-item>
+                            -->
                             <md-list-item class="md-list-item-inner">
                                 <md-input-container class="md-block" flex-gt-xs>
                                     <label>Project Id:</label>
-                                    <input type="text"/>
+                                    <input type="text" ng-model="searchAllProjects.project_id"/>
                                 </md-input-container>
                             </md-list-item>
                             <md-list-item class="md-list-item-inner">
                                 <md-input-container class="md-block" flex-gt-xs>
                                     <label>Project Title:</label>
-                                    <input type="text"/>
+                                    <input type="text" ng-model="searchAllProjects.project_title"/>
                                 </md-input-container>
                             </md-list-item>
                             <md-list-item class="md-list-item-inner">
                                 <md-input-container class="md-block" flex-gt-xs>
                                     <label>Project Status:</label>
-                                    <input type="text"/>
+                                    <input type="text" ng-model="searchAllProjects.project_status"/>
                                 </md-input-container>
                             </md-list-item>
                         </md-list>
@@ -71,6 +73,7 @@
                             </thead>
                             <tbody md-body>
                             <tr md-row ng-repeat="project in $ctrl.projectList |
+                                    filter: searchAllProjects |
                                     orderBy: $ctrl.tableQuery.order |
                                     limitTo: $ctrl.tableQuery.limit : ($ctrl.tableQuery.page -1)*$ctrl.tableQuery.limit">
                                 <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_id}}</a></td>
@@ -141,6 +144,14 @@
                                 <label>Carts Allocated</label>
                                 <input type="number" ng-model="$ctrl.carts_allocated">
                             </md-input-container>
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Crop</label>
+                                <md-select ng-model="$ctrl.crop" ng-model-options="{trackBy: '$value._id'}">
+                                    <md-option ng-repeat="crop in $ctrl.availableCrops" ng-value="{{crop}}">
+                                        {{crop.scientific_name}} / / {{crop.common_name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
                             <md-input-container class="md-block" flex-gt-xs>
                                 <label>Chamber Allocation Date</label>
                                 <md-datepicker ng-model="$ctrl.chamber_allocation_date" md-placeholder="Enter date"></md-datepicker>
@@ -149,7 +160,7 @@
                                 <label>Chamber Deallocation Date</label>
                                 <md-datepicker ng-model="$ctrl.chamber_deallocation_date" md-placeholder="Enter date"></md-datepicker>
                             </md-input-container>
-                            <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedChamber" ng-click="$ctrl.addChamberToProject()" flex="5"><h1>+</h1></md-button>
+                            <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedChamber || $ctrl.carts_allocated=='' || ($ctrl.chamber_allocation_date == '') || ($ctrl.chamber_deallocation_date == '') || ($ctrl.crop == '')" ng-click="$ctrl.addChamberToProject()" flex="5"><h1>+</h1></md-button>
                         </div>
 
                         <md-table-container>
@@ -157,6 +168,7 @@
                                 <thead md-head>
                                 <th md-column>Chamber</th>
                                 <th md-column>Carts Allocated</th>
+                                <th md-column>Crop</th>
                                 <th md-column>Chamber Allocation Date</th>
                                 <th md-column>Chamber Deallocation Date</th>
                                 <th md-column>Action</th>
@@ -165,6 +177,7 @@
                                 <tr md-row ng-repeat="addedChamber in $ctrl.newProject.chambers track by $index">
                                     <td md-cell><p>{{addedChamber.chamber.chamber_name}}</p></td>
                                     <td md-cell><p>{{addedChamber.carts_allocated}}</p></td>
+                                    <td md-cell><p>{{addedChamber.crop.scientific_name}}</p></td>
                                     <td md-cell><p>{{addedChamber.chamber_allocation_date}}</p></td>
                                     <td md-cell><p>{{addedChamber.chamber_deallocation_date}}</p></td>
                                     <td md-cell><md-button class="md-raised md-warn" ng-click="$ctrl.removeChamberFromProject($index)">X</md-button></td>
@@ -178,23 +191,23 @@
                     <div layout="row">
                         <md-input-container class="md-block" flex-gt-xs>
                             <label>Global Search:</label>
-                            <input type="text" />
+                            <input type="text" ng-model="searchAllClients.$"/>
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-xs>
                             <label>First Name:</label>
-                            <input type="text"/>
+                            <input type="text" ng-model="searchAllClients.first_name"/>
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-xs>
                             <label>Last Name:</label>
-                            <input type="text"/>
+                            <input type="text" ng-model="searchAllClients.last_name"/>
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-xs>
                             <label>Email:</label>
-                            <input type="text"/>
+                            <input type="text" ng-model="searchAllClients.email"/>
                         </md-input-container>
                         <md-input-container class="md-block" flex-gt-xs>
                             <label>Status:</label>
-                            <input type="text"/>
+                            <input type="text" ng-model="searchAllClients.status"/>
                         </md-input-container>
                     </div>
                     <div layout="row" layout-fill>
@@ -233,6 +246,7 @@
                                     </thead>
                                     <tbody md-body>
                                     <tr md-row ng-repeat="client in $ctrl.availableClients |
+                                    filter: searchAllClients |
                                     orderBy: $ctrl.clientTableQuery.order |
                                     limitTo: $ctrl.clientTableQuery.limit : ($ctrl.clientTableQuery.page -1)*$ctrl.clientTableQuery.limit">
                                         <td md-cell>{{client.first_name}}</td>
@@ -292,7 +306,7 @@
                                     <label>Resource Comments</label>
                                     <input ng-model="$ctrl.resource_comments">
                                 </md-input-container>
-                                <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedResource" ng-click="$ctrl.addResourceToProject()" flex="5"><h1>+</h1></md-button>
+                                <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedResource || $ctrl.unit_rate == '' || $ctrl.units_consumed == '' || $ctrl.resource_allocation_date == '' || $ctrl.resource_deallocation_date == '' " ng-click="$ctrl.addResourceToProject()" flex="5"><h1>+</h1></md-button>
                             </div>
 
                         </div>

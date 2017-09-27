@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 var Chamber = require('./chamber');
+var Crop = require('./crop');
 var Resource = require('./resource');
 var Rate = require('./rate');
 var Client = require('./client');
@@ -52,6 +53,10 @@ var ProjectSchema = new Schema({
                 type: Number,
                 min: 0,
                 default: 0
+            },
+            crop:{
+                type: Schema.Types.ObjectId,
+                ref: 'Crop'
             },
             chamber_allocation_date: {
                 type: Date,

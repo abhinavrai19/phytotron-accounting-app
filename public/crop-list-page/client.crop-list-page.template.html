@@ -33,13 +33,13 @@
                     <md-list-item class="md-list-item-inner" >
                         <md-input-container class="md-block" flex-gt-xs>
                             <label>Scientific Name:</label>
-                            <input type="text" />
+                            <input type="text" ng-model="searchAll.scientific_name"/>
                         </md-input-container>
                     </md-list-item>
                     <md-list-item class="md-list-item-inner">
                         <md-input-container class="md-block" flex-gt-xs>
                             <label>Common Name:</label>
-                            <input type="text"/>
+                            <input type="text" ng-model="searchAll.common_name"/>
                         </md-input-container>
                     </md-list-item>
                 </md-list>
@@ -62,6 +62,7 @@
                     </thead>
                     <tbody md-body>
                     <tr md-row ng-repeat="crop in $ctrl.cropList |
+                        filter: searchAll |
                         orderBy: $ctrl.tableQuery.order |
                         limitTo: $ctrl.tableQuery.limit : ($ctrl.tableQuery.page -1)*$ctrl.tableQuery.limit">
                         <td md-cell><a ng-href="#/crop-update/{{crop.scientific_name}}">{{crop.scientific_name}}</a></td>

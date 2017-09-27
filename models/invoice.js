@@ -47,7 +47,7 @@ var InvoiceSchema = new Schema({
 
         }
     ],
-    previous_dues: {
+    adjustments: {
         type: Number,
         default: 0
     },
