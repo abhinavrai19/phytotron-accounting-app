@@ -14,7 +14,10 @@
                 <md-button ng-click="$mdMenu.open($event)">Invoicing *</md-button>
                 <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
                     <md-menu-item>
-                        <md-button>Generate Invoice</md-button>
+                        <md-button ng-click="$ctrl.navigateTo('/invoice-project-list')">Invoice Projects</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.navigateTo('/invoice-history')">Invoice History</md-button>
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>

@@ -18,7 +18,8 @@
     "mongoose": "^4.11.10",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "helmet": "^3.8.1"
+    "helmet": "^3.8.1",
+    "moment": "^2.18.1"
 
   }
 }

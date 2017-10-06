@@ -98,7 +98,11 @@ var ProjectSchema = new Schema({
                 default: Date.now
             },
             resource_description: String,
-            resource_comments: String
+            resource_comments: String,
+            resource_invoiced: {
+                type: Boolean,
+                default: false
+            }
         }
     ],
 
@@ -108,21 +112,7 @@ var ProjectSchema = new Schema({
         default: 'ACTIVE'
     },
 
-    invoices:[
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Invoice'
-        }
-    ],
-
-    last_invoice_date: Date,
-
-    payments: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Payment'
-        }
-    ]
+    last_invoice_date: Date
 
 });
 

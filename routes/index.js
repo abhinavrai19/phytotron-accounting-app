@@ -5,6 +5,8 @@ var router = express.Router();
 var ProjectController = require('../controller/project.controller');
 var ClientController = require('../controller/client.controller');
 
+var InvoiceController = require('../controller/invoice.controller');
+
 var ChamberController = require('../controller/chamber.controller');
 var RateController = require('../controller/rate.controller');
 var DepartmentController = require('../controller/department.controller');
@@ -44,6 +46,17 @@ router.post('/client/create', ClientController.createClient);
 
 // Update Client
 router.post('/client/update', ClientController.updateClient);
+
+// Invoice Routes //-------------------------------------------------
+
+// Get Invoice Project List
+router.get('/invoice/projects/:invoicePeriodStartDate/:invoicePeriodEndDate', InvoiceController.getInvoiceProjectsList);
+
+// Invoice Projects
+router.post('/invoice/projects', InvoiceController.invoiceProjects);
+
+// Get Invoice List
+router.get('/invoices/:invoiceHistoryStartDate/:invoiceHistoryEndDate',InvoiceController.getInvoiceList);
 
 // Chamber Routes //-------------------------------------------------
 

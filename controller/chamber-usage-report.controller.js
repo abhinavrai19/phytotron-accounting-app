@@ -1,5 +1,4 @@
 var Project = require('../models/project');
-var Chamber = require('../models/chamber');
 
 
 var async = require('async');

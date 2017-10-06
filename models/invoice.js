@@ -10,14 +10,10 @@ var InvoiceSchema = new Schema({
         required: true,
         unique: true,
     },
-    project_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'Project'
-    },
+    project_id: String,
     generation_date: {
         type: Date,
-        required: true,
-        default: Date.now
+        required: true
     },
     bill_start_date: Date,
     bill_end_date: Date,
@@ -25,16 +21,16 @@ var InvoiceSchema = new Schema({
         type: Number,
         min: 0
     },
-    basic_cost: [
+    chamber_usage_cost: [
         {
-            chamber_id: String,
+            chamber_name: String,
             start_date: Date,
             end_date: Date,
             chamber_rate: Number,
             chamber_cost: Number
         }
     ],
-    additional_cost: [
+    additional_resource_cost: [
         {
             resource_name: String,
             unit_rate: Number,

@@ -33,6 +33,15 @@ angular.module('phytotronAccountingApp')
                 template: '<client-update-page></client-update-page>'
             });
 
+        // URL-Component mappings: invoice
+        $routeProvider
+            .when('/invoice-project-list',{
+                template: '<invoice-project-list-page></invoice-project-list-page>'
+            })
+            .when('/invoice-history',{
+                template: '<invoice-history-page></invoice-history-page>'
+            });
+
         // URL-Component mappings: space usage parameters
         $routeProvider
             .when('/chamber-list',{

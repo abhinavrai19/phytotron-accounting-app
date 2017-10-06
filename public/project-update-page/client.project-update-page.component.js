@@ -77,8 +77,6 @@ angular.module('phytotronAccountingApp')
 
             // Update Project after review
             ctrl.updateProject = function(){
-                console.log('Update Project controller: client side ');
-                console.log(ctrl.project);
                 ProjectService.updateProject(ctrl.project)
                     .then(function success(res){
                         Flash.create('success',res.data);

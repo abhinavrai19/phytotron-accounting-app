@@ -47,8 +47,6 @@ angular.module('phytotronAccountingApp')
             ctrl.getProjectList = function(){
                 ProjectService.getProjectList()
                     .then(function success(res){
-                        console.log('Get Project List : client side');
-                        console.log(res.data);
                         ctrl.projectList = res.data;
                     },function failure(res){
                         Flash.create('danger',res.data);

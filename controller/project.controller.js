@@ -52,9 +52,7 @@ exports.createProject = function(req, res){
         requires_additional_resources:  project.requires_additional_resources,
         additional_resources:           project.additional_resources,
         project_status:                 project.project_status,
-        invoices:                       project.invoices,
-        last_invoice_date:              project.last_invoice_date,
-        payments:                       project.payments
+        last_invoice_date:              project.last_invoice_date
     });
 
     projectInstance.save(function(err){
