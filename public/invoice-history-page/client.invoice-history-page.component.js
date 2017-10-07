@@ -44,8 +44,9 @@ angular.module('phytotronAccountingApp')
                             invoice.additional_resource_cost.forEach(function (additionalResourceCost) {
                                 additionalResourceCost.start_date = moment(additionalResourceCost.start_date).format('L');
                                 additionalResourceCost.end_date = moment(additionalResourceCost.end_date).format('L');
-                            })
+                            });
                         });
+                        Flash.create('success',ctrl.invoiceList.length+ ' Invoice(s) found between selected dates.');
                     },function failure(res){
                         Flash.create('danger',res.data);
                     });

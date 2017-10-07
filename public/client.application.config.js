@@ -82,6 +82,13 @@ angular.module('phytotronAccountingApp')
             });
 }]);
 
+// Configure the theme of the application
+angular.module('phytotronAccountingApp')
+    .config( function($mdThemingProvider){
+        $mdThemingProvider.theme('default')
+            .primaryPalette('red')
+            .accentPalette('blue');
+});
 
 // Configure Flash Message
 angular.module('phytotronAccountingApp')

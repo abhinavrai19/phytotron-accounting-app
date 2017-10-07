@@ -53,9 +53,9 @@
                         limitTo: $ctrl.tableQuery.limit : ($ctrl.tableQuery.page -1)*$ctrl.tableQuery.limit">
                         <td md-cell>{{project.project_id}}</td>
                         <td md-cell>{{project.project_title}}</td>
-                        <td md-cell>{{project.project_start_date}}</td>
-                        <td md-cell>{{project.project_end_date}}</td>
-                        <td md-cell>{{project.last_invoice_date}}</td>
+                        <td md-cell>{{project.project_start_date.format('L')}}</td>
+                        <td md-cell>{{project.project_end_date.format('L')}}</td>
+                        <td md-cell>{{project.last_invoice_date.format('L')}}</td>
                         <td md-cell>{{project.project_status}}</td>
                     </tr>
                     </tbody>

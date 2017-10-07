@@ -3,6 +3,7 @@ angular.module('phytotronAccountingApp')
         templateUrl: 'invoice-project-list-page/client.invoice-project-list-page.template.html',
         controller: function InvoiceProjectListPageController(InvoiceService,
                                                               $location,
+                                                              moment,
                                                               Flash){
             var ctrl = this;
 
@@ -26,8 +27,14 @@ angular.module('phytotronAccountingApp')
                 InvoiceService.getInvoiceProjectsList(ctrl.invoicePeriodStartDate,ctrl.invoicePeriodEndDate)
                     .then(function success(res){
                         ctrl.invoiceProjectList = res.data;
-                        console.log('getInvoiceProjectList');
-                        console.log(res.data);
+                        ctrl.invoiceProjectList.forEach(function (project) {
+                            project.project_start_date = moment(project.project_start_date);
+                            project.project_end_date = moment(project.project_end_date);
+                            if(project.last_invoice_date!=null){
+                                project.last_invoice_date = moment(project.last_invoice_date);
+                            }
+                        });
+
                         Flash.create('success', ctrl.invoiceProjectList.length + ' projects available for invoicing for selected criteria.');
                     },function failure(res){
                         Flash.create('danger', res.data);
