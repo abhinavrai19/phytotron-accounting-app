@@ -10,6 +10,7 @@ angular.module('phytotronAccountingApp')
             ResourceService,
             $routeParams,
             $location,
+            moment,
             Flash){
 
             var ctrl = this;
@@ -49,6 +50,17 @@ angular.module('phytotronAccountingApp')
                 ProjectService.getProjectById($routeParams.id)
                     .then(function success(res){
                         ctrl.project = res.data;
+                        // parse chamber start/end dates and resource start/end dates
+                        //chamber dates
+                        ctrl.project.chambers.forEach(function (chamber) {
+                            chamber.chamber_allocation_date = moment(chamber.chamber_allocation_date);
+                            chamber.chamber_deallocation_date = moment(chamber.chamber_deallocation_date);
+                        });
+                        //resources
+                        ctrl.project.additional_resources.forEach(function (resource) {
+                            resource.resource_allocation_date = moment(resource.resource_allocation_date);
+                            resource.resource_deallocation_date = moment(resource.resource_deallocation_date);
+                        });
                     },function failure(res){
                         Flash.create('danger',res.data);
                     });
@@ -170,8 +182,8 @@ angular.module('phytotronAccountingApp')
                     chamber:                    ctrl.selectedChamber,
                     carts_allocated:            ctrl.carts_allocated,
                     crop:                       ctrl.crop,
-                    chamber_allocation_date:    ctrl.chamber_allocation_date,
-                    chamber_deallocation_date:  ctrl.chamber_deallocation_date
+                    chamber_allocation_date:    moment(ctrl.chamber_allocation_date),
+                    chamber_deallocation_date:  moment(ctrl.chamber_deallocation_date)
                 };
 
                 ctrl.project.chambers.push(chamber);
@@ -189,8 +201,8 @@ angular.module('phytotronAccountingApp')
                     resource:                   ctrl.selectedResource,
                     unit_rate:                  ctrl.unit_rate,
                     units_consumed:             ctrl.units_consumed,
-                    resource_allocation_date:   ctrl.resource_allocation_date,
-                    resource_deallocation_date: ctrl.resource_deallocation_date,
+                    resource_allocation_date:   moment(ctrl.resource_allocation_date),
+                    resource_deallocation_date: moment(ctrl.resource_deallocation_date),
                     resource_description:       ctrl.resource_description,
                     resource_comments:          ctrl.resource_comments
                 }

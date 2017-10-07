@@ -14,7 +14,7 @@
                     <label>Usage End Date</label>
                     <md-datepicker ng-model="$ctrl.usageEndDate" md-placeholder="Enter date"></md-datepicker>
                 </md-input-container>
-                <md-button ng-show="$ctrl.usageStartDate!='' && $ctrl.usageEndDate!=''" class="md-raised md-primary" ng-click="$ctrl.getChamberUsageBetweenDates()"> List Chamber Usage </md-button>
+                <md-button ng-disabled="$ctrl.usageStartDate=='' || $ctrl.usageEndDate==''" class="md-raised md-primary" ng-click="$ctrl.getChamberUsageBetweenDates()"> List Chamber Usage </md-button>
             </md-content>
         </md-sidenav>
         <div layout="column" ng-hide="$ctrl.completeUsageReport.length==0" layout-fill>

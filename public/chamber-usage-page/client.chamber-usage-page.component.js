@@ -32,6 +32,7 @@ angular.module('phytotronAccountingApp')
                 };
                 ChamberUsageReportService.getChamberUsageBetweenDates(reportParams)
                     .then(function success(res){
+                        console.log(res.data);
                         // clear drop down list
                         ctrl.chamberDropDownList = [];
                         // repopulate drop down and update complete usage report

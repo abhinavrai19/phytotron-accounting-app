@@ -8,6 +8,7 @@ angular.module('phytotronAccountingApp')
             ChamberService,
             CropService,
             ResourceService,
+            moment,
             Flash){
 
             var ctrl = this;
@@ -48,6 +49,14 @@ angular.module('phytotronAccountingApp')
                 ProjectService.getProjectList()
                     .then(function success(res){
                         ctrl.projectList = res.data;
+                        // format display dates in the table
+                        ctrl.projectList.forEach(function(project){
+                            project.project_start_date = moment(project.project_start_date);
+                            project.project_end_date = moment(project.project_end_date);
+                            if(project.last_invoice_date!=null){
+                                project.last_invoice_date = moment(project.last_invoice_date);
+                            }
+                        });
                     },function failure(res){
                         Flash.create('danger',res.data);
                     });
@@ -69,9 +78,7 @@ angular.module('phytotronAccountingApp')
                     requires_additional_resources: false,
                     additional_resources: [],
                     project_status: "ACTIVE",
-                    invoices: [],
-                    last_invoice_date: "",
-                    payments: []
+                    last_invoice_date: ""
                 };
 
                 // add chamber details
@@ -172,13 +179,12 @@ angular.module('phytotronAccountingApp')
             // Add and remove chambers from project
             ctrl.addChamberToProject = function(){
                 var chamber = {
-                    chamber:                    ctrl.selectedChamber,
-                    carts_allocated:            ctrl.carts_allocated,
-                    crop:                       ctrl.crop,
-                    chamber_allocation_date:    ctrl.chamber_allocation_date,
-                    chamber_deallocation_date:  ctrl.chamber_deallocation_date
+                    chamber:                            ctrl.selectedChamber,
+                    carts_allocated:                    ctrl.carts_allocated,
+                    crop:                               ctrl.crop,
+                    chamber_allocation_date:            moment(ctrl.chamber_allocation_date),
+                    chamber_deallocation_date:          moment(ctrl.chamber_deallocation_date)
                 };
-
                 ctrl.newProject.chambers.push(chamber);
                 ctrl.selectedChamber = null;
                 ctrl.carts_allocated = "";
@@ -191,13 +197,13 @@ angular.module('phytotronAccountingApp')
             // Add and remove resources from project
             ctrl.addResourceToProject = function(){
                 var resource = {
-                    resource:                   ctrl.selectedResource,
-                    unit_rate:                  ctrl.unit_rate,
-                    units_consumed:             ctrl.units_consumed,
-                    resource_allocation_date:   ctrl.resource_allocation_date,
-                    resource_deallocation_date: ctrl.resource_deallocation_date,
-                    resource_description:       ctrl.resource_description,
-                    resource_comments:          ctrl.resource_comments
+                    resource:                           ctrl.selectedResource,
+                    unit_rate:                          ctrl.unit_rate,
+                    units_consumed:                     ctrl.units_consumed,
+                    resource_allocation_date:           moment(ctrl.resource_allocation_date),
+                    resource_deallocation_date:         moment(ctrl.resource_deallocation_date),
+                    resource_description:               ctrl.resource_description,
+                    resource_comments:                  ctrl.resource_comments
                 };
 
                 ctrl.newProject.additional_resources.push(resource);

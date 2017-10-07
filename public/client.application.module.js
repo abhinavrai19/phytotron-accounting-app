@@ -4,6 +4,7 @@ angular.module('phytotronAccountingApp', [
     'ngRoute',
     'ngMaterial',
     'ngFlash',
-    'md.data.table'
+    'md.data.table',
+    'angularMoment'
 
 ]);

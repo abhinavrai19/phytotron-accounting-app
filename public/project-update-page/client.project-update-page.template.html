@@ -84,8 +84,8 @@
                             <td md-cell><p>{{addedChamber.chamber.chamber_name}}</p></td>
                             <td md-cell><p>{{addedChamber.carts_allocated}}</p></td>
                             <td md-cell><p>{{addedChamber.crop.scientific_name}}</p></td>
-                            <td md-cell><p>{{addedChamber.chamber_allocation_date}}</p></td>
-                            <td md-cell><p>{{addedChamber.chamber_deallocation_date}}</p></td>
+                            <td md-cell><p>{{addedChamber.chamber_allocation_date.format('L')}}</p></td>
+                            <td md-cell><p>{{addedChamber.chamber_deallocation_date.format('L')}}</p></td>
                             <td md-cell><md-button class="md-raised md-warn" ng-click="$ctrl.removeChamberFromProject($index)">X</md-button></td>
                         </tr>
                         </tbody>
@@ -233,8 +233,8 @@
                             <td md-cell><p>{{addedResource.resource.resource_name}}</p></td>
                             <td md-cell><p>{{addedResource.unit_rate}}</p></td>
                             <td md-cell><p>{{addedResource.units_consumed}}</p></td>
-                            <td md-cell><p>{{addedResource.resource_allocation_date}}</p></td>
-                            <td md-cell><p>{{addedResource.resource_deallocation_date}}</p></td>
+                            <td md-cell><p>{{addedResource.resource_allocation_date.format('L')}}</p></td>
+                            <td md-cell><p>{{addedResource.resource_deallocation_date.format('L')}}</p></td>
                             <td md-cell><p>{{addedResource.resource_description}}</p></td>
                             <td md-cell><p>{{addedResource.resource_comments}}</p></td>
                             <td md-cell><md-button class="md-raised md-warn" ng-click="$ctrl.removeResourceFromProject($index)">X</md-button></td>

@@ -111,54 +111,60 @@
         <br>
 
         <!-- Chamber Bill Cost Details -->
-        <b>Chamber Usage:</b>
-        <table md-table>
-            <thead md-head>
-            <th md-column >Chamber Name</th>
-            <th md-column >Start Date</th>
-            <th md-column >End Date</th>
-            <th md-column >Chamber Rate</th>
-            <th md-column >Chamber Cost</th>
-            </thead>
-            <tbody md-body>
-            <tr md-row ng-repeat="chamberUsageCost in $ctrl.selectedInvoice.chamber_usage_cost">
-                <td md-cell>{{chamberUsageCost.chamber_name}}</td>
-                <td md-cell>{{chamberUsageCost.start_date}}</td>
-                <td md-cell>{{chamberUsageCost.end_date}}</td>
-                <td md-cell>{{chamberUsageCost.chamber_rate}}</td>
-                <td md-cell>{{chamberUsageCost.chamber_cost}}</td>
-            </tr>
-            </tbody>
-        </table>
-        <br>
+        <div ng-hide="$ctrl.selectedInvoice.chamber_usage_cost.length==0">
+            <b>Chamber Usage:</b>
+            <table md-table>
+                <thead md-head>
+                <th md-column >Chamber Name</th>
+                <th md-column >Start Date</th>
+                <th md-column >End Date</th>
+                <th md-column >Chamber Rate</th>
+                <th md-column >Chamber Cost</th>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="chamberUsageCost in $ctrl.selectedInvoice.chamber_usage_cost">
+                    <td md-cell>{{chamberUsageCost.chamber_name}}</td>
+                    <td md-cell>{{chamberUsageCost.start_date}}</td>
+                    <td md-cell>{{chamberUsageCost.end_date}}</td>
+                    <td md-cell>{{chamberUsageCost.chamber_rate}}</td>
+                    <td md-cell>{{chamberUsageCost.chamber_cost}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+        </div>
+
 
         <!--Additional Resource Cost Details -->
-        <b> Additional Resources Usage:</b>
-        <table md-table>
-            <thead md-head>
-            <th md-column >Resource Name</th>
-            <th md-column >Unit Rate</th>
-            <th md-column >Units Consumed</th>
-            <th md-column >Start Date</th>
-            <th md-column >End Date</th>
-            <th md-column >Description</th>
-            <th md-column >Comments</th>
-            <th md-column >Resource Cost</th>
-            </thead>
-            <tbody md-body>
-            <tr md-row ng-repeat="additionalResource in $ctrl.selectedInvoice.additional_resource_cost">
-                <td md-cell>{{additionalResource.resource_name}}</td>
-                <td md-cell>{{additionalResource.unit_rate}}</td>
-                <td md-cell>{{additionalResource.units_consumed}}</td>
-                <td md-cell>{{additionalResource.start_date}}</td>
-                <td md-cell>{{additionalResource.end_date}}</td>
-                <td md-cell>{{additionalResource.description}}</td>
-                <td md-cell>{{additionalResource.comments}}</td>
-                <td md-cell>{{additionalResource.resource_cost}}</td>
-            </tr>
-            </tbody>
-        </table>
-        <br>
+        <div ng-hide="$ctrl.selectedInvoice.additional_resource_cost.length==0">
+            <b> Additional Resources Usage:</b>
+            <table md-table>
+                <thead md-head>
+                <th md-column >Resource Name</th>
+                <th md-column >Unit Rate</th>
+                <th md-column >Units Consumed</th>
+                <th md-column >Start Date</th>
+                <th md-column >End Date</th>
+                <th md-column >Description</th>
+                <th md-column >Comments</th>
+                <th md-column >Resource Cost</th>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="additionalResource in $ctrl.selectedInvoice.additional_resource_cost">
+                    <td md-cell>{{additionalResource.resource_name}}</td>
+                    <td md-cell>{{additionalResource.unit_rate}}</td>
+                    <td md-cell>{{additionalResource.units_consumed}}</td>
+                    <td md-cell>{{additionalResource.start_date}}</td>
+                    <td md-cell>{{additionalResource.end_date}}</td>
+                    <td md-cell>{{additionalResource.description}}</td>
+                    <td md-cell>{{additionalResource.comments}}</td>
+                    <td md-cell>{{additionalResource.resource_cost}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+        </div>
+
 
         <!--Cost Split -->
         <md-grid-list md-cols="4" md-gutter="1em" md-row-height="10px">
