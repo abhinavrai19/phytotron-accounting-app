@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--Header-->
+    <ul>
+        <li><h4>North Carolina State University</h4></li>
+        <li><p>Southeastern Plant Environment Laboratories</p></li>
+        <li><p>Invoice for Services Rendered</p></li>
+    </ul>
+</head>
+<body>
+<!--Invoice Page START-->
+<div layout="column">
+    <!--Invoice and Project Details-->
+    <ul>
+        <li><p><b>Phytotron ID:</b> A020201</p></li>
+        <li><b>Invoice #:</b> {{selectedInvoice.invoice_id}}</li>
+
+        <li><p><b>Preparation Date:</b> {{selectedInvoice.generation_date}}</p></li>
+        <li><p><b>Billing Interval:</b> {{selectedInvoice.bill_start_date}}    -    {{selectedInvoice.bill_end_date}}</p></li>
+
+        <li><p><b>Project ID:</b> {{selectedInvoice.project_id}} </p></li>
+        <li><p><b>Project Title:</b> {{selectedInvoiceProject.project_title}} </p></li>
+
+        <li><p><b>Project Duration:</b> {{selectedInvoiceProject.project_start_date}}    -    {{selectedInvoiceProject.project_end_date}}</p></li>
+    </ul>
+    <br>
+    <!-- Client Details-->
+    <b>In Account With: </b>
+    <table>
+        <thead>
+        <th>Client Name</th>
+        <th>Department Name</th>
+        <th>Address</th>
+        </thead>
+        <tbody>
+        <tr md-row ng-repeat="client in selectedInvoiceProject.clients">
+            <td>{{client.first_name}} {{client.last_name}}</td>
+            <td>{{client.department}}</td>
+            <td>{{client.address}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+
+    <!-- Chamber Bill Cost Details -->
+    <div ng-hide="$ctrl.selectedInvoice.chamber_usage_cost.length==0">
+        <b>Chamber Usage:</b>
+        <table>
+            <thead>
+            <th>Chamber Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Chamber Rate</th>
+            <th>Chamber Cost</th>
+            </thead>
+            <tbody>
+            {{#each selectedInvoice.chamber_usage_cost}}
+            <tr>
+                <td>{{chamber_name}}</td>
+                <td>{{start_date}}</td>
+                <td>{{end_date}}</td>
+                <td>{{chamber_rate}}</td>
+                <td>{{chamber_cost}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        <br>
+    </div>
+
+
+    <!--Additional Resource Cost Details -->
+    <div ng-hide="$ctrl.selectedInvoice.additional_resource_cost.length==0">
+        <b> Additional Resources Usage:</b>
+        <table>
+            <thead>
+            <th>Resource Name</th>
+            <th>Unit Rate</th>
+            <th>Units Consumed</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Description</th>
+            <th>Comments</th>
+            <th>Resource Cost</th>
+            </thead>
+            <tbody>
+            {{#each selectedInvoice.additional_resource_cost}}
+            <tr>
+                <td>{{resource_name}}</td>
+                <td>{{unit_rate}}</td>
+                <td>{{units_consumed}}</td>
+                <td>{{start_date}}</td>
+                <td>{{end_date}}</td>
+                <td>{{description}}</td>
+                <td>{{comments}}</td>
+                <td>{{resource_cost}}</td>
+            </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        <br>
+    </div>
+
+
+    <!--Cost Split -->
+    <ul md-cols="4" md-gutter="1em" md-row-height="10px">
+        <li><p>Bill Amount: {{selectedInvoice.bill_amount}}</p></li>
+        <li><p>Adjustments: {{selectedInvoice.adjustments}}</p></li>
+        <li><p>Discounts: {{selectedInvoice.discounts}}</p></li>
+        <li><p>Total Amount: {{selectedInvoice.total_amount}}</p></li>
+    </ul>
+    <br>
+
+    <!--Footer-->
+    <ul>
+        <li>Please make check payable to: <b>North Carolina State University</b></li>
+
+        <li>Remit with one (1) copy of this invoice to:</li>
+
+        <li>North Carolina State University</li>
+        <li>Office of Finance and Business, Box 7201</li>
+        <li>Raleigh, North Carolina 27695-7201</li>
+
+        <li>Business Office</li>
+
+        <li>Deposit Check to: North Carolina Agricultural Research Service</li>
+        <li>Misc. Rec. -- Phytotron Revenue Code No. 4-16952-0791</li>
+    </ul>
+
+</div>
+<!--Invoice Page END-->
+</body>
+</html>
