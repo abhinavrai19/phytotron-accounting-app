@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var helmet = require('helmet');
 
+// GLOBAL VARIABLE to hold view directory name ( used in referencing template)
+global.__views = __dirname+'/views/';
+
 // get passport and pass it for configuration: -Abhinav
 //var passport = require('passport');
 //require('./config/passport')(passport);

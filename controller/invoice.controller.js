@@ -4,151 +4,22 @@ var moment = require('moment');
 var async = require('async');
 var hbs = require('hbs');
 var wkhtmltopdf = require('wkhtmltopdf');
+var fs = require('fs');
 
 
-//REPORT TEMPLATE----------------------------------------------------------------------------------------------------------------------
-var reportTemplate = '<!DOCTYPE html>\n' +
-    '<html lang="en">\n' +
-    '<head>\n' +
-    '    <meta charset="UTF-8">\n' +
-    '    <!--Header-->\n' +
-    '    <ul>\n' +
-    '        <li><h4>North Carolina State University</h4></li>\n' +
-    '        <li><p>Southeastern Plant Environment Laboratories</p></li>\n' +
-    '        <li><p>Invoice for Services Rendered</p></li>\n' +
-    '    </ul>\n' +
-    '</head>\n' +
-    '<body>\n' +
-    '<!--Invoice Page START-->\n' +
-    '<div layout="column">\n' +
-    '    <!--Invoice and Project Details-->\n' +
-    '    <ul>\n' +
-    '        <li><p><b>Phytotron ID:</b> A020201</p></li>\n' +
-    '        <li><b>Invoice #:</b> {{selectedInvoice.invoice_id}}</li>\n' +
-    '\n' +
-    '        <li><p><b>Preparation Date:</b> {{selectedInvoice.generation_date}}</p></li>\n' +
-    '        <li><p><b>Billing Interval:</b> {{selectedInvoice.bill_start_date}}    -    {{selectedInvoice.bill_end_date}}</p></li>\n' +
-    '\n' +
-    '        <li><p><b>Project ID:</b> {{selectedInvoice.project_id}} </p></li>\n' +
-    '        <li><p><b>Project Title:</b> {{selectedInvoiceProject.project_title}} </p></li>\n' +
-    '\n' +
-    '        <li><p><b>Project Duration:</b> {{selectedInvoiceProject.project_start_date}}    -    {{selectedInvoiceProject.project_end_date}}</p></li>\n' +
-    '    </ul>\n' +
-    '    <br>\n' +
-    '    <!-- Client Details-->\n' +
-    '    <b>In Account With: </b>\n' +
-    '    <table>\n' +
-    '        <thead>\n' +
-    '        <th>Client Name</th>\n' +
-    '        <th>Department Name</th>\n' +
-    '        <th>Address</th>\n' +
-    '        </thead>\n' +
-    '        <tbody>\n' +
-    '        <tr md-row ng-repeat="client in selectedInvoiceProject.clients">\n' +
-    '            <td>{{client.first_name}} {{client.last_name}}</td>\n' +
-    '            <td>{{client.department}}</td>\n' +
-    '            <td>{{client.address}}</td>\n' +
-    '        </tr>\n' +
-    '        </tbody>\n' +
-    '    </table>\n' +
-    '    <br>\n' +
-    '\n' +
-    '    <!-- Chamber Bill Cost Details -->\n' +
-    '    <div ng-hide="$ctrl.selectedInvoice.chamber_usage_cost.length==0">\n' +
-    '        <b>Chamber Usage:</b>\n' +
-    '        <table>\n' +
-    '            <thead>\n' +
-    '            <th>Chamber Name</th>\n' +
-    '            <th>Start Date</th>\n' +
-    '            <th>End Date</th>\n' +
-    '            <th>Chamber Rate</th>\n' +
-    '            <th>Chamber Cost</th>\n' +
-    '            </thead>\n' +
-    '            <tbody>\n' +
-    '            {{#each selectedInvoice.chamber_usage_cost}}\n' +
-    '            <tr>\n' +
-    '                <td>{{chamber_name}}</td>\n' +
-    '                <td>{{start_date}}</td>\n' +
-    '                <td>{{end_date}}</td>\n' +
-    '                <td>{{chamber_rate}}</td>\n' +
-    '                <td>{{chamber_cost}}</td>\n' +
-    '            </tr>\n' +
-    '            {{/each}}\n' +
-    '            </tbody>\n' +
-    '        </table>\n' +
-    '        <br>\n' +
-    '    </div>\n' +
-    '\n' +
-    '\n' +
-    '    <!--Additional Resource Cost Details -->\n' +
-    '    <div ng-hide="$ctrl.selectedInvoice.additional_resource_cost.length==0">\n' +
-    '        <b> Additional Resources Usage:</b>\n' +
-    '        <table>\n' +
-    '            <thead>\n' +
-    '            <th>Resource Name</th>\n' +
-    '            <th>Unit Rate</th>\n' +
-    '            <th>Units Consumed</th>\n' +
-    '            <th>Start Date</th>\n' +
-    '            <th>End Date</th>\n' +
-    '            <th>Description</th>\n' +
-    '            <th>Comments</th>\n' +
-    '            <th>Resource Cost</th>\n' +
-    '            </thead>\n' +
-    '            <tbody>\n' +
-    '            {{#each selectedInvoice.additional_resource_cost}}\n' +
-    '            <tr>\n' +
-    '                <td>{{resource_name}}</td>\n' +
-    '                <td>{{unit_rate}}</td>\n' +
-    '                <td>{{units_consumed}}</td>\n' +
-    '                <td>{{start_date}}</td>\n' +
-    '                <td>{{end_date}}</td>\n' +
-    '                <td>{{description}}</td>\n' +
-    '                <td>{{comments}}</td>\n' +
-    '                <td>{{resource_cost}}</td>\n' +
-    '            </tr>\n' +
-    '            {{/each}}\n' +
-    '            </tbody>\n' +
-    '        </table>\n' +
-    '        <br>\n' +
-    '    </div>\n' +
-    '\n' +
-    '\n' +
-    '    <!--Cost Split -->\n' +
-    '    <ul md-cols="4" md-gutter="1em" md-row-height="10px">\n' +
-    '        <li><p>Bill Amount: {{selectedInvoice.bill_amount}}</p></li>\n' +
-    '        <li><p>Adjustments: {{selectedInvoice.adjustments}}</p></li>\n' +
-    '        <li><p>Discounts: {{selectedInvoice.discounts}}</p></li>\n' +
-    '        <li><p>Total Amount: {{selectedInvoice.total_amount}}</p></li>\n' +
-    '    </ul>\n' +
-    '    <br>\n' +
-    '\n' +
-    '    <!--Footer-->\n' +
-    '    <ul>\n' +
-    '        <li>Please make check payable to: <b>North Carolina State University</b></li>\n' +
-    '\n' +
-    '        <li>Remit with one (1) copy of this invoice to:</li>\n' +
-    '\n' +
-    '        <li>North Carolina State University</li>\n' +
-    '        <li>Office of Finance and Business, Box 7201</li>\n' +
-    '        <li>Raleigh, North Carolina 27695-7201</li>\n' +
-    '\n' +
-    '        <li>Business Office</li>\n' +
-    '\n' +
-    '        <li>Deposit Check to: North Carolina Agricultural Research Service</li>\n' +
-    '        <li>Misc. Rec. -- Phytotron Revenue Code No. 4-16952-0791</li>\n' +
-    '    </ul>\n' +
-    '\n' +
-    '</div>\n' +
-    '<!--Invoice Page END-->\n' +
-    '</body>\n' +
-    '</html>';
-
-var invoiceReportTemplate = hbs.compile(reportTemplate);
-
-//---------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-//moment().format();
+//PARSE INVOICE REPORT TEMPLATE ON SERVER START--------------------------------
+var emptyReportTemplate = '<h1>MISSING INVOICE TEMPLATE</h1>';
+var invoiceReportTemplate;
+fs.readFile(global.__views+'invoice_report.hbs','utf8', function(err,data){
+    if(err){
+        console.log('Error Reading Invoice Report template file (invoice_report.hbs) '+err);
+        invoiceReportTemplate = hbs.compile(emptyReportTemplate);
+    }else{
+        console.log('Invoice Report Template successfully compiled');
+        invoiceReportTemplate = hbs.compile(data);
+    }
+});
+//------------------------------------------------------------------------------
 
 // get projects for invoicing
 // INCOMPLETE -- implement date filtering properly
