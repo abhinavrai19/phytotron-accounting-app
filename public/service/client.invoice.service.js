@@ -17,9 +17,15 @@ angular.module('phytotronAccountingApp')
                 };
                 return $http.post('/invoice/projects',reqBody);
             },
+
             // Get Invoice History/List
             getInvoiceList: function(invoiceHistoryStartDate, invoiceHistoryEndDate){
-                return $http.get(/invoices/+invoiceHistoryStartDate+'/'+invoiceHistoryEndDate);
+                return $http.get('/invoices/'+invoiceHistoryStartDate+'/'+invoiceHistoryEndDate);
+            },
+
+            // Generate Invoice PDFs
+            generateInvoicePDFs: function(invoices){
+                return $http.post('/invoices/generatePDFs', invoices);
             }
         };
     }]);

@@ -15,15 +15,24 @@
                     <md-datepicker ng-model="$ctrl.invoiceHistoryEndDate" md-placeholder="Enter date"></md-datepicker>
                 </md-input-container>
                 <md-button ng-disabled="$ctrl.invoiceHistoryStartDate=='' || $ctrl.invoiceHistoryEndDate==''" class="md-raised md-primary" ng-click="$ctrl.getInvoiceList()"> Get History </md-button>
+
                 <md-toolbar class="md-theme-light">
                     <h4 class="md-toolbar-tools">View Selected Invoice Details:</h4>
                 </md-toolbar>
-                <md-button ng-disabled="$ctrl.selectedInvoices.length==0" class="md-raised md-primary" ng-click="$ctrl.showInvoiceDetails()"> View  Details </md-button>
+                <md-button ng-disabled="$ctrl.selectedInvoices.length==0" class="md-raised md-primary" ng-click="$ctrl.generateInvoicePDFs()"> Generate PDFs </md-button>
+                <md-button ng-disabled="$ctrl.selectedInvoices.length==0" class="md-raised md-primary" ng-click="$ctrl.showInvoiceDetails()"> View Invoice </md-button>
             </md-content>
         </md-sidenav>
         <div layout="column" layout-fill>
             <div layout="row">
-                <p class="md-toolbar-tools">Invoices in the given period. </p>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Search By Project ID:</label>
+                    <input type="text" ng-model="searchAllInvoices.project_id"/>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Search by Project Title:</label>
+                    <input type="text" ng-model="searchAllInvoices.project_title"/>
+                </md-input-container>
             </div>
             <md-table-pagination
                     md-limit="$ctrl.tableQuery.limit"
@@ -35,10 +44,12 @@
             <md-table-container>
                 <table md-table
                        md-row-select="true"
+                       multiple="true"
                        ng-model="$ctrl.selectedInvoices">
                     <thead md-head md-order="$ctrl.tableQuery.order">
                     <th md-column md-order-by="invoice_id">Invoice Id</th>
                     <th md-column md-order-by="project_id">Project Id</th>
+                    <th md-column md-order-by="project_title">Project Title</th>
                     <th md-column md-order-by="generation_date">Generation Date</th>
                     <th md-column md-order-by="bill_start_date">Bill Start Date</th>
                     <th md-column md-order-by="bill_end_date">Bill End Date</th>
@@ -48,10 +59,12 @@
                     <tr md-row md-select="invoice"
                         md-select-id="invoice_id"
                         ng-repeat="invoice in $ctrl.invoiceList |
+                        filter: searchAllInvoices |
                         orderBy: $ctrl.tableQuery.order |
                         limitTo: $ctrl.tableQuery.limit : ($ctrl.tableQuery.page -1)*$ctrl.tableQuery.limit">
                         <td md-cell>{{invoice.invoice_id}}</td>
                         <td md-cell>{{invoice.project_id}}</td>
+                        <td md-cell>{{invoice.project_title}}</td>
                         <td md-cell>{{invoice.generation_date}}</td>
                         <td md-cell>{{invoice.bill_start_date}}</td>
                         <td md-cell>{{invoice.bill_end_date}}</td>
@@ -87,9 +100,9 @@
             <md-grid-tile><p><b>Billing Interval:</b> {{$ctrl.selectedInvoice.bill_start_date}}    -    {{$ctrl.selectedInvoice.bill_end_date}}</p></md-grid-tile>
 
             <md-grid-tile><p><b>Project ID:</b> {{$ctrl.selectedInvoice.project_id}} </p></md-grid-tile>
-            <md-grid-tile><p><b>Project Title:</b> {{$ctrl.selectedInvoiceProject.project_title}} </p></md-grid-tile>
+            <md-grid-tile><p><b>Project Title:</b> {{$ctrl.selectedInvoice.project_title}} </p></md-grid-tile>
 
-            <md-grid-tile md-colspan="1"><p><b>Project Duration:</b> {{$ctrl.selectedInvoiceProject.project_start_date}}    -    {{$ctrl.selectedInvoiceProject.project_end_date}}</p></md-grid-tile>
+            <md-grid-tile md-colspan="1"><p><b>Project Duration:</b> {{$ctrl.selectedInvoice.project_start_date}}    -    {{$ctrl.selectedInvoice.project_end_date}}</p></md-grid-tile>
         </md-grid-list>
         <br>
         <!-- Client Details-->
@@ -101,7 +114,7 @@
             <th md-column >Address</th>
             </thead>
             <tbody md-body>
-            <tr md-row ng-repeat="client in $ctrl.selectedInvoiceProject.clients">
+            <tr md-row ng-repeat="client in $ctrl.selectedInvoice.clients">
                 <td md-cell>{{client.first_name}} {{client.last_name}}</td>
                 <td md-cell>{{client.department}}</td>
                 <td md-cell>{{client.address}}</td>
@@ -116,16 +129,20 @@
             <table md-table>
                 <thead md-head>
                 <th md-column >Chamber Name</th>
+                <th md-column >Carts Used</th>
                 <th md-column >Start Date</th>
                 <th md-column >End Date</th>
+                <th md-column >Usage Days</th>
                 <th md-column >Chamber Rate</th>
                 <th md-column >Chamber Cost</th>
                 </thead>
                 <tbody md-body>
                 <tr md-row ng-repeat="chamberUsageCost in $ctrl.selectedInvoice.chamber_usage_cost">
                     <td md-cell>{{chamberUsageCost.chamber_name}}</td>
+                    <td md-cell>{{chamberUsageCost.carts_allocated}}</td>
                     <td md-cell>{{chamberUsageCost.start_date}}</td>
                     <td md-cell>{{chamberUsageCost.end_date}}</td>
+                    <td md-cell>{{chamberUsageCost.usage_days}}</td>
                     <td md-cell>{{chamberUsageCost.chamber_rate}}</td>
                     <td md-cell>{{chamberUsageCost.chamber_cost}}</td>
                 </tr>
@@ -145,6 +162,7 @@
                 <th md-column >Units Consumed</th>
                 <th md-column >Start Date</th>
                 <th md-column >End Date</th>
+                <th md-column >Usage Days</th>
                 <th md-column >Description</th>
                 <th md-column >Comments</th>
                 <th md-column >Resource Cost</th>
@@ -156,6 +174,7 @@
                     <td md-cell>{{additionalResource.units_consumed}}</td>
                     <td md-cell>{{additionalResource.start_date}}</td>
                     <td md-cell>{{additionalResource.end_date}}</td>
+                    <td md-cell>{{additionalResource.usage_days}}</td>
                     <td md-cell>{{additionalResource.description}}</td>
                     <td md-cell>{{additionalResource.comments}}</td>
                     <td md-cell>{{additionalResource.resource_cost}}</td>

@@ -37,6 +37,7 @@ angular.module('phytotronAccountingApp')
                             invoice.generation_date = moment(invoice.generation_date).format('L');
                             invoice.bill_start_date = moment(invoice.bill_start_date).format('L');
                             invoice.bill_end_date = moment(invoice.bill_end_date).format('L');
+                            /*
                             invoice.chamber_usage_cost.forEach(function(chamberUsageCost){
                                 chamberUsageCost.start_date = moment(chamberUsageCost.start_date).format('L');
                                 chamberUsageCost.end_date = moment(chamberUsageCost.end_date).format('L');
@@ -45,6 +46,7 @@ angular.module('phytotronAccountingApp')
                                 additionalResourceCost.start_date = moment(additionalResourceCost.start_date).format('L');
                                 additionalResourceCost.end_date = moment(additionalResourceCost.end_date).format('L');
                             });
+                            */
                         });
                         Flash.create('success',ctrl.invoiceList.length+ ' Invoice(s) found between selected dates.');
                     },function failure(res){
@@ -52,10 +54,24 @@ angular.module('phytotronAccountingApp')
                     });
             };
 
+            // Generate PDFs for selected Invoices
+            ctrl.generateInvoicePDFs = function(){
+                InvoiceService.generateInvoicePDFs(ctrl.selectedInvoices)
+                    .then(function success(res){
+                        Flash.create('success',res.data);
+                    }, function failure(res){
+                        Flash.create('danger',res.data);
+                    });
+            }
+
             // function to show detailed info of the selected invoice.
             // function gets project and client details of the selected invoice and displays the details.
             ctrl.showInvoiceDetails = function(){
+
                 ctrl.selectedInvoice = ctrl.selectedInvoices[0];
+                ctrl.isVisibleInvoiceDetails = true;
+
+                /*
                 var projectId = ctrl.selectedInvoice.project_id;
                 ProjectService.getProjectById(projectId)
                     .then(function success(res){
@@ -69,6 +85,7 @@ angular.module('phytotronAccountingApp')
                         Flash.create('danger',res.data);
                         ctrl.isVisibleInvoiceDetails = false;
                     });
+                */
             };
 
             ctrl.hideInvoiceDetails = function(){

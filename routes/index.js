@@ -58,6 +58,9 @@ router.post('/invoice/projects', InvoiceController.invoiceProjects);
 // Get Invoice List
 router.get('/invoices/:invoiceHistoryStartDate/:invoiceHistoryEndDate',InvoiceController.getInvoiceList);
 
+// Generate Invoice PDFs
+router.post('/invoices/generatePDFs', InvoiceController.generateInvoicePDFs);
+
 // Chamber Routes //-------------------------------------------------
 
 // Get chamber List

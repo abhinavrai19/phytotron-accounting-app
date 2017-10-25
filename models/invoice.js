@@ -5,16 +5,25 @@ var Schema = mongoose.Schema;
 var Project = require('./project');
 
 var InvoiceSchema = new Schema({
+    phytotron_id: String,
     invoice_id: {
         type: String,
         required: true,
         unique: true,
     },
     project_id: String,
-    generation_date: {
-        type: Date,
-        required: true
-    },
+    project_title: String,
+    project_start_date: String,
+    project_end_date: String,
+    clients: [
+        {
+            first_name: String,
+            last_name: String,
+            department: String,
+            address: String
+        }
+    ],
+    generation_date: Date,
     bill_start_date: Date,
     bill_end_date: Date,
     bill_amount: {
@@ -24,8 +33,10 @@ var InvoiceSchema = new Schema({
     chamber_usage_cost: [
         {
             chamber_name: String,
-            start_date: Date,
-            end_date: Date,
+            carts_allocated: Number,
+            start_date: String,
+            end_date: String,
+            usage_days: Number,
             chamber_rate: Number,
             chamber_cost: Number
         }
@@ -35,8 +46,9 @@ var InvoiceSchema = new Schema({
             resource_name: String,
             unit_rate: Number,
             units_consumed: Number,
-            start_date: Date,
-            end_date: Date,
+            start_date: String,
+            end_date: String,
+            usage_days: Number,
             description: String,
             comments: String,
             resource_cost: Number
@@ -48,7 +60,7 @@ var InvoiceSchema = new Schema({
         default: 0
     },
     discounts: {
-        Type: Number,
+        type: Number,
         default: 0
     },
     total_amount: Number

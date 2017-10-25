@@ -2,23 +2,9 @@ var Project = require('../models/project');
 var Invoice = require('../models/invoice');
 var moment = require('moment');
 var async = require('async');
-var hbs = require('hbs');
-var wkhtmltopdf = require('wkhtmltopdf');
-var fs = require('fs');
+var CONSTANTS = require('../constants');
+var PrintUtility = require('./utility.generatePDF');
 
-
-//PARSE INVOICE REPORT TEMPLATE ON SERVER START--------------------------------
-var emptyReportTemplate = '<h1>MISSING INVOICE TEMPLATE</h1>';
-var invoiceReportTemplate;
-fs.readFile(global.__views+'invoice_report.hbs','utf8', function(err,data){
-    if(err){
-        console.log('Error Reading Invoice Report template file (invoice_report.hbs) '+err);
-        invoiceReportTemplate = hbs.compile(emptyReportTemplate);
-    }else{
-        console.log('Invoice Report Template successfully compiled');
-        invoiceReportTemplate = hbs.compile(data);
-    }
-});
 //------------------------------------------------------------------------------
 
 // get projects for invoicing
@@ -51,20 +37,21 @@ exports.getInvoiceProjectsList = function(req, res){
                 res.status('500');
                 res.send('Error fetching Project List for Invoicing'+err);
             }else{
+                // create an empty array of eligible projects and only put projects for which last invoice date is before given period end date.
                 // If project has the last invoice date later than the given period end date, remove the project from the list
-
-                for(var i=0;i<projectList.length;i++){
-                    var project = projectList[i];
-
-                    if(project.last_invoice_date != null){
-                        var lastInvoiceDate = moment(project.last_invoice_date);
-                        var projectEndDate = moment(project.project_end_date);
-                        if(lastInvoiceDate.isSameOrAfter(projectEndDate, 'day')){
-                            projectList.splice(i,1);
+                var invoicableProjects = [];
+                projectList.forEach(function(currentProject){
+                    if(currentProject.last_invoice_date != null){
+                        var lastInvoiceDate = moment(currentProject.last_invoice_date);
+                        var projectEndDate = moment(currentProject.project_end_date);
+                        if(lastInvoiceDate.isBefore(projectEndDate, 'day')){
+                            invoicableProjects.push(currentProject);
                         }
+                    }else{
+                        invoicableProjects.push(currentProject);
                     }
-                }
-                res.send(projectList);
+                });
+                res.send(invoicableProjects);
             }
         });
 };
@@ -103,8 +90,8 @@ exports.invoiceProjects = function(req, res){
                         // update the fields in the project object
                         // save project to project table.
 
-                        //var projectStartDate = new moment(project.project_start_date);
 
+                        var projectStartDate = moment(project.project_start_date);
                         var projectEndDate = moment(project.project_end_date);
                         // if project was never invoiced before set the date to project start date.
                         if(project.last_invoice_date==null){
@@ -113,7 +100,7 @@ exports.invoiceProjects = function(req, res){
                         var lastInvoiceDate = moment(project.last_invoice_date);
 
                         // initialize invoice Bill start and end dates
-                        var invoiceBillStartDate = moment(project.last_invoice_date);
+                        var invoiceBillStartDate = lastInvoiceDate;
                         var invoiceBillEndDate;
 
                         if(projectEndDate.isBefore(invoicePeriodEndDate, 'day')){
@@ -125,8 +112,13 @@ exports.invoiceProjects = function(req, res){
                         // initialize invoice id and the invoice object
                         var invoice_id = project.project_id+'_'+ moment().unix();
                         var invoice = {
+                            phytotron_id:               CONSTANTS.PHYTOTRON_ID,
                             invoice_id:                 invoice_id,
                             project_id:                 project.project_id,
+                            project_title:              project.project_title,
+                            project_start_date:         projectStartDate.format('L'),
+                            project_end_date:           projectEndDate.format('L'),
+                            clients:                    [],
                             generation_date:            invoiceBillEndDate.toDate(),
                             bill_start_date:            invoiceBillStartDate.toDate(),
                             bill_end_date:              invoiceBillEndDate.toDate(),
@@ -138,20 +130,34 @@ exports.invoiceProjects = function(req, res){
                             total_amount:               0                               // bill amount + adjustments + discounts
                         };
 
+                        // Put Client details in the invoice
+                        project.clients.forEach(function(clientEntry){
+                            // create a client object to be pushed to client list in invoice
+                            var client = {
+                                first_name: clientEntry.first_name,
+                                last_name: clientEntry.last_name,
+                                department: clientEntry.department,
+                                address: clientEntry.address
+                            };
+                            invoice.clients.push(client);
+                        });
+
                         var totalChamberUsageCost = 0;
                         var totalAdditionalResourceCost = 0;
                         var adjustments = 0;
                         var discounts = 0;
-                        var billAmount = 0;
-                        var totalAmount = 0;
+                        var billAmount;
+                        var totalAmount;
 
                         // calculate each chamber cost and push an entry into chamber usage cost
                         project.chambers.forEach(function(chamberEntry){
                             // create a chamber usage cost object
                             var chamberUsageCostEntry = {
                                 chamber_name: chamberEntry.chamber.chamber_name,
+                                carts_allocated: chamberEntry.carts_allocated,
                                 start_date: '',
                                 end_date: '',
+                                usage_days: 0,
                                 chamber_rate: project.chamber_rate.rate_value,
                                 chamber_cost: 0
                             };
@@ -163,8 +169,9 @@ exports.invoiceProjects = function(req, res){
                             var chamberAllocationDate = moment(chamberEntry.chamber_allocation_date);
                             var chamberDeallocationDate = moment(chamberEntry.chamber_deallocation_date);
 
+                            // ADDED CHANGE: 2nd check in If below(chamberDeallocationDate.isAfter())
                             // only calculate bill for this chamber if chamber is allocated before the invoiceBillEndDate
-                            if(chamberAllocationDate.isBefore(invoiceBillEndDate)){
+                            if(chamberAllocationDate.isBefore(invoiceBillEndDate) && chamberDeallocationDate.isAfter(invoiceBillStartDate)){
 
                                 // set chamberBillStart date to maximum of chamberAllocationDate and invoiceBillStartDate
                                 if(chamberAllocationDate.isAfter(invoiceBillStartDate,'day')){
@@ -182,12 +189,15 @@ exports.invoiceProjects = function(req, res){
 
                                 // once the billing start and end dates for a chamber are found, find the duration between these.
                                 // multiply with the chamber rates and get the cost for that particular chamber use.
-                                var usageDays = chamberBillEndDate.diff(chamberBillStartDate, 'days');
-                                var chamberCost = usageDays*chamberUsageCostEntry.chamber_rate;
+                                var chamberUsageDays = chamberBillEndDate.diff(chamberBillStartDate, 'days');
+
+                                var chamberCost = chamberUsageDays* chamberUsageCostEntry.carts_allocated* chamberUsageCostEntry.chamber_rate;
+                                chamberCost = Math.floor(chamberCost);
 
                                 // fill in the remaining values in the chamber usage cost object
-                                chamberUsageCostEntry.start_date = chamberBillStartDate.toDate();
-                                chamberUsageCostEntry.end_date = chamberBillEndDate.toDate();
+                                chamberUsageCostEntry.start_date = chamberBillStartDate.format('L');
+                                chamberUsageCostEntry.end_date = chamberBillEndDate.format('L');
+                                chamberUsageCostEntry.usage_days = chamberUsageDays;
                                 chamberUsageCostEntry.chamber_cost = chamberCost;
 
                                 // push the object in the invoice object and add the cost to totalChamberUsageCost
@@ -200,17 +210,23 @@ exports.invoiceProjects = function(req, res){
                         // calculate each additional resource cost and push an entry into additional resource cost
                         project.additional_resources.forEach(function(resourceEntry){
                             if(resourceEntry.resource_invoiced==false){
+                                var resourceAllocationDate = moment(resourceEntry.resource_allocation_date);
+                                var resourceDeallocationDate = moment(resourceEntry.resource_deallocation_date);
+                                var resourceUsageDays =resourceDeallocationDate.diff(resourceAllocationDate, 'days');
+
                                 var resourceUsageCostEntry = {
                                     resource_name: resourceEntry.resource.resource_name,
                                     unit_rate: resourceEntry.unit_rate,
                                     units_consumed: resourceEntry.units_consumed,
-                                    start_date: resourceEntry.resource_allocation_date,
-                                    end_date: resourceEntry.resource_deallocation_date,
+                                    start_date: resourceAllocationDate.format('L'),
+                                    end_date: resourceDeallocationDate.format('L'),
+                                    usage_days: resourceUsageDays,
                                     description: resourceEntry.resource_description,
                                     comments: resourceEntry.resource_comments,
                                     resource_cost: 0
                                 };
                                 resourceUsageCostEntry.resource_cost = resourceUsageCostEntry.unit_rate * resourceUsageCostEntry.units_consumed;
+                                resourceUsageCostEntry.resource_cost = Math.floor(resourceUsageCostEntry.resource_cost);
 
                                 // Push this entry into the invoice object and add the cost to totalAdditionalResourceCost
                                 invoice.additional_resource_cost.push(resourceUsageCostEntry);
@@ -248,21 +264,7 @@ exports.invoiceProjects = function(req, res){
                                         console.log('ERROR: updating project with last_invoice_date');
                                     }else{
                                         console.log('SUCCESS: Project updated with last_invoice_date');
-                                        // Generate PDF Report when everything is updated in the database
-                                        // Generate HTML with the data from the current report
-                                        var invoiceReportData = {selectedInvoice: invoice, selectedInvoiceProject: project};
-                                        var invoiceReportHTML = invoiceReportTemplate(invoiceReportData);
-
-                                        // set pdf file name
-                                        var pdfFileName = invoice.invoice_id+'.pdf';
-                                        var options = {
-                                            output: pdfFileName,
-                                            pageSize: 'A4',
-
-                                        }
-                                        wkhtmltopdf(invoiceReportHTML,options);
-
-
+                                        PrintUtility.generateSingleInvoicePDF(invoice);
                                     }
                                 }); // END OF project.save()
                             }
@@ -304,4 +306,11 @@ exports.getInvoiceList = function (req, res) {
                 res.send(invoiceList);
             }
         });
+};
+
+// Generate Invoice PDFs for all the invoices in the request.
+exports.generateInvoicePDFs = function(req, res){
+    var invoices = req.body;
+    PrintUtility.generateMultipleInvoicePDFs(invoices);
+    res.send('Invoice(s) Generated');
 };

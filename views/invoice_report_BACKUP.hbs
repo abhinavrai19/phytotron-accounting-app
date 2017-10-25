@@ -77,9 +77,10 @@
     </table>
 
     <!-- Client Details-->
+    <b>In Account With: </b>
     <table class="table">
         <thead>
-        <th>In Account With:</th>
+        <th>Client Name</th>
         <th>Department Name</th>
         <th>Address</th>
         </thead>
@@ -96,87 +97,76 @@
 
     <!-- Chamber Bill Cost Details -->
     {{#if selectedInvoice.chamber_usage_cost.length}}
-        <table class="table">
-            <thead>
-            <th>Chamber Name</th>
-            <th>Carts</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Days Used</th>
-            <th>Rate</th>
-            <th>Cost</th>
-            </thead>
-            <tbody>
-            {{#each selectedInvoice.chamber_usage_cost}}
-                <tr>
-                    <td>{{chamber_name}}</td>
-                    <td>{{carts_allocated}}</td>
-                    <td>{{start_date}}</td>
-                    <td>{{end_date}}</td>
-                    <td>{{usage_days}}</td>
-                    <td>{{chamber_rate}}</td>
-                    <td>{{chamber_cost}}</td>
-                </tr>
-            {{/each}}
-            </tbody>
-        </table>
+        <div>
+            <b>Chamber Usage:</b>
+            <table class="table">
+                <thead>
+                <th>Name</th>
+                <th>Carts</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Days Used</th>
+                <th>Rate</th>
+                <th>Cost</th>
+                </thead>
+                <tbody>
+                {{#each selectedInvoice.chamber_usage_cost}}
+                    <tr>
+                        <td>{{chamber_name}}</td>
+                        <td>{{carts_allocated}}</td>
+                        <td>{{start_date}}</td>
+                        <td>{{end_date}}</td>
+                        <td>{{usage_days}}</td>
+                        <td>{{chamber_rate}}</td>
+                        <td>{{chamber_cost}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+            <br>
+        </div>
     {{/if}}
 
     <!--Additional Resource Cost Details -->
     {{#if selectedInvoice.additional_resource_cost.length}}
-        <table class="table">
-            <thead>
-            <th>Resource Name</th>
-            <th>Rate</th>
-            <th>Units</th>
-            <!--
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Days Used</th>
-            -->
-            <th>Description</th>
-            <th>Comments</th>
-            <th>Cost</th>
-            </thead>
-            <tbody>
-            {{#each selectedInvoice.additional_resource_cost}}
-                <tr>
-                    <td>{{resource_name}}</td>
-                    <td>{{unit_rate}}</td>
-                    <td>{{units_consumed}}</td>
-                    <!--
-                    <td>{start_date}}</td>
-                    <td>{end_date}}</td>
-                    <td>{usage_days}}</td>
-                    -->
-                    <td>{{description}}</td>
-                    <td>{{comments}}</td>
-                    <td>{{resource_cost}}</td>
-                </tr>
-            {{/each}}
-            </tbody>
-        </table>
+        <div>
+            <b> Additional Resources Usage:</b>
+            <table class="table">
+                <thead>
+                <th>Name</th>
+                <th>Unit Rate</th>
+                <th>Units Consumed</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Days Used</th>
+                <th>Description</th>
+                <th>Comments</th>
+                <th>Resource Cost</th>
+                </thead>
+                <tbody>
+                {{#each selectedInvoice.additional_resource_cost}}
+                    <tr>
+                        <td>{{resource_name}}</td>
+                        <td>{{unit_rate}}</td>
+                        <td>{{units_consumed}}</td>
+                        <td>{{start_date}}</td>
+                        <td>{{end_date}}</td>
+                        <td>{{usage_days}}</td>
+                        <td>{{description}}</td>
+                        <td>{{comments}}</td>
+                        <td>{{resource_cost}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+            <br>
+        </div>
     {{/if}}
 
     <!--Cost Split -->
-    <table>
-        <thead>
-        <th>Bill Amount + </th>
-        <th>Adjustments - </th>
-        <th>Discounts = </th>
-        <th>Total Amount</th>
-        </thead>
-
-        <tbody>
-        <tr>
-            <td>{{selectedInvoice.bill_amount}}</td>
-            <td>{{selectedInvoice.adjustments}}</td>
-            <td>{{selectedInvoice.discounts}}</td>
-            <td>{{selectedInvoice.total_amount}}</td>
-        </tr>
-        </tbody>
-    </table>
-
+    <div class="text-center">
+        Bill Amount: {{selectedInvoice.bill_amount}}      Adjustments: {{selectedInvoice.adjustments}}      Discounts: {{selectedInvoice.discounts}}      Total Amount: {{selectedInvoice.total_amount}}
+    </div>
     <br>
     <!--Footer-->
     <div class="text-center">
@@ -191,6 +181,8 @@
         Deposit Check to: North Carolina Agricultural Research Service<br>
         Misc. Rec. -- Phytotron Revenue Code No. 4-16952-0791
     </div>
+
+
 </div>
 <!--Invoice Page END-->
 </body>
