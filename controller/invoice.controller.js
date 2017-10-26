@@ -4,6 +4,7 @@ var moment = require('moment');
 var async = require('async');
 var CONSTANTS = require('../constants');
 var PrintUtility = require('./utility.generatePDF');
+var MathUtility = require('./utility.mathematics');
 
 //------------------------------------------------------------------------------
 
@@ -39,19 +40,19 @@ exports.getInvoiceProjectsList = function(req, res){
             }else{
                 // create an empty array of eligible projects and only put projects for which last invoice date is before given period end date.
                 // If project has the last invoice date later than the given period end date, remove the project from the list
-                var invoicableProjects = [];
+                var invoiceEligibleProjects = [];
                 projectList.forEach(function(currentProject){
                     if(currentProject.last_invoice_date != null){
                         var lastInvoiceDate = moment(currentProject.last_invoice_date);
                         var projectEndDate = moment(currentProject.project_end_date);
                         if(lastInvoiceDate.isBefore(projectEndDate, 'day')){
-                            invoicableProjects.push(currentProject);
+                            invoiceEligibleProjects.push(currentProject);
                         }
                     }else{
-                        invoicableProjects.push(currentProject);
+                        invoiceEligibleProjects.push(currentProject);
                     }
                 });
-                res.send(invoicableProjects);
+                res.send(invoiceEligibleProjects);
             }
         });
 };
@@ -64,6 +65,7 @@ exports.invoiceProjects = function(req, res){
     var projectsInvoicedSuccessfully = [];
     var projectsInvoiceFailed = [];
     var errorList =[];
+    var roundOffToDigits = CONSTANTS.ROUND_OFF_AMOUNT_TO_VALUE;
 
     var projectIdList = req.body.projectIds;
     //var invoicePeriodStartDate = moment(req.body.invoicePeriodStartDate);
@@ -83,7 +85,6 @@ exports.invoiceProjects = function(req, res){
                         projectsInvoiceFailed.push(project_id);
                         errorList.push(err+ ' Error fetching data for project: '+project_id);
                     }else{
-                        console.log('calculating invoice for project: '+project.project_id);
                         // Calculate cost for the invoice.
                         // set the data in the invoice object.
                         // add invoice to the invoice table.
@@ -142,6 +143,7 @@ exports.invoiceProjects = function(req, res){
                             invoice.clients.push(client);
                         });
 
+                        // Initialize the invoice amounts
                         var totalChamberUsageCost = 0;
                         var totalAdditionalResourceCost = 0;
                         var adjustments = 0;
@@ -192,7 +194,8 @@ exports.invoiceProjects = function(req, res){
                                 var chamberUsageDays = chamberBillEndDate.diff(chamberBillStartDate, 'days');
 
                                 var chamberCost = chamberUsageDays* chamberUsageCostEntry.carts_allocated* chamberUsageCostEntry.chamber_rate;
-                                chamberCost = Math.floor(chamberCost);
+                                // Round off chamberCost
+                                chamberCost = MathUtility.roundNumberTo(chamberCost, roundOffToDigits);
 
                                 // fill in the remaining values in the chamber usage cost object
                                 chamberUsageCostEntry.start_date = chamberBillStartDate.format('L');
@@ -226,7 +229,8 @@ exports.invoiceProjects = function(req, res){
                                     resource_cost: 0
                                 };
                                 resourceUsageCostEntry.resource_cost = resourceUsageCostEntry.unit_rate * resourceUsageCostEntry.units_consumed;
-                                resourceUsageCostEntry.resource_cost = Math.floor(resourceUsageCostEntry.resource_cost);
+                                // Round Resource Cost
+                                resourceUsageCostEntry.resource_cost = MathUtility.roundNumberTo(resourceUsageCostEntry.resource_cost, roundOffToDigits);
 
                                 // Push this entry into the invoice object and add the cost to totalAdditionalResourceCost
                                 invoice.additional_resource_cost.push(resourceUsageCostEntry);
@@ -238,8 +242,14 @@ exports.invoiceProjects = function(req, res){
                         });
 
                         // find the bill Amount and total amount and set these into the invoice object
+                        // Round off each of them
                         billAmount = totalChamberUsageCost + totalAdditionalResourceCost;
+                        billAmount = MathUtility.roundNumberTo(billAmount, roundOffToDigits);
+
                         totalAmount = billAmount + adjustments - discounts;
+                        totalAmount = MathUtility.roundNumberTo(totalAmount, roundOffToDigits);
+
+                        // Round Numbers to
 
                         invoice.bill_amount = billAmount;
                         invoice.total_amount = totalAmount;
@@ -254,7 +264,6 @@ exports.invoiceProjects = function(req, res){
                             }else{
                                 // ON SUCCESS push project id into success list and update the project as well with updated data.
                                 projectsInvoicedSuccessfully.push(project.project_id);
-                                console.log('projectsInvoicedSuccessfully: '+projectsInvoicedSuccessfully.length);
 
                                 // save the corresponding project with the updated last invoice date as well.
                                 project.last_invoice_date = invoiceBillEndDate.toDate();
@@ -277,7 +286,6 @@ exports.invoiceProjects = function(req, res){
     };
 
     var sendResponse = function(err,result){
-        console.log('Final callback, sending response');
         // once all the projects are invoiced.. send the success and error list in the response
         var responseBody = {
             projects_invoice_success: projectsInvoicedSuccessfully,

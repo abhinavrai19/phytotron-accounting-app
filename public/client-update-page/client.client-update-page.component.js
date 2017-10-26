@@ -2,16 +2,23 @@
 angular.module('phytotronAccountingApp')
     .component('clientUpdatePage',{
         templateUrl: 'client-update-page/client.client-update-page.template.html',
-        controller: function ClientUpdatePageController($routeParams,ClientService, DepartmentService,Flash){
+        controller: function ClientUpdatePageController($routeParams,
+                                                        ClientService,
+                                                        DepartmentService,
+                                                        ProjectService,
+                                                        moment,
+                                                        Flash){
             var ctrl = this;
 
             // Array to populate client status
             ctrl.clientStatusList = ['ACTIVE', 'INACTIVE'];
 
             ctrl.$onInit = function(){
+                ctrl.projectList = [];
                 ctrl.getClientById();
+                ctrl.getProjectsByClient();
                 ctrl.getClientDepartmentList();
-            }
+            };
 
             ctrl.getClientById = function () {
                 //Get current client details
@@ -21,7 +28,26 @@ angular.module('phytotronAccountingApp')
                     }, function failure(res){
                         Flash.create('danger',res.data);
                     });
-            }
+            };
+
+            // Get Projects for a given client
+            ctrl.getProjectsByClient = function(){
+                ProjectService.getProjectsByClient($routeParams.id)
+                    .then(function success(res){
+                        ctrl.projectList = res.data;
+                        // format display dates in the table
+                        ctrl.projectList.forEach(function(project){
+                            project.project_start_date = moment(project.project_start_date);
+                            project.project_end_date = moment(project.project_end_date);
+                            if(project.last_invoice_date!=null){
+                                project.last_invoice_date = moment(project.last_invoice_date);
+                            }
+                        });
+                    }, function failure(res){
+                        Flash.create('danger', res.data);
+                    });
+
+            };
 
             // Get Department List for add new client
             ctrl.getClientDepartmentList = function(){

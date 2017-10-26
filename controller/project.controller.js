@@ -34,6 +34,36 @@ exports.getProjectById = function(req, res){
         });
 };
 
+// Get Projects By Client
+exports.getProjectsByClient = function(req, res){
+    var clientIdInRequest = req.params.id;
+    Project.find()
+        .populate('clients')
+        .populate('chambers.chamber')
+        .populate('chambers.crop')
+        .populate('additional_resources.resource')
+        .exec(function(err, projectList){
+            if(err){
+                res.status(500);
+                res.send('Error Finding projects for this client: '+err);
+            }else{
+                var eligibleProjects = [];
+                projectList.forEach(function(currentProject){
+                    var currentProjectClients = currentProject.clients;
+                    for(var i=0; i<currentProjectClients.length;i++){
+                        var currentProjectClient = currentProjectClients[i];
+                        // If a match is found , break loop for this project and continue with remaining projects
+                        if(clientIdInRequest == currentProjectClient._id){
+                            eligibleProjects.push(currentProject);
+                            break;
+                        }
+                    }
+                });
+                res.send(eligibleProjects);
+            }
+        });
+};
+
 // Create Project
 exports.createProject = function(req, res){
     // Parse response for ids before saving project

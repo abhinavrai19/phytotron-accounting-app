@@ -1,76 +1,168 @@
 <div layout="column">
     <top-navigation-bar></top-navigation-bar>
-
-    <div layout="row" layout-fill>
-        <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16">
-            <md-content>
-                <md-toolbar class="md-theme-light">
-                    <md-button class="md-raised" ng-click="$ctrl.updateClient()"> Update Client </md-button>
-                    <md-button class="md-raised" ng-click="$ctrl.reinitializeClient()"> Clear All Fields</md-button>
-                </md-toolbar>
-            </md-content>
-        </md-sidenav>
-        <div layout ="column" layout-fill>
-            <div layout-gt-xs="row">
-                <md-input-container class="md-block" flex-gt-xs>
-                    <label>First Name*</label>
-                    <input ng-model="$ctrl.client.first_name">
-                </md-input-container>
-                <md-input-container class="md-block" flex-gt-xs>
-                    <label>Last Name</label>
-                    <input ng-model="$ctrl.client.last_name">
-                </md-input-container>
-                <md-input-container class="md-block" flex-gt-xs>
-                    <label>Email</label>
-                    <input ng-model="$ctrl.client.email">
-                </md-input-container>
-            </div>
-            <div layout-gt-xs="row">
-                <md-input-container class="md-block" flex-gt-xs>
-                    <label>Contact Number</label>
-                    <input ng-model="$ctrl.client.contact_number">
-                </md-input-container>
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>Department</label>
-                    <md-select ng-model="$ctrl.client.department" >
-                        <md-option ng-repeat="department in $ctrl.clientDepartmentList" value="{{department.department_name}}">
-                            {{department.department_name}}
-                        </md-option>
-                    </md-select>
-                </md-input-container>
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>Status</label>
-                    <md-select ng-model="$ctrl.client.status">
-                        <md-option ng-repeat="status in $ctrl.clientStatusList" value="{{status}}">
-                            {{status}}
-                        </md-option>
-                    </md-select>
-                </md-input-container>
-            </div>
-            <md-input-container class="md-block">
-                <label>Address</label>
-                <input ng-model="$ctrl.client.address">
-            </md-input-container>
-            <md-table-container>
-                <table md-table>
-                    <thead md-head>
-                    <th md-column>
-                        <md-input-container class="md-block">
-                            <label>Account Number</label>
-                            <input ng-model="$ctrl.accountNumber">
+    <md-tabs md-border-bottom md-center-tabs md-dynamic-height md-no-ink>
+        <md-tab label="Update Client Details" layout-fill>
+            <div layout="row" layout-fill>
+                <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16">
+                    <md-content>
+                        <md-toolbar class="md-theme-light">
+                            <md-button class="md-raised" ng-click="$ctrl.updateClient()"> Update Client </md-button>
+                            <md-button class="md-raised" ng-click="$ctrl.reinitializeClient()"> Clear All Fields</md-button>
+                        </md-toolbar>
+                    </md-content>
+                </md-sidenav>
+                <div layout ="column" layout-fill>
+                    <div layout-gt-xs="row">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>First Name*</label>
+                            <input ng-model="$ctrl.client.first_name">
                         </md-input-container>
-                    </th>
-                    <th md-column><md-button class="md-raised" ng-disabled="!$ctrl.accountNumber" ng-click="$ctrl.addAccount()"> Add</md-button></th>
-                    </thead>
-                    <tbody md-body>
-                    <tr md-row ng-repeat="accountNumber in $ctrl.client.account_numbers track by $index">
-                        <td md-cell><p>{{accountNumber}}</p></td>
-                        <td md-cell><md-button class="md-raised" ng-click="$ctrl.removeAccount($index)">X</md-button></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </md-table-container>
-        </div>
-    </div>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Last Name</label>
+                            <input ng-model="$ctrl.client.last_name">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Email</label>
+                            <input ng-model="$ctrl.client.email">
+                        </md-input-container>
+                    </div>
+                    <div layout-gt-xs="row">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Contact Number</label>
+                            <input ng-model="$ctrl.client.contact_number">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Department</label>
+                            <md-select ng-model="$ctrl.client.department" >
+                                <md-option ng-repeat="department in $ctrl.clientDepartmentList" value="{{department.department_name}}">
+                                    {{department.department_name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Status</label>
+                            <md-select ng-model="$ctrl.client.status">
+                                <md-option ng-repeat="status in $ctrl.clientStatusList" value="{{status}}">
+                                    {{status}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <md-input-container class="md-block">
+                        <label>Address</label>
+                        <input ng-model="$ctrl.client.address">
+                    </md-input-container>
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                            <th md-column>
+                                <md-input-container class="md-block">
+                                    <label>Account Number</label>
+                                    <input ng-model="$ctrl.accountNumber">
+                                </md-input-container>
+                            </th>
+                            <th md-column><md-button class="md-raised" ng-disabled="!$ctrl.accountNumber" ng-click="$ctrl.addAccount()"> Add</md-button></th>
+                            </thead>
+                            <tbody md-body>
+                            <tr md-row ng-repeat="accountNumber in $ctrl.client.account_numbers track by $index">
+                                <td md-cell><p>{{accountNumber}}</p></td>
+                                <td md-cell><md-button class="md-raised" ng-click="$ctrl.removeAccount($index)">X</md-button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </div>
+            </div>
+        </md-tab>
+
+        <md-tab label="Project List" layout-fill>
+            <div layout="row" layout-fill>
+                <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16">
+                    <md-content>
+                        <md-toolbar class="md-theme-light">
+                            <h4 class="md-toolbar-tools">Search By:</h4>
+                        </md-toolbar>
+                        <md-list flex >
+                            <md-list-item class="md-list-item-inner" >
+                                <md-input-container class="md-block" flex-gt-xs>
+                                    <label>Global Search:</label>
+                                    <input type="text" ng-model="searchAllProjects.$"/>
+                                </md-input-container>
+                            </md-list-item>
+                            <!--
+                            <md-list-item class="md-list-item-inner">
+                                <md-input-container class="md-block" flex-gt-xs>
+                                    <label>Client First Name:</label>
+                                    <input type="text"/>
+                                </md-input-container>
+                            </md-list-item>
+                            <md-list-item class="md-list-item-inner">
+                                <md-input-container class="md-block" flex-gt-xs>
+                                    <label>Client Last Name:</label>
+                                    <input type="text"/>
+                                </md-input-container>
+                            </md-list-item>
+                            -->
+                            <md-list-item class="md-list-item-inner">
+                                <md-input-container class="md-block" flex-gt-xs>
+                                    <label>Project Id:</label>
+                                    <input type="text" ng-model="searchAllProjects.project_id"/>
+                                </md-input-container>
+                            </md-list-item>
+                            <md-list-item class="md-list-item-inner">
+                                <md-input-container class="md-block" flex-gt-xs>
+                                    <label>Project Title:</label>
+                                    <input type="text" ng-model="searchAllProjects.project_title"/>
+                                </md-input-container>
+                            </md-list-item>
+                            <md-list-item class="md-list-item-inner">
+                                <md-input-container class="md-block" flex-gt-xs>
+                                    <label>Project Status:</label>
+                                    <input type="text" ng-model="searchAllProjects.project_status"/>
+                                </md-input-container>
+                            </md-list-item>
+                        </md-list>
+                    </md-content>
+                </md-sidenav>
+                <div layout="column" layout-fill>
+                    <md-table-pagination
+                            md-limit="$ctrl.tableQuery.limit"
+                            md-page="$ctrl.tableQuery.page"
+                            md-total="{{$ctrl.projectList.length}}"
+                            md-boundary-links="true"
+                            md-page-select="true">
+                    </md-table-pagination>
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head md-order="$ctrl.tableQuery.order">
+                            <th md-column md-order-by="project_id">Project Id</th>
+                            <th md-column md-order-by="project_title">Project Title</th>
+                            <th md-column md-order-by="project_start_date">Start Date</th>
+                            <th md-column md-order-by="project_end_date">End Date</th>
+                            <th md-column md-order-by="last_invoice_date">Last Invoice Date</th>
+                            <th md-column md-order-by="project_status">Project Status</th>
+
+                            </thead>
+                            <tbody md-body>
+                            <tr md-row ng-repeat="project in $ctrl.projectList |
+                                    filter: searchAllProjects |
+                                    orderBy: $ctrl.tableQuery.order |
+                                    limitTo: $ctrl.tableQuery.limit : ($ctrl.tableQuery.page -1)*$ctrl.tableQuery.limit">
+                                <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_id}}</a></td>
+                                <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_title}}</a></td>
+                                <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_start_date.format('L')}}</a></td>
+                                <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_end_date.format('L')}}</a></td>
+                                <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.last_invoice_date.format('L')}}</a></td>
+                                <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_status}}</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </div>
+            </div>
+        </md-tab>
+    </md-tabs>
+
+
     <flash-message></flash-message>
 </div>

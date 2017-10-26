@@ -27,6 +27,9 @@ router.get('/projects', ProjectController.getProjectList);
 // Get Project By Id
 router.get('/project/:id', ProjectController.getProjectById);
 
+//Get Projects By Client
+router.get('/projects/client/:id', ProjectController.getProjectsByClient);
+
 // Create Project
 router.post('/project/create', ProjectController.createProject);
 

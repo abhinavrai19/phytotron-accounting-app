@@ -7,5 +7,7 @@ module.exports = {
 
     PHYTOTRON_ID: 'A020201',
 
-    INVOICE_REPORT_TEMPLATE_PATH: __dirname+'/views/'+'invoice_report.hbs'
+    INVOICE_REPORT_TEMPLATE_PATH: __dirname+'/views/'+'invoice_report.hbs',
+
+    ROUND_OFF_AMOUNT_TO_VALUE: 2
 };

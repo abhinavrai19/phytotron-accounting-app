@@ -14,6 +14,11 @@ angular.module('phytotronAccountingApp')
                 return $http.get('/project/'+projectId);
             },
 
+            //Get Projects by Client
+            getProjectsByClient: function(clientId){
+                return $http.get('/projects/client/'+clientId);
+            },
+
             //create Project
             createProject: function(project){
                 return $http.post('/project/create',project);

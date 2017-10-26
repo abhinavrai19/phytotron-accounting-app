@@ -17,10 +17,10 @@
                 <md-button ng-disabled="$ctrl.invoiceHistoryStartDate=='' || $ctrl.invoiceHistoryEndDate==''" class="md-raised md-primary" ng-click="$ctrl.getInvoiceList()"> Get History </md-button>
 
                 <md-toolbar class="md-theme-light">
-                    <h4 class="md-toolbar-tools">View Selected Invoice Details:</h4>
+                    <h4 class="md-toolbar-tools">For Selected Invoice(s):</h4>
                 </md-toolbar>
                 <md-button ng-disabled="$ctrl.selectedInvoices.length==0" class="md-raised md-primary" ng-click="$ctrl.generateInvoicePDFs()"> Generate PDFs </md-button>
-                <md-button ng-disabled="$ctrl.selectedInvoices.length==0" class="md-raised md-primary" ng-click="$ctrl.showInvoiceDetails()"> View Invoice </md-button>
+                <md-button ng-disabled="$ctrl.selectedInvoices.length==0 || $ctrl.selectedInvoices.length>1" class="md-raised md-primary" ng-click="$ctrl.showInvoiceDetails()"> View Invoice </md-button>
             </md-content>
         </md-sidenav>
         <div layout="column" layout-fill>
