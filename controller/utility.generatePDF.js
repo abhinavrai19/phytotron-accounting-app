@@ -40,16 +40,18 @@ var generateInvoicePDF = function (invoice) {
     // set pdf file name
     var pdfFileName = invoice.invoice_id+'.pdf';
     var options = {
-        output: pdfFileName,
-        pageSize: 'A4',
-
+        //output: pdfFileName, // Commented out as the output now is done through write stream
+        pageSize: 'A4'
     };
 
-    // generate report pdf
-    wkhtmltopdf(invoiceReportHTML,options);
+    // Create Write Stream to the output file.
+    var pdfFile = fs.createWriteStream(CONSTANTS.INVOICE_SAVE_DIRECTORY_PATH + pdfFileName);
+
+    // generate report pdf by piping the pdf stream to the write stream
+    wkhtmltopdf(invoiceReportHTML,options).pipe(pdfFile);
 };
 
-// EXPORTS
+// EXPORTS----------------------------------------------------------------------
 
 // generate PDF for all invoices in the parameter array
 exports.generateMultipleInvoicePDFs = function(invoices){

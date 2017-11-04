@@ -44,6 +44,8 @@
                     <th md-column md-order-by="project_end_date">End Date</th>
                     <th md-column md-order-by="last_invoice_date">Last Invoice Date</th>
                     <th md-column md-order-by="project_status">Project Status</th>
+                    <th md-column md-order-by="missing_resources_sort">Missing resources</th>
+
                     </thead>
                     <tbody md-body>
                     <tr md-row md-select="project.project_id"
@@ -51,12 +53,16 @@
                         ng-repeat="project in $ctrl.invoiceProjectList |
                         orderBy: $ctrl.tableQuery.order |
                         limitTo: $ctrl.tableQuery.limit : ($ctrl.tableQuery.page -1)*$ctrl.tableQuery.limit">
-                        <td md-cell>{{project.project_id}}</td>
-                        <td md-cell>{{project.project_title}}</td>
-                        <td md-cell>{{project.project_start_date.format('L')}}</td>
-                        <td md-cell>{{project.project_end_date.format('L')}}</td>
-                        <td md-cell>{{project.last_invoice_date.format('L')}}</td>
-                        <td md-cell>{{project.project_status}}</td>
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_id}}</a></td>
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_title}}</a></td>
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_start_date.format('L')}}</a></td>
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_end_date.format('L')}}</a></td>
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.last_invoice_date.format('L')}}</a></td>
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_status}}</a></td>
+                        <td md-cell>
+                            <div ng-show="!project.missing_resources">NO</div>
+                            <div ng-show="project.missing_resources">YES <md-icon>warning</md-icon></div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

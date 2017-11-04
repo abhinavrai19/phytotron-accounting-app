@@ -9,7 +9,7 @@ angular.module('phytotronAccountingApp')
 
             // Parameters for table pagination
             ctrl.tableQuery = {
-                order: 'project_id',
+                order: 'missing_resources_sort',
                 limit: 10,
                 page: 1
             };
@@ -28,10 +28,20 @@ angular.module('phytotronAccountingApp')
                     .then(function success(res){
                         ctrl.invoiceProjectList = res.data;
                         ctrl.invoiceProjectList.forEach(function (project) {
+                            // Create Moment Object for returned Date fields
                             project.project_start_date = moment(project.project_start_date);
                             project.project_end_date = moment(project.project_end_date);
                             if(project.last_invoice_date!=null){
                                 project.last_invoice_date = moment(project.last_invoice_date);
+                            }
+
+                            // Create Missing Resources field for the listed projects
+                            if(project.requires_additional_resources==true && project.additional_resources.length==0){
+                                project.missing_resources = true;
+                                project.missing_resources_sort = "A"
+                            }else{
+                                project.missing_resources = false;
+                                project.missing_resources_sort = "B"
                             }
                         });
 
