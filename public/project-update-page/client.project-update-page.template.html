@@ -38,6 +38,7 @@
                     </md-input-container>
                 </div>
                 <div layout-gt-xs="row" md-whiteframe="4">
+                    <!--
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Chamber</label>
                         <md-select ng-model="$ctrl.selectedChamber" ng-model-options="{trackBy: '$value._id'}">
@@ -46,10 +47,28 @@
                             </md-option>
                         </md-select>
                     </md-input-container>
+                    -->
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Chamber</label>
+                        <md-autocomplete
+                                md-no-cache="true"
+                                md-selected-item="$ctrl.selectedChamber"
+                                md-search-text="$ctrl.searchChamber"
+                                md-items="chamber in $ctrl.availableChambers | filter: $ctrl.searchChamber"
+                                md-item-text="chamber.chamber_name"
+                                md-min-length="0">
+                            <md-item-template>
+                                <span md-highlight-text="$ctrl.searchChamber" md-highlight-flags="^i">{{chamber.chamber_name}}    ||    {{chamber.carts_count}}</span>
+                            </md-item-template>
+                        </md-autocomplete>
+                    </md-input-container>
+
                     <md-input-container>
                         <label>Carts Allocated</label>
                         <input type="number" ng-model="$ctrl.carts_allocated">
                     </md-input-container>
+
+                    <!--
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Crop</label>
                         <md-select ng-model="$ctrl.crop" ng-model-options="{trackBy: '$value._id'}">
@@ -58,6 +77,22 @@
                             </md-option>
                         </md-select>
                     </md-input-container>
+                    -->
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Crop</label>
+                        <md-autocomplete
+                                md-no-cache="true"
+                                md-selected-item="$ctrl.crop"
+                                md-search-text="$ctrl.searchCrop"
+                                md-items="crop in $ctrl.availableCrops | filter: $ctrl.searchCrop"
+                                md-item-text="crop.scientific_name+' '+crop.common_name"
+                                md-min-length="0">
+                            <md-item-template>
+                                <span md-highlight-text="$ctrl.searchCrop" md-highlight-flags="^i">{{crop.scientific_name}}    ||    {{crop.common_name}}</span>
+                            </md-item-template>
+                        </md-autocomplete>
+                    </md-input-container>
+
                     <md-input-container class="md-block" flex-gt-xs>
                         <label>Chamber Allocation Date</label>
                         <md-datepicker ng-model="$ctrl.chamber_allocation_date" md-placeholder="Enter date"></md-datepicker>
@@ -66,7 +101,7 @@
                         <label>Chamber Deallocation Date</label>
                         <md-datepicker ng-model="$ctrl.chamber_deallocation_date" md-placeholder="Enter date"></md-datepicker>
                     </md-input-container>
-                    <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedChamber || $ctrl.carts_allocated=='' || ($ctrl.chamber_allocation_date == '') || ($ctrl.chamber_deallocation_date == '') || ($ctrl.crop == '')" ng-click="$ctrl.addChamberToProject()" flex="5"><h1>+</h1></md-button>
+                    <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedChamber || $ctrl.carts_allocated=='' || ($ctrl.chamber_allocation_date == '') || ($ctrl.chamber_deallocation_date == '') || ($ctrl.crop == '')" ng-click="$ctrl.addChamberToProject()" flex="5"><md-icon>add</md-icon></md-button>
                 </div>
 
                 <md-table-container>
@@ -86,7 +121,7 @@
                             <td md-cell><p>{{addedChamber.crop.scientific_name}}</p></td>
                             <td md-cell><p>{{addedChamber.chamber_allocation_date.format('L')}}</p></td>
                             <td md-cell><p>{{addedChamber.chamber_deallocation_date.format('L')}}</p></td>
-                            <td md-cell><md-button class="md-raised md-warn" ng-click="$ctrl.removeChamberFromProject($index)">X</md-button></td>
+                            <td md-cell><md-button class="md-raised md-warn" ng-click="$ctrl.removeChamberFromProject($index)"><md-icon>remove</md-icon></md-button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -125,7 +160,7 @@
                         <md-list flex >
                             <md-list-item class="md-list-item-inner" ng-repeat="client in $ctrl.project.clients track by $index">
                                 <div layout="row">
-                                    <md-button class="md-raised md-warn" ng-click="$ctrl.removeClientsFromProject(client)">X</md-button>
+                                    <md-button class="md-raised md-warn" ng-click="$ctrl.removeClientsFromProject(client)"><md-icon>remove</md-icon></md-button>
                                     <p>{{client.first_name}} {{client.last_name}} {{client.email}}</p>
                                 </div>
                             </md-list-item>
@@ -160,7 +195,7 @@
                                 <td md-cell>{{client.email}}</td>
                                 <td md-cell>{{client.department}}</td>
                                 <td md-cell>{{client.status}}</td>
-                                <td md-cell><md-button class="md-raised md-primary" ng-click="$ctrl.addClientsToProject(client)"><h1>+</h1></md-button></td>
+                                <td md-cell><md-button class="md-raised md-primary" ng-click="$ctrl.addClientsToProject(client)"><md-icon>add</md-icon></md-button></td>
                             </tr>
                             </tbody>
                         </table>
@@ -178,6 +213,8 @@
             <div ng-show="$ctrl.project.requires_additional_resources">
                 <div layout="column" md-whiteframe="4">
                     <div layout="row">
+
+                        <!--
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Resource</label>
                             <md-select ng-model="$ctrl.selectedResource" ng-model-options="{trackBy: '$value._id'}">
@@ -186,6 +223,23 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
+                        -->
+
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Resource</label>
+                            <md-autocomplete
+                                    md-no-cache="true"
+                                    md-selected-item="$ctrl.selectedResource"
+                                    md-search-text="$ctrl.searchResource"
+                                    md-items="resource in $ctrl.availableResources | filter: $ctrl.searchResource"
+                                    md-item-text="resource.resource_name+' '+resource.unit_of_measure"
+                                    md-min-length="0">
+                                <md-item-template>
+                                    <span md-highlight-text="$ctrl.searchResource" md-highlight-flags="^i">{{resource.resource_name}}    ||    {{resource.unit_of_measure}}</span>
+                                </md-item-template>
+                            </md-autocomplete>
+                        </md-input-container>
+
                         <md-input-container>
                             <label>Unit Rate ($)</label>
                             <input type="number" ng-model="$ctrl.unit_rate">
@@ -212,7 +266,7 @@
                             <label>Resource Comments</label>
                             <input ng-model="$ctrl.resource_comments">
                         </md-input-container>
-                        <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedResource || $ctrl.unit_rate == '' || $ctrl.units_consumed == '' || $ctrl.resource_allocation_date == '' || $ctrl.resource_deallocation_date == '' " ng-click="$ctrl.addResourceToProject()" flex="5"><h1>+</h1></md-button>
+                        <md-button class="md-raised md-primary" ng-disabled="!$ctrl.selectedResource || $ctrl.unit_rate == '' || $ctrl.units_consumed == '' || $ctrl.resource_allocation_date == '' || $ctrl.resource_deallocation_date == '' " ng-click="$ctrl.addResourceToProject()" flex="5"><md-icon>add</md-icon></md-button>
                     </div>
 
                 </div>
@@ -237,7 +291,7 @@
                             <td md-cell><p>{{addedResource.resource_deallocation_date.format('L')}}</p></td>
                             <td md-cell><p>{{addedResource.resource_description}}</p></td>
                             <td md-cell><p>{{addedResource.resource_comments}}</p></td>
-                            <td md-cell><md-button class="md-raised md-warn" ng-click="$ctrl.removeResourceFromProject($index)">X</md-button></td>
+                            <td md-cell><md-button class="md-raised md-warn" ng-click="$ctrl.removeResourceFromProject($index)"><md-icon>remove</md-icon></md-button></td>
                         </tr>
                         </tbody>
                     </table>

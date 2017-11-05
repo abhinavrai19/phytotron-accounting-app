@@ -34,6 +34,10 @@ angular.module('phytotronAccountingApp')
             };
 
             ctrl.$onInit = function(){
+                ctrl.searchChamber='';
+                ctrl.searchCrop='';
+                ctrl.searchResource='';
+
                 ctrl.getProjectById();
 
                 //Pre Fetching data to Update PROJECT
