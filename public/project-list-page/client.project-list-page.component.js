@@ -32,6 +32,10 @@ angular.module('phytotronAccountingApp')
             };
 
             ctrl.$onInit = function(){
+                ctrl.searchChamber='';
+                ctrl.searchCrop='';
+                ctrl.searchResource='';
+
                 ctrl.getProjectList();
 
                 //Pre Fetching data to Start a new PROJECT
@@ -219,6 +223,7 @@ angular.module('phytotronAccountingApp')
             };
 
             ctrl.verifyProject = function(project){
+                console.log(project);
                 ctrl.projectVerified= true;
                 if (project.project_id=="") {
                     ctrl.projectVerified= false;
