@@ -14,6 +14,16 @@
                     <label>Carts</label>
                     <input type="number" ng-model="$ctrl.chamber.carts_count">
                 </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Chamber Type</label>
+                    <md-select ng-model="$ctrl.chamber.chamber_type" >
+                        <md-option ng-repeat="chamberType in $ctrl.chamberTypeList" value="{{chamberType._id}}">
+                            {{chamberType.chamber_type_name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
                 <div layout="row">
                     <md-button class="md-raised" ng-click="$ctrl.updateChamber()"> Update Chamber </md-button>
                     <md-button class="md-raised" ng-href="#/chamber-list"> Go Back</md-button>

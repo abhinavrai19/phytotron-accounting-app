@@ -27,7 +27,10 @@
                 <md-button ng-click="$mdMenu.open($event)">Space Usage Parameters *</md-button>
                 <md-menu-content width="4" ng-mouseleave="$mdMenu.close()">
                     <md-menu-item>
-                        <md-button ng-click="$ctrl.navigateTo('/chamber-list')">Chambers</md-button>
+                        <md-button ng-click="$ctrl.navigateTo('/chamber-list')">Chamber</md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="$ctrl.navigateTo('/chamber-type-list')">Chamber Type</md-button>
                     </md-menu-item>
                     <md-menu-item>
                         <md-button ng-click="$ctrl.navigateTo('/rate-list')">Rate</md-button>

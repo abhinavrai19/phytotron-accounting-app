@@ -10,29 +10,20 @@
                 <md-list flex >
                     <md-list-item class="md-list-item-inner" >
                         <md-input-container class="md-block" flex-gt-xs>
-                            <label>Chamber Name</label>
-                            <input type="text" ng-model="$ctrl.newChamber.chamber_name">
+                            <label>Chamber Type Name</label>
+                            <input type="text" ng-model="$ctrl.newChamberType.chamber_type_name">
                         </md-input-container>
                     </md-list-item>
                     <md-list-item class="md-list-item-inner" >
                         <md-input-container class="md-block" flex-gt-xs>
-                            <label>Carts</label>
-                            <input type="number" ng-model="$ctrl.newChamber.carts_count">
+                            <label>Description</label>
+                            <input type="text" ng-model="$ctrl.newChamberType.chamber_type_description">
                         </md-input-container>
                     </md-list-item>
                     <md-list-item class="md-list-item-inner" >
-                        <md-input-container class="md-block" flex-gt-xs>
-                            <label>Chamber Type</label>
-                            <md-select ng-model="$ctrl.newChamber.chamber_type" >
-                                <md-option ng-repeat="chamberType in $ctrl.chamberTypeList" value="{{chamberType._id}}">
-                                    {{chamberType.chamber_type_name}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
+                        <md-button class="md-primary" ng-click="$ctrl.addChamberType()"> Add Chamber Type</md-button>
                     </md-list-item>
-                    <md-list-item class="md-list-item-inner" >
-                        <md-button class="md-primary" ng-click="$ctrl.addChamber()"> Add New Chamber </md-button>
-                    </md-list-item>
+
                 </md-list>
 
                 <md-toolbar class="md-theme-light">
@@ -41,16 +32,18 @@
                 <md-list flex >
                     <md-list-item class="md-list-item-inner" >
                         <md-input-container class="md-block" flex-gt-xs>
-                            <label>Chamber Name :</label>
-                            <input type="text" ng-model="searchAll.chamber_name"/>
+                            <label>Chamber Type Name :</label>
+                            <input type="text" ng-model="searchAll.chamber_type_name"/>
                         </md-input-container>
                     </md-list-item>
+                    <!--
                     <md-list-item class="md-list-item-inner">
                         <md-input-container class="md-block" flex>
-                            <label >Chamber Type :</label>
-                            <input type="text" ng-model="searchAll.chamber_type.chamber_type_name"/>
+                            <label >Carts Count:</label>
+                            <input type="number" ng-model="searchAll.carts_count"/>
                         </md-input-container>
                     </md-list-item>
+                    -->
                 </md-list>
             </md-content>
         </md-sidenav>
@@ -59,25 +52,23 @@
             <md-table-pagination
                     md-limit="$ctrl.tableQuery.limit"
                     md-page="$ctrl.tableQuery.page"
-                    md-total="{{$ctrl.chambersList.length}}"
+                    md-total="{{$ctrl.chamberTypeList.length}}"
                     md-boundary-links="true"
                     md-page-select="true">
             </md-table-pagination>
             <md-table-container>
                 <table md-table>
                     <thead md-head md-order="$ctrl.tableQuery.order">
-                    <th md-column md-order-by="chamber_name">ChamberName</th>
-                    <th md-column md-order-by="carts_count">Carts</th>
-                    <th md-column md-order-by="chamber_type">Chamber Type</th>
+                    <th md-column md-order-by="chamber_type_name">Chamber Type</th>
+                    <th md-column md-order-by="chamber_type_description">Description</th>
                     </thead>
                     <tbody md-body>
-                    <tr md-row ng-repeat="chamber in $ctrl.chambersList |
+                    <tr md-row ng-repeat="chamberType in $ctrl.chamberTypeList |
                         filter: searchAll |
                         orderBy: $ctrl.tableQuery.order |
                         limitTo: $ctrl.tableQuery.limit : ($ctrl.tableQuery.page -1)*$ctrl.tableQuery.limit">
-                        <td md-cell><a ng-href="#/chamber-update/{{chamber.chamber_name}}">{{chamber.chamber_name}}</a></td>
-                        <td md-cell><a ng-href="#/chamber-update/{{chamber.chamber_name}}">{{chamber.carts_count}}</a></td>
-                        <td md-cell><a ng-href="#/chamber-update/{{chamber.chamber_name}}">{{chamber.chamber_type.chamber_type_name}}</a></td>
+                        <td md-cell><a ng-href="#/chamber-type-update/{{chamberType.chamber_type_name}}">{{chamberType.chamber_type_name}}</a></td>
+                        <td md-cell><a ng-href="#/chamber-type-update/{{chamberType.chamber_type_name}}">{{chamberType.chamber_type_description}}</a></td>
                     </tr>
                     </tbody>
                 </table>

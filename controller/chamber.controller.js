@@ -1,10 +1,9 @@
 var Chamber = require('../models/chamber');
 
-var async = require('async');
-
 // Get Chamber List
 exports.getChamberList = function(req, res){
     Chamber.find()
+        .populate('chamber_type')
         .exec(function(err, chamberList){
            if(err){
                res.status(500);
@@ -35,7 +34,8 @@ exports.createChamber = function(req, res){
 
     var chamberInstance = new Chamber({
         chamber_name: req.body.chamber_name,
-        carts_count: req.body.carts_count
+        carts_count: req.body.carts_count,
+        chamber_type: req.body.chamber_type
     });
 
     chamberInstance.save(function(err){

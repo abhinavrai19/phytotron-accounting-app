@@ -2,6 +2,7 @@
 var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
+var ChamberType = require('./chamber-type');
 
 var ChamberSchema = new Schema({
     chamber_name: {
@@ -14,6 +15,12 @@ var ChamberSchema = new Schema({
         type: Number,
         required: true,
         min: 0
+    },
+    chamber_type: {
+        type: Schema.Types.ObjectId,
+        ref: 'ChamberType',
+        required: true
+
     }
 });
 

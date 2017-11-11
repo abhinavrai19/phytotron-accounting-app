@@ -1,7 +1,9 @@
 angular.module('phytotronAccountingApp')
     .component('chamberListPage',{
         templateUrl: 'chamber-list-page/client.chamber-list-page.template.html',
-        controller: function ChamberListPageController( ChamberService, Flash){
+        controller: function ChamberListPageController( ChamberService,
+                                                        ChamberTypeService,
+                                                        Flash){
             var ctrl = this;
 
             // Parameters for table pagination
@@ -13,7 +15,8 @@ angular.module('phytotronAccountingApp')
 
             ctrl.$onInit = function(){
                 ctrl.getAllChambers();
-            }
+                ctrl.getAllChamberTypes();
+            };
 
             ctrl.getAllChambers = function(){
                 // Get all chambers
@@ -25,6 +28,17 @@ angular.module('phytotronAccountingApp')
                     });
             };
 
+            ctrl.getAllChamberTypes = function () {
+                // Get all Chamber Types
+                ChamberTypeService.getChamberTypeList()
+                    .then(function success(res) {
+                        ctrl.chamberTypeList = res.data;
+                    }, function failure(res){
+                        Flash.create('danger',res.data);
+                    });
+
+            };
+
             ctrl.addChamber = function(){
                 ChamberService.createChamber(ctrl.newChamber)
                     .then(function success(res){
@@ -34,6 +48,6 @@ angular.module('phytotronAccountingApp')
                     }, function failure(res){
                         Flash.create('danger',res.data);
                     });
-            }
+            };
         }
 });

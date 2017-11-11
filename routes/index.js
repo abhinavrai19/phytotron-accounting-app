@@ -8,6 +8,7 @@ var ClientController = require('../controller/client.controller');
 var InvoiceController = require('../controller/invoice.controller');
 
 var ChamberController = require('../controller/chamber.controller');
+var ChamberTypeController = require('../controller/chamber-type.controller');
 var RateController = require('../controller/rate.controller');
 var DepartmentController = require('../controller/department.controller');
 var CropController = require('../controller/crop.controller');
@@ -64,7 +65,7 @@ router.get('/invoices/:invoiceHistoryStartDate/:invoiceHistoryEndDate',InvoiceCo
 // Generate Invoice PDFs
 router.post('/invoices/generatePDFs', InvoiceController.generateInvoicePDFs);
 
-// Chamber Routes //-------------------------------------------------
+// Chamber Routes //----------------------------------------------------
 
 // Get chamber List
 router.get('/chambers', ChamberController.getChamberList);
@@ -78,7 +79,21 @@ router.post('/chamber/create', ChamberController.createChamber);
 // Update a Chamber
 router.post('/chamber/update', ChamberController.updateChamber);
 
-// Rate Routes //-------------------------------------------------
+// Chamber Type Routes //-------------------------------------------------
+
+// Get chamber Type List
+router.get('/chamberTypes', ChamberTypeController.getChamberTypeList);
+
+// Get A Single Chamber Type by Name
+router.get('/chamberType/:id', ChamberTypeController.getChamberTypeByName);
+
+// Create a Chamber Type
+router.post('/chamberType/create', ChamberTypeController.createChamberType);
+
+// Update a Chamber Type
+router.post('/chamberType/update', ChamberTypeController.updateChamberType);
+
+// Rate Routes //----------------------------------------------------------
 
 // Get Rate List
 router.get('/rates', RateController.getRateList);
@@ -92,7 +107,7 @@ router.post('/rate/create', RateController.createRate);
 // Update a Rate
 router.post('/rate/update', RateController.updateRate);
 
-// Department Routes //-------------------------------------------------
+// Department Routes //----------------------------------------------------
 
 // Get Department List
 router.get('/departments', DepartmentController.getDepartmentList);
