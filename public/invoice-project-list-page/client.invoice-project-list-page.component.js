@@ -28,6 +28,10 @@ angular.module('phytotronAccountingApp')
                     .then(function success(res){
                         ctrl.invoiceProjectList = res.data;
                         ctrl.invoiceProjectList.forEach(function (project) {
+                            // Add primary client as a filtering field for projects in list
+                            project.primary_client = project.clients[0].first_name +' '+project.clients[0].last_name;
+
+
                             // Create Moment Object for returned Date fields
                             project.project_start_date = moment(project.project_start_date);
                             project.project_end_date = moment(project.project_end_date);
@@ -56,7 +60,6 @@ angular.module('phytotronAccountingApp')
                 InvoiceService.invoiceProjects(ctrl.invoicePeriodStartDate,ctrl.invoicePeriodEndDate,ctrl.selectedProjectIds)
                     .then(function success(res){
                         var responseData = res.data;
-                        console.log(responseData);
                         // Display success message
                         if(responseData.projects_invoice_success.length>0){
                             var successMessage = 'Invoicing successful for: ';

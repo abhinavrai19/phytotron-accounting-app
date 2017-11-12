@@ -34,6 +34,9 @@ angular.module('phytotronAccountingApp')
                         ctrl.invoiceList = res.data;
                         // format Dates in the invoice history page
                         ctrl.invoiceList.forEach(function(invoice){
+                            //create primary client field in invoice list to filter invoices accordingly
+                            invoice.primary_client = invoice.clients[0].first_name +' '+invoice.clients[0].last_name;
+
                             invoice.generation_date = moment(invoice.generation_date).format('L');
                             invoice.bill_start_date = moment(invoice.bill_start_date).format('L');
                             invoice.bill_end_date = moment(invoice.bill_end_date).format('L');

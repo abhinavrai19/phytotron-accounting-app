@@ -59,10 +59,12 @@ var InvoiceSchema = new Schema({
         type: Number,
         default: 0
     },
+    adjustments_comments: String,
     discounts: {
         type: Number,
         default: 0
     },
+    discounts_comments: String,
     total_amount: Number
 });
 

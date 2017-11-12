@@ -31,6 +31,7 @@ exports.getInvoiceProjectsList = function(req, res){
             }
         ]
     })
+        .populate('clients')
         //.where('project_start_date').lt(invoicePeriodEndDate)
         //.where('project_end_date').gt(invoicePeriodStartDate)
         .exec(function(err, projectList){

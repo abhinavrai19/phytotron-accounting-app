@@ -33,6 +33,10 @@
                     <label>Search by Project Title:</label>
                     <input type="text" ng-model="searchAllInvoices.project_title"/>
                 </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Search by Client Name:</label>
+                    <input type="text" ng-model="searchAllInvoices.primary_client"/>
+                </md-input-container>
             </div>
             <md-table-pagination
                     md-limit="$ctrl.tableQuery.limit"
@@ -50,6 +54,7 @@
                     <th md-column md-order-by="invoice_id">Invoice Id</th>
                     <th md-column md-order-by="project_id">Project Id</th>
                     <th md-column md-order-by="project_title">Project Title</th>
+                    <th md-column md-order-by="primary_client">Client Name</th>
                     <th md-column md-order-by="generation_date">Generation Date</th>
                     <th md-column md-order-by="bill_start_date">Bill Start Date</th>
                     <th md-column md-order-by="bill_end_date">Bill End Date</th>
@@ -65,6 +70,7 @@
                         <td md-cell>{{invoice.invoice_id}}</td>
                         <td md-cell>{{invoice.project_id}}</td>
                         <td md-cell>{{invoice.project_title}}</td>
+                        <td md-cell>{{invoice.primary_client}}</td>
                         <td md-cell>{{invoice.generation_date}}</td>
                         <td md-cell>{{invoice.bill_start_date}}</td>
                         <td md-cell>{{invoice.bill_end_date}}</td>
