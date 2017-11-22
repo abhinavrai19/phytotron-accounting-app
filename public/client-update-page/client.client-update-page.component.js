@@ -54,6 +54,7 @@ angular.module('phytotronAccountingApp')
                 DepartmentService.getDepartmentList()
                     .then(function success(res){
                         ctrl.clientDepartmentList = res.data;
+                        ctrl.clientDepartmentList.sort(compareClientDepartmentByDepartmentName);
                     }, function failure(res){
                         Flash.create('danger', res.data);
                     });
@@ -92,5 +93,13 @@ angular.module('phytotronAccountingApp')
             ctrl.removeAccount = function(index){
                 ctrl.client.account_numbers.splice(index,1);
             };
+
+            function compareClientDepartmentByDepartmentName(a,b){
+                if (a.department_name < b.department_name)
+                    return -1;
+                if (a.department_name > b.department_name)
+                    return 1;
+                return 0;
+            }
         }
     });

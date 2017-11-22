@@ -35,6 +35,7 @@ angular.module('phytotronAccountingApp')
                 ctrl.searchChamber='';
                 ctrl.searchCrop='';
                 ctrl.searchResource='';
+                ctrl.activeProjectList = [];
 
                 ctrl.getProjectList();
 
@@ -60,6 +61,13 @@ angular.module('phytotronAccountingApp')
                             if(project.last_invoice_date!=null){
                                 project.last_invoice_date = moment(project.last_invoice_date);
                             }
+
+                            // if project is active then push the project to running project list.
+                            if(project.project_status == 'ACTIVE'){
+                                ctrl.activeProjectList.push(project);
+                            }
+
+                            // push
                         });
                     },function failure(res){
                         Flash.create('danger',res.data);
