@@ -28,13 +28,14 @@
 
         <md-input-container class="md-block" flex-gt-xs>
             <label>Chamber Type:</label>
-            <md-select ng-model="searchUsageChamberEntries.chamber_type" md-on-close="$ctrl.drawChamberUsageChart()">
-                <md-option ng-value="chamberType._id" ng-repeat="chamberType in $ctrl.chamberTypeList">{{chamberType.chamber_type_name}}</md-option>
+            <md-select ng-model="searchUsageChamberEntries">
+                <md-option ng-value="chamberType._id" ng-repeat="chamberType in $ctrl.inReportChamberTypeList">{{chamberType.chamber_type_name}}</md-option>
             </md-select>
-
         </md-input-container>
-    </div>
 
+        <md-button class="md-raised md-primary" ng-click="$ctrl.printPage()">Print</md-button>
+    </div>
+    <!--
     <md-table-pagination
             md-limit="$ctrl.tableQuery.limit"
             md-page="$ctrl.tableQuery.page"
@@ -42,17 +43,19 @@
             md-boundary-links="true"
             md-page-select="true">
     </md-table-pagination>
+    -->
     <md-table-container>
         <table md-table>
             <thead md-head md-order="$ctrl.tableQuery.order">
             <th md-column md-order-by="chamber_name">Chamber</th>
+            <th md-column md-order-by="client_name">Client</th>
+            <th md-column md-order-by="project_id">Project ID</th>
             <th md-column md-order-by="chamber_allocation_date">Start Date</th>
             <th md-column md-order-by="chamber_deallocation_date">End Date</th>
             <th md-column md-order-by="carts_allocated">Carts</th>
             <th md-column md-order-by="crop">Crop</th>
             <th md-column md-order-by="department">Department</th>
-            <th md-column md-order-by="client_name">Client</th>
-            <th md-column md-order-by="project_id">Project ID</th>
+
             </thead>
             <tbody md-body>
             <tr md-row ng-repeat="usageEntry in $ctrl.usageReport |
@@ -60,13 +63,13 @@
                         orderBy: $ctrl.tableQuery.order |
                         limitTo: $ctrl.tableQuery.limit : ($ctrl.tableQuery.page -1)*$ctrl.tableQuery.limit">
                 <td md-cell>{{usageEntry.chamber_name}}</td>
+                <td md-cell>{{usageEntry.client_name}}</td>
+                <td md-cell>{{usageEntry.project_id}}</td>
                 <td md-cell>{{usageEntry.chamber_allocation_date}}</td>
                 <td md-cell>{{usageEntry.chamber_deallocation_date}}</td>
                 <td md-cell>{{usageEntry.carts_allocated}}</td>
                 <td md-cell>{{usageEntry.crop}}</td>
                 <td md-cell>{{usageEntry.department}}</td>
-                <td md-cell>{{usageEntry.client_name}}</td>
-                <td md-cell>{{usageEntry.project_id}}</td>
             </tr>
             </tbody>
         </table>

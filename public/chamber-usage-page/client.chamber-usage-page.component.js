@@ -33,9 +33,11 @@ angular.module('phytotronAccountingApp')
                 ChamberTypeService.getChamberTypeList()
                     .then(function success(res){
                         ctrl.chamberTypeList = res.data;
+                        // parse this list to contain only chamberTypes that are in the usage list as well.
+                        // Also adding an all field to display whole usage report
+
                     },function failure(res){
                         Flash.create('danger','Error fetching chamber types: '+res.data);
-
                     });
             };
 
@@ -45,12 +47,40 @@ angular.module('phytotronAccountingApp')
                     usageStartDate: ctrl.usageStartDate,
                     usageEndDate: ctrl.usageEndDate
                 };
+                // list used to
                 ctrl.inReportChamberTypeList = [];
 
                 ChamberUsageReportService.getChamberUsageBetweenDates(reportParams)
                     .then(function success(res){
                         // repopulate drop down and update complete usage report
                         ctrl.usageReport = res.data;
+                        // In this loop, for each usage entry:
+                        // replace each chamberType_id in usage report entry with chamberType object
+                        // Also push matched UsageEntry.chamberType to inReportChamberTypeList.
+                        ctrl.usageReport.forEach(function(usageEntry){
+
+                            for(var i=0;i<ctrl.chamberTypeList.length;i++){
+                                var chamberTypeListEntry = ctrl.chamberTypeList[i];
+                                if(usageEntry.chamber_type == chamberTypeListEntry._id){
+                                    usageEntry.chamber_type = chamberTypeListEntry;
+                                    break;
+                                }
+                            }
+
+                            // check if usageEntry.chamber_type is already in the inReportChamberTypeList, if not push it
+                            var isPresentInInReportChamberTypeList = false;
+                            for(var i=0; i<ctrl.inReportChamberTypeList.length;i++){
+                                if(usageEntry.chamber_type._id == ctrl.inReportChamberTypeList[i]._id){
+                                    isPresentInInReportChamberTypeList=true;
+                                    break;
+                                }
+                            }
+                            // If ChamberEntry was not in inReportChamberTypeList, push it
+                            if(!isPresentInInReportChamberTypeList){
+                                ctrl.inReportChamberTypeList.push(usageEntry.chamber_type);
+                            }
+                        });
+
                         if(ctrl.usageReport.length==0){
                             Flash.create('success','No Chambers were in use during the selected period');
 
@@ -59,6 +89,15 @@ angular.module('phytotronAccountingApp')
                         }else{
                             // set report visibility to true
                             ctrl.isReportVisible = true;
+
+                            // add an All Entry in inReportChamberTypeList and Sort it as well.
+                            var allChambersObject = {
+                                _id: "",
+                                chamber_type_name: " All Chambers"
+                            }
+                            ctrl.inReportChamberTypeList.push(allChambersObject);
+                            ctrl.inReportChamberTypeList.sort(compareChamberTypeByName);
+
                         }
 
                     }, function failure(res){
@@ -69,6 +108,19 @@ angular.module('phytotronAccountingApp')
             ctrl.returnToSelectReportUsageDates = function(){
                 // set report visibility to false
                 ctrl.isReportVisible = false;
+            };
+            
+            ctrl.printPage = function () {
+                window.print();
+            };
+
+            // compare function to sort chamberType List
+            function compareChamberTypeByName(a,b){
+                if (a.chamber_type_name < b.chamber_type_name)
+                    return -1;
+                if (a.chamber_type_name > b.chamber_type_name)
+                    return 1;
+                return 0;
             }
 
             /*
