@@ -35,7 +35,8 @@ exports.createChamber = function(req, res){
     var chamberInstance = new Chamber({
         chamber_name: req.body.chamber_name,
         carts_count: req.body.carts_count,
-        chamber_type: req.body.chamber_type
+        chamber_type: req.body.chamber_type,
+        chamber_description: req.body.chamber_description
     });
 
     chamberInstance.save(function(err){

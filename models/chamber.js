@@ -21,7 +21,8 @@ var ChamberSchema = new Schema({
         ref: 'ChamberType',
         required: true
 
-    }
+    },
+    chamber_description: String
 });
 
 module.exports = mongoose.model('Chamber', ChamberSchema);
