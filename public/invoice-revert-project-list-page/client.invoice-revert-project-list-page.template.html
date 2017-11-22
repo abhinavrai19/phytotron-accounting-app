@@ -1,0 +1,112 @@
+<div layout="column">
+    <top-navigation-bar></top-navigation-bar>
+    <div layout="row" layout-fill>
+        <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16">
+            <md-content>
+                <!--
+                <md-toolbar class="md-theme-light">
+                    <h4 class="md-toolbar-tools">Invoice Projects between:</h4>
+                </md-toolbar>
+                -->
+
+                <md-toolbar class="md-theme-light">
+                    <h4 class="md-toolbar-tools">Revert Invoice For a selected Project</h4>
+                </md-toolbar>
+                <md-button ng-disabled="$ctrl.selectedProjectIds.length==0" class="md-raised md-primary" ng-click="$ctrl.revertLastInvoice()"> Revert Invoice </md-button>
+
+                <md-toolbar class="md-theme-light">
+                    <h4 class="md-toolbar-tools">Search By:</h4>
+                </md-toolbar>
+                <md-list flex >
+                    <md-list-item class="md-list-item-inner" >
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Global Search:</label>
+                            <input type="text" ng-model="searchProjectsForRevertLastInvoice.$"/>
+                        </md-input-container>
+                    </md-list-item>
+                    <md-list-item class="md-list-item-inner">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Project Id:</label>
+                            <input type="text" ng-model="searchProjectsForRevertLastInvoice.project_id"/>
+                        </md-input-container>
+                    </md-list-item>
+                    <md-list-item class="md-list-item-inner">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Project Title:</label>
+                            <input type="text" ng-model="searchProjectsForRevertLastInvoice.project_title"/>
+                        </md-input-container>
+                    </md-list-item>
+                    <md-list-item class="md-list-item-inner">
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>Client Name:</label>
+                            <input type="text" ng-model="searchProjectsForRevertLastInvoice.primary_client"/>
+                        </md-input-container>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </md-sidenav>
+        <div layout="column" layout-fill>
+            <!--
+            <div layout="row">
+
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>From Date</label>
+                    <md-datepicker ng-model="$ctrl.invoicePeriodStartDate" md-placeholder="Enter date"></md-datepicker>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>To Date</label>
+                    <md-datepicker ng-model="$ctrl.invoicePeriodEndDate" md-placeholder="Enter date"></md-datepicker>
+                </md-input-container>
+                <md-button ng-disabled="$ctrl.invoicePeriodStartDate=='' || $ctrl.invoicePeriodEndDate==''" class="md-raised md-primary" ng-click="$ctrl.getInvoiceProjectList()"> List Projects </md-button>
+
+            </div>
+            -->
+            <md-table-pagination
+                    md-limit="$ctrl.tableQuery.limit"
+                    md-page="$ctrl.tableQuery.page"
+                    md-total="{{$ctrl.revertLastInvoiceProjectList.length}}"
+                    md-boundary-links="true"
+                    md-page-select="true">
+            </md-table-pagination>
+            <md-table-container>
+                <table md-table
+                       md-row-select="true"
+                       multiple="false"
+                       ng-model="$ctrl.selectedProjectIds">
+                    <thead md-head md-order="$ctrl.tableQuery.order">
+                    <th md-column md-order-by="project_id">Project Id</th>
+                    <th md-column md-order-by="project_title">Project Title</th>
+                    <th md-column md-order_by="primary_client">Client Name</th>
+                    <th md-column md-order-by="project_start_date">Start Date</th>
+                    <th md-column md-order-by="project_end_date">End Date</th>
+                    <th md-column md-order-by="last_invoice_date">Last Invoice Date</th>
+                    <th md-column md-order-by="project_status">Project Status</th>
+                    <th md-column md-order-by="missing_resources_sort">Missing resources</th>
+
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row md-select="project.project_id"
+                        md-select-id="project_id"
+                        ng-repeat="project in $ctrl.revertLastInvoiceProjectList |
+                        filter: searchProjectsForRevertLastInvoice |
+                        orderBy: $ctrl.tableQuery.order |
+                        limitTo: $ctrl.tableQuery.limit : ($ctrl.tableQuery.page -1)*$ctrl.tableQuery.limit">
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_id}}</a></td>
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_title}}</a></td>
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.primary_client}}</a></td>
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_start_date.format('L')}}</a></td>
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_end_date.format('L')}}</a></td>
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.last_invoice_date.format('L')}}</a></td>
+                        <td md-cell><a ng-href="#/project-update/{{project.project_id}}">{{project.project_status}}</a></td>
+                        <td md-cell>
+                            <div ng-show="!project.missing_resources">NO</div>
+                            <div ng-show="project.missing_resources">YES <md-icon>warning</md-icon></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </div>
+    </div>
+    <flash-message></flash-message>
+</div>

@@ -1,7 +1,7 @@
 angular.module('phytotronAccountingApp')
-    .component('invoiceProjectListPage',{
-        templateUrl: 'invoice-project-list-page/client.invoice-project-list-page.template.html',
-        controller: function InvoiceProjectListPageController(InvoiceService,
+    .component('invoiceRevertProjectListPage',{
+        templateUrl: 'invoice-revert-project-list-page/client.invoice-revert-project-list-page.template.html',
+        controller: function InvoiceRevertProjectListPageController(InvoiceService,
                                                               $location,
                                                               moment,
                                                               Flash){
@@ -9,26 +9,24 @@ angular.module('phytotronAccountingApp')
 
             // Parameters for table pagination
             ctrl.tableQuery = {
-                order: 'missing_resources_sort',
+                order: 'project_id',
                 limit: 10,
                 page: 1
             };
 
             ctrl.$onInit = function(){
-                ctrl.invoicePeriodStartDate='';
-                ctrl.invoicePeriodEndDate= new Date();
-
-                ctrl.invoiceProjectList = [];
+                ctrl.revertLastInvoiceProjectList = [];
                 ctrl.selectedProjectIds = [];
+                ctrl.getRevertLastInvoiceProjectList();
             };
 
             // get list of eligible projects for invoicing in a particular period.
-            ctrl.getInvoiceProjectList = function(){
+            ctrl.getRevertLastInvoiceProjectList = function(){
                 ctrl.selectedProjectIds = [];
-                InvoiceService.getInvoiceProjectsList(ctrl.invoicePeriodStartDate,ctrl.invoicePeriodEndDate)
+                InvoiceService.getRevertLastInvoiceProjectList()
                     .then(function success(res){
-                        ctrl.invoiceProjectList = res.data;
-                        ctrl.invoiceProjectList.forEach(function (project) {
+                        ctrl.revertLastInvoiceProjectList = res.data;
+                        ctrl.revertLastInvoiceProjectList.forEach(function (project) {
                             // Add primary client as a filtering field for projects in list
                             project.primary_client = project.clients[0].first_name +' '+project.clients[0].last_name;
 
@@ -50,42 +48,22 @@ angular.module('phytotronAccountingApp')
                             }
                         });
 
-                        Flash.create('success', ctrl.invoiceProjectList.length + ' projects available for invoicing for selected criteria.');
+                        Flash.create('success', ctrl.revertLastInvoiceProjectList.length + ' projects available for which last invoice can be reverted.');
                     },function failure(res){
                         Flash.create('danger', res.data);
                     });
             };
 
             // Invoice a list of selected projects.
-            ctrl.invoiceProjects = function(){
-                InvoiceService.invoiceProjects(ctrl.invoicePeriodStartDate,ctrl.invoicePeriodEndDate,ctrl.selectedProjectIds)
+            ctrl.revertLastInvoice = function(){
+                InvoiceService.revertLastInvoice(ctrl.selectedProjectIds)
                     .then(function success(res){
                         var responseData = res.data;
-                        // Display success message
-                        if(responseData.projects_invoice_success.length>0){
-                            var successMessage = 'Invoicing successful for: ';
-                            responseData.projects_invoice_success.forEach(function(successProjectId){
-                                successMessage = successMessage + successProjectId + ' \n';
-                            });
-                            Flash.create('success',successMessage);
-                        }
-
-                        // Display failure message
-                        if(responseData.projects_invoice_failure.length>0){
-                            var failureMessage = 'Invoicing failure for: ';
-                            responseData.projects_invoice_failure.forEach(function(failureProjectId){
-                                failureMessage = failureMessage + failureProjectId + ' \n';
-                            });
-                            responseData.error_list.forEach(function(error){
-                                failureMessage = failureMessage + error + ' \n';
-                            });
-                            Flash.create('danger',failureMessage);
-                        }
-
+                        Flash.create('success', responseData);
                         $location.path( '/home' );
                     }, function failure(res){
                         // The server side has no error handling. Hence a custom error message here.
-                        Flash.create('danger', 'ERROR in Invoicing service'+ res.data);
+                        Flash.create('danger', 'ERROR in Revert Last Invoicing service'+ res.data);
                     });
             };
 

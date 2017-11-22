@@ -95,11 +95,15 @@ exports.invoiceProjects = function(req, res){
 
                         var projectStartDate = moment(project.project_start_date);
                         var projectEndDate = moment(project.project_end_date);
+
                         // if project was never invoiced before set the date to project start date.
+                        var lastInvoiceDate;
                         if(project.last_invoice_date==null){
-                            project.last_invoice_date = project.project_start_date;
+                            lastInvoiceDate = moment(project.project_start_date);
+                        }else{
+                            lastInvoiceDate = moment(project.last_invoice_date);
                         }
-                        var lastInvoiceDate = moment(project.last_invoice_date);
+
 
                         // initialize invoice Bill start and end dates
                         var invoiceBillStartDate = lastInvoiceDate;
@@ -192,7 +196,8 @@ exports.invoiceProjects = function(req, res){
 
                                 // once the billing start and end dates for a chamber are found, find the duration between these.
                                 // multiply with the chamber rates and get the cost for that particular chamber use.
-                                var chamberUsageDays = chamberBillEndDate.diff(chamberBillStartDate, 'days');
+                                // Correction for difference plus one to get correct allocated days.
+                                var chamberUsageDays = chamberBillEndDate.diff(chamberBillStartDate, 'days') + 1;
 
                                 var chamberCost = chamberUsageDays* chamberUsageCostEntry.carts_allocated* chamberUsageCostEntry.chamber_rate;
                                 // Round off chamberCost
@@ -239,6 +244,8 @@ exports.invoiceProjects = function(req, res){
 
                                 // update resource_invoiced to true.
                                 resourceEntry.resource_invoiced = true;
+                                // update associated invoice id
+                                resourceEntry.associated_invoice_id = invoice_id;
                             }
                         });
 
@@ -266,8 +273,17 @@ exports.invoiceProjects = function(req, res){
                                 // ON SUCCESS push project id into success list and update the project as well with updated data.
                                 projectsInvoicedSuccessfully.push(project.project_id);
 
-                                // save the corresponding project with the updated last invoice date as well.
+                                // UPDATE PROJECT DETAILS AFTER INVOICING
+                                // save project last invoice date and last invoice id to REVERT params
+                                project.revert_to_invoice_date = project.last_invoice_date;
+                                project.revert_to_invoice_id = project_id.last_invoice_id;
+
+                                // save the corresponding project with the updated last invoice date and id.
                                 project.last_invoice_date = invoiceBillEndDate.toDate();
+                                project.last_invoice_id = invoice_id;
+
+                                // Set revert invoice
+                                project.revert_invoice_possible = true;
 
                                 project.save(function(err){
                                     if(err){
@@ -322,4 +338,100 @@ exports.generateInvoicePDFs = function(req, res){
     var invoices = req.body;
     PrintUtility.generateMultipleInvoicePDFs(invoices);
     res.send('Invoice(s) Generated');
+};
+
+// Get Revert Last Invoice Project List.
+exports.getRevertLastInvoiceProjectList = function(req, res){
+    Project.find({revert_invoice_possible: true})
+        .populate('clients')
+        .populate('chamber_rate')
+        .populate('chambers.chamber')
+        .populate('chambers.crop')
+        .populate('additional_resources.resource')
+        .exec(function(err,projectList){
+            if(err){
+                res.status('500');
+                res.send('Error Finding Projects for reverting invoice '+err);
+
+            }else{
+                res.send(projectList);
+            }
+        })
+
+};
+
+// Revert Last Invoice for selected project.
+exports.revertLastInvoice = function (req, res) {
+    var projectIds = req.body.project_ids;
+    // Current Code for single project for which last invoice can be reverted
+    var projectId = projectIds[0];
+    Project.findOne({'project_id': projectId})
+        .populate('clients')
+        .populate('chamber_rate')
+        .populate('chambers.chamber')
+        .populate('chambers.crop')
+        .populate('additional_resources.resource')
+        .exec(function(err,project){
+            if(err){
+                res.status('500');
+                res.send('Error fetching Project Details for Reverting Invoice '+err);
+            }else{
+                if(project.revert_invoice_possible){
+                    // get invoice id to revert from DB
+                    var invoiceIdToRevert = project.last_invoice_id;
+
+                    // Set Revert Params to last params and udpate flag
+                    project.revert_invoice_possible=false;
+                    project.last_invoice_date = project.revert_to_invoice_date;
+                    project.last_invoice_id = project.revert_to_invoice_id;
+
+                    // Set Revert Params to null
+                    project.revert_to_invoice_id = '';
+                    project.revert_to_invoice_date = null;
+
+                    // Also if any resource was accounted in that invoice
+                    project.additional_resources.forEach(function(resourceEntry){
+                        if(resourceEntry.associated_invoice_id == invoiceIdToRevert && resourceEntry.resource_invoiced == true){
+                            resourceEntry.resource_invoiced = false;
+                            resourceEntry.associated_invoice_id = '';
+                        }
+                    });
+
+
+                    // After updating project details, delete particular entry from invoice Table and then save the project details
+                    Invoice.findOneAndRemove({ invoice_id: invoiceIdToRevert})
+                        .exec(function(err, removedItem){
+                            // If error removing invoice
+                            if(err){
+                                res.status('500');
+                                res.send('Error removing invoice from DB '+err);
+                            }
+                            // If invoice not found in deletion
+
+                            /*// NOTE: Commented for now - proceed to update project even if invoice to be deleted was not in DB
+                            if(!removedItem){
+                                res.status('500');
+                                res.send('Revert Error: Cannot Find Invoice to Delete' + err);
+                            }
+                            */
+                            // Deletion is successful
+                            // update the project details as well
+
+                            // NOTE: ANOTHER METHOD CAN BE USED TO UPDATE
+                            project.save(function(err){
+                                if(err){
+                                    res.status('500');
+                                    res.send('Invoice to be reverted, deleted from DB, but Project Update failed '+err);
+                                }else{
+                                    // service successful
+                                    res.send('Invoice Reverted Successfully');
+                                }
+                            });
+                        });
+                }else{
+                    // service successful
+                    res.send('Cannot revert invoice for this project / Already 1 invoice reverted for this project ');
+                }
+            }
+        });
 };

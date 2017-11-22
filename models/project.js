@@ -102,6 +102,10 @@ var ProjectSchema = new Schema({
             resource_invoiced: {
                 type: Boolean,
                 default: false
+            },
+            associated_invoice_id: {
+                type: String,
+                default: ''
             }
         }
     ],
@@ -112,7 +116,26 @@ var ProjectSchema = new Schema({
         default: 'ACTIVE'
     },
 
-    last_invoice_date: Date
+    // Invoicing and revert Invoice related data.
+
+    last_invoice_date: Date,
+
+    last_invoice_id: {
+        type: String,
+        default: ''
+    },
+
+    revert_to_invoice_date: Date,
+
+    revert_to_invoice_id: {
+        type: String,
+        default: ''
+    },
+
+    revert_invoice_possible: {
+        type: Boolean,
+        default: false
+    }
 
 });
 

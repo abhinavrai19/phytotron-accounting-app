@@ -26,6 +26,18 @@ angular.module('phytotronAccountingApp')
             // Generate Invoice PDFs
             generateInvoicePDFs: function(invoices){
                 return $http.post('/invoices/generatePDFs', invoices);
+            },
+
+            getRevertLastInvoiceProjectList: function(){
+                return $http.get('/invoice/revert/projects');
+            },
+
+            revertLastInvoice: function(projectIds){
+                var reqBody = {
+                    project_ids: projectIds
+                }
+                console.log(reqBody);
+                return $http.post('/invoice/revert',reqBody);
             }
         };
     }]);

@@ -40,6 +40,9 @@ angular.module('phytotronAccountingApp')
             })
             .when('/invoice-history',{
                 template: '<invoice-history-page></invoice-history-page>'
+            })
+            .when('/invoice-revert-project-list',{
+                template: '<invoice-revert-project-list-page></invoice-revert-project-list-page>'
             });
 
         // URL-Component mappings: space usage parameters
