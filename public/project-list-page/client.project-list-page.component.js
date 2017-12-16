@@ -90,7 +90,8 @@ angular.module('phytotronAccountingApp')
                     requires_additional_resources: false,
                     additional_resources: [],
                     project_status: "ACTIVE",
-                    last_invoice_date: ""
+                    last_invoice_date: "",
+                    invoice_amount_distribution: []
                 };
 
                 // add chamber details
@@ -230,6 +231,44 @@ angular.module('phytotronAccountingApp')
                 ctrl.newProject.additional_resources.splice(index,1);
             };
 
+
+            // INVOICE AMOUNT DISTRIBUTION
+            // Add and remove invoice amount distribution details from a project.
+            ctrl.removeAccountFromInvoiceAmountDistribution = function(index){
+                ctrl.newProject.invoice_amount_distribution.splice(index,1);
+            };
+            
+            ctrl.addAccountToInvoiceAmountDistribution = function (client, accountNumber) {
+                var isAccountEntryAlreadyPresent = false;
+                ctrl.newProject.invoice_amount_distribution.forEach(function (accountEntry) {
+                    if(accountEntry.client_id == client._id && accountEntry.client_account_number == accountNumber){
+                        isAccountEntryAlreadyPresent = true;
+                    }
+                });
+                if(isAccountEntryAlreadyPresent){
+                    Flash.create('danger','Account Entry is already present');
+                }else{
+                    var newAccountEntry = {
+                        client_id: client._id,
+                        client_first_name: client.first_name,
+                        client_last_name: client.last_name,
+                        client_account_number: accountNumber,
+                        percent_share: 0
+                    };
+                    ctrl.newProject.invoice_amount_distribution.push(newAccountEntry);
+                }
+            };
+
+            // check if the entered account distributions is amounting to 100 or not.
+            ctrl.getInvoiceAmountDistributionTotal = function(){
+                var totalPercentage = 0;
+                ctrl.newProject.invoice_amount_distribution.forEach(function (accountEntry) {
+                    totalPercentage = totalPercentage + accountEntry.percent_share;
+                });
+                return totalPercentage;
+            };
+
+            // VERIFY PROJECT
             ctrl.verifyProject = function(project){
                 console.log(project);
                 ctrl.projectVerified= true;
@@ -248,6 +287,10 @@ angular.module('phytotronAccountingApp')
                 if(project.chamber_rate==""){
                     ctrl.projectVerified=false;
                     Flash.create('danger','Project must have a chamber rate');
+                }
+                if(ctrl.getInvoiceAmountDistributionTotal() != 100){
+                    ctrl.projectVerified=false;
+                    Flash.create('danger','Invoice amount distribution percentages should amount to 100%');
                 }
             };
         }

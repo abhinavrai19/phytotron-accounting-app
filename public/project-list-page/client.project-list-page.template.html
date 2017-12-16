@@ -379,6 +379,37 @@
                     </div>
 
                 </md-tab>
+                <md-tab label="Invoice Details">
+                    <div layout="row" layout-fill>
+                        <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16" flex="50">
+                            <md-content>
+                                <md-toolbar class="md-theme-light">
+                                    <h4 class="md-toolbar-tools">Account Percentage Distribution:</h4>
+                                </md-toolbar>
+                                <md-list flex >
+                                    <md-list-item class="md-list-item-inner" ng-repeat="accountEntry in $ctrl.newProject.invoice_amount_distribution">
+                                        <div layout="row">
+                                            <md-button class="md-raised md-warn" ng-click="$ctrl.removeAccountFromInvoiceAmountDistribution($index)"><md-icon>remove</md-icon></md-button>
+                                            <input ng-model="accountEntry.percent_share" type="number" min="0" max="100" step="0.1">
+                                            <p>{{accountEntry.client_first_name}} {{accountEntry.client_last_name}} {{accountEntry.client_account_number}}</p>
+                                        </div>
+                                    </md-list-item>
+                                </md-list>
+                            </md-content>
+                        </md-sidenav>
+                        <div layout="column" flex="50">
+                            <md-toolbar class="md-theme-light">
+                                <h4 class="md-toolbar-tools">Available Client Accounts:</h4>
+                            </md-toolbar>
+                            <md-list flex>
+                                <md-list-item style="margin-left: 10px;"ng-repeat-start="client in $ctrl.newProject.clients">{{client.first_name}} {{client.last_name}}</md-list-item>
+                                <md-list-item style="margin-left: 50px;" ng-repeat-end ng-repeat="account in client.account_numbers">
+                                    <div layout="row"><md-button class="md-raised md-primary" ng-click="$ctrl.addAccountToInvoiceAmountDistribution(client, account)"><md-icon>add</md-icon></md-button> {{account}}</div>
+                                </md-list-item>
+                            </md-list>
+                        </div>
+                    </div>
+                </md-tab>
                 <md-tab label="Review and Submit" md-on-select="$ctrl.verifyProject($ctrl.newProject)">
                     <div layout="column" ng-show="$ctrl.projectVerified">
                         <md-button class="md-primary md-raised" ng-click="$ctrl.createNewProject()">Start New Project</md-button>

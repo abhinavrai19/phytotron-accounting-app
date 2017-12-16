@@ -223,6 +223,44 @@ angular.module('phytotronAccountingApp')
                 ctrl.project.additional_resources.splice(index,1);
             };
 
+            // INVOICE AMOUNT DISTRIBUTION
+            // Add and remove invoice amount distribution details from a project.
+            ctrl.removeAccountFromInvoiceAmountDistribution = function(index){
+                ctrl.project.invoice_amount_distribution.splice(index,1);
+            };
+
+            ctrl.addAccountToInvoiceAmountDistribution = function (client, accountNumber) {
+                var isAccountEntryAlreadyPresent = false;
+                ctrl.project.invoice_amount_distribution.forEach(function (accountEntry) {
+                    if(accountEntry.client_id == client._id && accountEntry.client_account_number == accountNumber){
+                        isAccountEntryAlreadyPresent = true;
+                    }
+                });
+                if(isAccountEntryAlreadyPresent){
+                    Flash.create('danger','Account Entry is already present');
+                }else{
+                    var newAccountEntry = {
+                        client_id: client._id,
+                        client_first_name: client.first_name,
+                        client_last_name: client.last_name,
+                        client_account_number: accountNumber,
+                        percent_share: 0
+                    };
+                    ctrl.project.invoice_amount_distribution.push(newAccountEntry);
+                }
+            };
+
+            // check if the entered account distributions is amounting to 100 or not.
+            ctrl.getInvoiceAmountDistributionTotal = function(){
+                var totalPercentage = 0;
+                ctrl.project.invoice_amount_distribution.forEach(function (accountEntry) {
+                    totalPercentage = totalPercentage + accountEntry.percent_share;
+                });
+                return totalPercentage;
+            };
+
+
+            // VERIFY PROJECT
             ctrl.verifyProject = function(project){
                 ctrl.projectVerified= true;
                 if (project.project_id=="") {
@@ -232,6 +270,10 @@ angular.module('phytotronAccountingApp')
                 if (project.clients.length==0) {
                     ctrl.projectVerified=false;
                     Flash.create('danger','0 Clients: Project must have at least one client');
+                }
+                if(ctrl.getInvoiceAmountDistributionTotal() != 100){
+                    ctrl.projectVerified=false;
+                    Flash.create('danger','Invoice amount distribution percentages should amount to 100%');
                 }
             };
         }

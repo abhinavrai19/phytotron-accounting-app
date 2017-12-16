@@ -71,6 +71,7 @@ exports.createProject = function(req, res){
     project = parseChamberIdsInProject(project);
     project = parseResourceIdsInProject(project);
 
+    /*
     var projectInstance = new Project({
         project_id:                     project.project_id,
         project_title:                  project.project_title,
@@ -82,8 +83,12 @@ exports.createProject = function(req, res){
         requires_additional_resources:  project.requires_additional_resources,
         additional_resources:           project.additional_resources,
         project_status:                 project.project_status,
-        last_invoice_date:              project.last_invoice_date
+        last_invoice_date:              project.last_invoice_date,
+        invoice_amount_distribution:    project.invoice_amount_distribution
     });
+    */
+
+    var projectInstance = new Project(project);
 
     projectInstance.save(function(err){
         if(err){

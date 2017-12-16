@@ -135,7 +135,19 @@ var ProjectSchema = new Schema({
     revert_invoice_possible: {
         type: Boolean,
         default: false
-    }
+    },
+
+    // Invoice amount distribution details
+
+    invoice_amount_distribution: [
+        {
+            client_id: String,
+            client_first_name: String,
+            client_last_name: String,
+            client_account_number: String,
+            percent_share: Number
+        }
+    ]
 
 });
 
