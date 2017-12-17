@@ -3,24 +3,35 @@
     <div layout="row" layout-fill>
         <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16">
             <md-content>
-                <md-toolbar class="md-theme-light">
-                    <h4 class="md-toolbar-tools">Get Invoice History between:</h4>
-                </md-toolbar>
-                <md-input-container class="md-block" flex-gt-xs>
-                    <label>From Date</label>
-                    <md-datepicker ng-model="$ctrl.invoiceHistoryStartDate" md-placeholder="Enter date"></md-datepicker>
-                </md-input-container>
-                <md-input-container class="md-block" flex-gt-xs>
-                    <label>To Date</label>
-                    <md-datepicker ng-model="$ctrl.invoiceHistoryEndDate" md-placeholder="Enter date"></md-datepicker>
-                </md-input-container>
-                <md-button ng-disabled="$ctrl.invoiceHistoryStartDate=='' || $ctrl.invoiceHistoryEndDate==''" class="md-raised md-primary" ng-click="$ctrl.getInvoiceList()"> Get History </md-button>
-
-                <md-toolbar class="md-theme-light">
-                    <h4 class="md-toolbar-tools">For Selected Invoice(s):</h4>
-                </md-toolbar>
-                <md-button ng-disabled="$ctrl.selectedInvoices.length==0" class="md-raised md-primary" ng-click="$ctrl.generateInvoicePDFs()"> Generate PDFs </md-button>
-                <md-button ng-disabled="$ctrl.selectedInvoices.length==0 || $ctrl.selectedInvoices.length>1" class="md-raised md-primary" ng-click="$ctrl.showInvoiceDetails()"> View Invoice </md-button>
+                <md-list flex>
+                    <md-toolbar class="md-theme-light">
+                        <h4 class="md-toolbar-tools">Get Invoice History between:</h4>
+                    </md-toolbar>
+                    <md-list-item>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>From Date</label>
+                            <md-datepicker ng-model="$ctrl.invoiceHistoryStartDate" md-placeholder="Enter date"></md-datepicker>
+                        </md-input-container>
+                    </md-list-item>
+                    <md-list-item>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <label>To Date</label>
+                            <md-datepicker ng-model="$ctrl.invoiceHistoryEndDate" md-placeholder="Enter date"></md-datepicker>
+                        </md-input-container>
+                    </md-list-item>
+                    <md-list-item>
+                        <md-button ng-disabled="$ctrl.invoiceHistoryStartDate=='' || $ctrl.invoiceHistoryEndDate==''" class="md-raised md-primary" ng-click="$ctrl.getInvoiceList()"> Get History </md-button>
+                    </md-list-item>
+                    <md-toolbar class="md-theme-light">
+                        <h4 class="md-toolbar-tools">For Selected Invoice(s):</h4>
+                    </md-toolbar>
+                    <md-list-item>
+                        <md-button ng-disabled="$ctrl.selectedInvoices.length==0" class="md-raised md-primary" ng-click="$ctrl.generateInvoicePDFs()"> Generate PDFs </md-button>
+                    </md-list-item>
+                    <md-list-item>
+                        <md-button ng-disabled="$ctrl.selectedInvoices.length==0 || $ctrl.selectedInvoices.length>1" class="md-raised md-primary" ng-click="$ctrl.showInvoiceDetails()"> View Invoice </md-button>
+                    </md-list-item>
+                </md-list>
             </md-content>
         </md-sidenav>
         <div layout="column" layout-fill>
