@@ -65,7 +65,15 @@ var InvoiceSchema = new Schema({
         default: 0
     },
     discounts_comments: String,
-    total_amount: Number
+    total_amount: Number,
+    invoice_amount_distribution: [
+        {
+            client_first_name: String,
+            client_last_name: String,
+            account_number: String,
+            share_amount: Number
+        }
+    ]
 });
 
 module.exports = mongoose.model('Invoice', InvoiceSchema);

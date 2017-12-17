@@ -133,7 +133,8 @@ exports.invoiceProjects = function(req, res){
                             additional_resource_cost:   [],                             // cost of additional resources
                             adjustments:                0,                              // misc cost
                             discounts:                  0,                              // discounts
-                            total_amount:               0                               // bill amount + adjustments + discounts
+                            total_amount:               0,                              // bill amount + adjustments + discounts
+                            invoice_amount_distribution:[]
                         };
 
                         // Put Client details in the invoice
@@ -261,6 +262,21 @@ exports.invoiceProjects = function(req, res){
 
                         invoice.bill_amount = billAmount;
                         invoice.total_amount = totalAmount;
+
+                        // Generate Invoice amount distribution for the set accounts.
+                        project.invoice_amount_distribution.forEach(function (accountEntry) {
+                            var shareAmount = accountEntry.percent_share*invoice.total_amount / 100;
+                            shareAmount = MathUtility.roundNumberTo(shareAmount, roundOffToDigits);
+                            var invoiceAmountDistributionEntry = {
+                                client_first_name: accountEntry.client_first_name,
+                                client_last_name: accountEntry.client_last_name,
+                                account_number: accountEntry.client_account_number,
+                                // Percent Share of the bill amount
+                                share_amount: shareAmount
+                            }
+                            invoice.invoice_amount_distribution.push(invoiceAmountDistributionEntry);
+                        });
+
 
                         // now that the invoice is prepared for this single project. Save that invoice into the DB.
                         var invoiceInstance = new Invoice(invoice);

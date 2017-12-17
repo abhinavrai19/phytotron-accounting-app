@@ -177,6 +177,25 @@
         </tbody>
     </table>
 
+    <!--Invoice Amount Distribution-->
+    <table class="table">
+        <thead>
+        <th>Client Name</th>
+        <th>Account #</th>
+        <th>Amount</th>
+        </thead>
+        <tbody>
+        {{#each selectedInvoice.invoice_amount_distribution}}
+            <tr>
+                <td>{{client_first_name}} {{client_last_name}}</td>
+                <td>{{account_number}}</td>
+                <td>{{share_amount}}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+
+
     <br>
     <!--Footer-->
     <div class="text-center">
