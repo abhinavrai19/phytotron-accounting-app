@@ -134,7 +134,9 @@ exports.invoiceProjects = function(req, res){
                             adjustments:                0,                              // misc cost
                             discounts:                  0,                              // discounts
                             total_amount:               0,                              // bill amount + adjustments + discounts
-                            invoice_amount_distribution:[]
+                            invoice_amount_distribution:[],
+                            is_invoice_paid:            false,
+                            payment_date:               null
                         };
 
                         // Put Client details in the invoice
@@ -334,6 +336,7 @@ exports.invoiceProjects = function(req, res){
 
 // Find all invoices generated within given dates
 exports.getInvoiceList = function (req, res) {
+    console.log('Running getInvoiceList');
     var invoiceHistoryStartDate = new Date(req.params.invoiceHistoryStartDate);
     var invoiceHistoryEndDate = new Date(req.params.invoiceHistoryEndDate);
     Invoice.find()
@@ -351,13 +354,17 @@ exports.getInvoiceList = function (req, res) {
 
 // Generate Invoice PDFs for all the invoices in the request.
 exports.generateInvoicePDFs = function(req, res){
+    console.log('Running generateInvoicePDFs');
     var invoices = req.body;
     PrintUtility.generateMultipleInvoicePDFs(invoices);
     res.send('Invoice(s) Generated');
 };
 
+// REVERT INVOICE
+
 // Get Revert Last Invoice Project List.
 exports.getRevertLastInvoiceProjectList = function(req, res){
+    console.log('RUNNING getRevertLastInvoiceProjectList');
     Project.find({revert_invoice_possible: true})
         .populate('clients')
         .populate('chamber_rate')
@@ -448,6 +455,51 @@ exports.revertLastInvoice = function (req, res) {
                     // service successful
                     res.send('Cannot revert invoice for this project / Already 1 invoice reverted for this project ');
                 }
+            }
+        });
+};
+
+// INVOICE PAYMENTS
+exports.getUnpaidInvoiceList = function(req, res){
+    console.log('RUNNING getUnpaidInvoiceList');
+
+    Invoice.find({
+        project_id: req.params.projectId,
+        is_invoice_paid: false
+    })
+        .exec(function (err,unpaidInvoiceList) {
+            if(err){
+                res.status(500);
+                res.send('Error fetching unpaid invoice List '+err);
+            }else{
+                res.send(unpaidInvoiceList);
+            }
+        });
+};
+
+exports.setInvoicesAsPaid = function(req, res){
+    console.log('RUNNING setInvoicesAsPaid');
+    // Only for a single invoice for now
+    var invoiceId = req.body.invoiceIds[0];
+    var paymentDate = req.body.paymentDate;
+    Invoice.findOne({invoice_id: invoiceId})
+        .exec(function(err, invoice){
+            if(err){
+                res.status(500);
+                res.send('Error findind invoice to set payment date of '+err);
+            }else{
+                invoice.is_invoice_paid = true;
+                invoice.payment_date = paymentDate;
+                var invoiceInstance = new Invoice(invoice);
+                invoiceInstance.save(function(err){
+                    if(err){
+                        res.status(500);
+                        res.send('Error saving payment details of the invoice '+err);
+                    }else{
+                        res.send('Successfully updated payment details of the invoice');
+                    }
+
+                });
             }
         });
 };

@@ -15,8 +15,9 @@ angular.module('phytotronAccountingApp')
             };
 
             ctrl.$onInit = function(){
+                ctrl.phytotronId = PHYTOTRON_ID;
                 ctrl.invoiceHistoryStartDate='';
-                ctrl.invoiceHistoryEndDate = new Date();
+                ctrl.invoiceHistoryEndDate = '';
                 ctrl.invoiceList = '';
 
                 ctrl.selectedInvoices = [];
@@ -40,6 +41,9 @@ angular.module('phytotronAccountingApp')
                             invoice.generation_date = moment(invoice.generation_date).format('L');
                             invoice.bill_start_date = moment(invoice.bill_start_date).format('L');
                             invoice.bill_end_date = moment(invoice.bill_end_date).format('L');
+                            if(invoice.is_invoice_paid){
+                                invoice.payment_date = moment(invoice.payment_date).format('L');
+                            }
                             /*
                             invoice.chamber_usage_cost.forEach(function(chamberUsageCost){
                                 chamberUsageCost.start_date = moment(chamberUsageCost.start_date).format('L');

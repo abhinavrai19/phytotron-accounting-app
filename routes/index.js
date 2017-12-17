@@ -68,7 +68,14 @@ router.post('/invoices/generatePDFs', InvoiceController.generateInvoicePDFs);
 // Get Revert Invoice Project List
 router.get('/invoice/revert/projects',InvoiceController.getRevertLastInvoiceProjectList);
 
+// Revert give invoice data
 router.post('/invoice/revert',InvoiceController.revertLastInvoice);
+
+// Get Unpaid Invoice List
+router.get('/unpaidInvoices/:projectId',InvoiceController.getUnpaidInvoiceList);
+
+// Mark Invoices as Paid
+router.post('/unpaidInvoices/setPaid',InvoiceController.setInvoicesAsPaid);
 
 // Chamber Routes //----------------------------------------------------
 

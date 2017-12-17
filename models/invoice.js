@@ -73,7 +73,12 @@ var InvoiceSchema = new Schema({
             account_number: String,
             share_amount: Number
         }
-    ]
+    ],
+    is_invoice_paid:{
+        type: Boolean,
+        default: false
+    },
+    payment_date: Date
 });
 
 module.exports = mongoose.model('Invoice', InvoiceSchema);

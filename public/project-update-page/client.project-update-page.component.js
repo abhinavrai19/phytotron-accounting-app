@@ -8,6 +8,7 @@ angular.module('phytotronAccountingApp')
             ChamberService,
             CropService,
             ResourceService,
+            InvoiceService,
             $routeParams,
             $location,
             moment,
@@ -33,10 +34,18 @@ angular.module('phytotronAccountingApp')
                 page: 1
             };
 
+            ctrl.unpaidInvoiceTableQuery = {
+                order: 'invoice_id',
+                limit: 10,
+                page: 1
+            };
+
             ctrl.$onInit = function(){
                 ctrl.searchChamber='';
                 ctrl.searchCrop='';
                 ctrl.searchResource='';
+
+                ctrl.selectedUnpaidInvoices = [];
 
                 ctrl.getProjectById();
 
@@ -259,6 +268,32 @@ angular.module('phytotronAccountingApp')
                 return totalPercentage;
             };
 
+            // PAYMENTS
+
+            // get list of unpaid invoices for that project.
+            ctrl.getUnpaidInvoiceList = function(){
+                // reset the page selections
+                ctrl.selectedUnpaidInvoices = [];
+                ctrl.invoicePaymentDate = '';
+
+                // request to get unpaid invoices list.
+                InvoiceService.getUnpaidInvoiceList(ctrl.project.project_id)
+                    .then(function success(res) {
+                        ctrl.unpaidInvoiceList = res.data;
+                    },function failure(res){
+                        Flash.create('danger', res.data);
+                    });
+            };
+
+            ctrl.setInvoicesAsPaid = function(){
+                InvoiceService.setInvoicesAsPaid(ctrl.selectedUnpaidInvoices,ctrl.invoicePaymentDate)
+                    .then(function success(res) {
+                        ctrl.getUnpaidInvoiceList();
+                        Flash.create('success', res.data);
+                    },function failure(res){
+                        Flash.create('danger', res.data);
+                    })
+            };
 
             // VERIFY PROJECT
             ctrl.verifyProject = function(project){

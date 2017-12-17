@@ -35,9 +35,21 @@ angular.module('phytotronAccountingApp')
             revertLastInvoice: function(projectIds){
                 var reqBody = {
                     project_ids: projectIds
-                }
-                console.log(reqBody);
+                };
                 return $http.post('/invoice/revert',reqBody);
+            },
+
+            getUnpaidInvoiceList: function(projectId){
+                return $http.get('/unpaidInvoices/'+projectId);
+            },
+
+            setInvoicesAsPaid: function(invoiceIds, payment_date){
+                var reqBody = {
+                    invoiceIds: invoiceIds,
+                    paymentDate: payment_date
+                };
+                return $http.post('/unpaidInvoices/setPaid',reqBody);
+
             }
         };
     }]);
