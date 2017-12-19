@@ -24,6 +24,8 @@ module.exports = {
     // Directory path to store the invoice reports in
     INVOICE_SAVE_DIRECTORY_PATH: '/Users/abhinavrai/Desktop/Phytotron/',
 
+    //INVOICE_SAVE_DIRECTORY_PATH: 'C:\\PhytotronInvoiceReports\\',
+
     // Decimals to round off to while doing invoice amount calculations
     ROUND_OFF_AMOUNT_TO_VALUE: 2
 };
