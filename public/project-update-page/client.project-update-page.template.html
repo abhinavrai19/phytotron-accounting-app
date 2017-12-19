@@ -128,7 +128,7 @@
                 </md-table-container>
             </div>
         </md-tab>
-        <md-tab label="Update Client Details" md-on-select="$ctrl.updateAvailableClients()">
+        <md-tab label="Client Edits" md-on-select="$ctrl.updateAvailableClients()">
             <div layout="row">
                 <md-input-container class="md-block" flex-gt-xs>
                     <label>Global Search:</label>
@@ -203,7 +203,7 @@
                 </div>
             </div>
         </md-tab>
-        <md-tab label="Update Resource Details">
+        <md-tab label="Resource Edits">
             <md-switch md- invert
                        ng-model="$ctrl.project.requires_additional_resources"
                        aria-label="Requires Additional Resources"
@@ -299,7 +299,7 @@
             </div>
 
         </md-tab>
-        <md-tab label="Client Accounts Share">
+        <md-tab label="Client Shared Accounts">
             <div layout="row" layout-fill>
                 <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16" flex="50">
                     <md-content>
@@ -330,7 +330,7 @@
                 </div>
             </div>
         </md-tab>
-        <md-tab label="Review and Submit Update" md-on-select="$ctrl.verifyProject($ctrl.project)">
+        <md-tab label="Review and Submit Edits" md-on-select="$ctrl.verifyProject($ctrl.project)">
             <div layout="column" ng-show="$ctrl.projectVerified">
                 <md-button class="md-primary md-raised" ng-click="$ctrl.updateProject()">Update Project</md-button>
             </div>

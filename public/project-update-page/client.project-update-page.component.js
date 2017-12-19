@@ -280,6 +280,11 @@ angular.module('phytotronAccountingApp')
                 InvoiceService.getUnpaidInvoiceList(ctrl.project.project_id)
                     .then(function success(res) {
                         ctrl.unpaidInvoiceList = res.data;
+                        ctrl.unpaidInvoiceList.forEach(function(unpaidInvoiceEntry){
+                            unpaidInvoiceEntry.generation_date = moment(unpaidInvoiceEntry.generation_date).format('L');
+                            unpaidInvoiceEntry.bill_start_date = moment(unpaidInvoiceEntry.bill_start_date).format('L');
+                            unpaidInvoiceEntry.bill_end_date = moment(unpaidInvoiceEntry.bill_end_date).format('L');
+                        });
                     },function failure(res){
                         Flash.create('danger', res.data);
                     });

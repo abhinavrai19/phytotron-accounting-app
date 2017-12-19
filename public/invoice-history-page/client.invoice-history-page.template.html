@@ -201,6 +201,25 @@
             <br>
         </div>
 
+        <!--Invoice Amount Distribution-->
+        <table md-table>
+            <thead md-head>
+            <th md-column >Client Name</th>
+            <th md-column >Account #</th>
+            <th md-column >Share Percent</th>
+            <th md-column >Amount</th>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="accountEntry in $ctrl.selectedInvoice.invoice_amount_distribution">
+                <td md-cell>{{accountEntry.client_first_name}} {{accountEntry.client_last_name}}</td>
+                <td md-cell>{{accountEntry.account_number}}</td>
+                <td md-cell>{{accountEntry.percent_share}}</td>
+                <td md-cell>{{accountEntry.share_amount}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+
         <!--Cost Split -->
         <md-grid-list md-cols="4" md-gutter="1em" md-row-height="10px">
             <md-grid-tile><p>Bill Amount: {{$ctrl.selectedInvoice.bill_amount}}</p></md-grid-tile>
@@ -208,23 +227,6 @@
             <md-grid-tile><p>Discounts: {{$ctrl.selectedInvoice.discounts}}</p></md-grid-tile>
             <md-grid-tile><p>Total Amount: {{$ctrl.selectedInvoice.total_amount}}</p></md-grid-tile>
         </md-grid-list>
-        <br>
-
-        <!--Invoice Amount Distribution-->
-        <table md-table>
-            <thead md-head>
-            <th md-column >Client Name</th>
-            <th md-column >Account #</th>
-            <th md-column >Amount</th>
-            </thead>
-            <tbody md-body>
-            <tr md-row ng-repeat="accountEntry in $ctrl.selectedInvoice.invoice_amount_distribution">
-                <td md-cell>{{accountEntry.client_first_name}} {{accountEntry.client_last_name}}</td>
-                <td md-cell>{{accountEntry.account_number}}</td>
-                <td md-cell>{{accountEntry.share_amount}}</td>
-            </tr>
-            </tbody>
-        </table>
         <br>
 
         <md-divider></md-divider>

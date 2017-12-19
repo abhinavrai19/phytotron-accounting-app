@@ -71,6 +71,7 @@ var InvoiceSchema = new Schema({
             client_first_name: String,
             client_last_name: String,
             account_number: String,
+            percent_share: String,
             share_amount: Number
         }
     ],

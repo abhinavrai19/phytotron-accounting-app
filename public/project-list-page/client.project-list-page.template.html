@@ -79,7 +79,7 @@
 
             <md-tabs md-border-bottom md-center-tabs md-dynamic-height>
 
-                <md-tab label="Project and Chamber Details">
+                <md-tab label="Project and Chamber">
                     <div layout ="column" layout-fill>
                         <div layout-gt-xs="row">
                             <md-input-container class="md-block" flex-gt-xs>
@@ -209,7 +209,7 @@
                         </md-table-container>
                     </div>
                 </md-tab>
-                <md-tab label="Client Details">
+                <md-tab label="Client Edits">
                     <div layout="row">
                         <md-input-container class="md-block" flex-gt-xs>
                             <label>Global Search:</label>
@@ -284,7 +284,7 @@
                         </div>
                     </div>
                 </md-tab>
-                <md-tab label="Resource Details">
+                <md-tab label="Resource Edits">
                     <md-switch md- invert
                                ng-model="$ctrl.newProject.requires_additional_resources"
                                aria-label="Requires Additional Resources"
@@ -379,7 +379,7 @@
                     </div>
 
                 </md-tab>
-                <md-tab label="Client Accounts Share">
+                <md-tab label="Client Shared Accounts">
                     <div layout="row" layout-fill>
                         <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16" flex="50">
                             <md-content>
@@ -410,7 +410,7 @@
                         </div>
                     </div>
                 </md-tab>
-                <md-tab label="Review and Submit" md-on-select="$ctrl.verifyProject($ctrl.newProject)">
+                <md-tab label="Review and Submit Project" md-on-select="$ctrl.verifyProject($ctrl.newProject)">
                     <div layout="column" ng-show="$ctrl.projectVerified">
                         <md-button class="md-primary md-raised" ng-click="$ctrl.createNewProject()">Start New Project</md-button>
                     </div>

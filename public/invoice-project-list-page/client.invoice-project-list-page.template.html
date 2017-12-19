@@ -1,53 +1,8 @@
 <div layout="column">
     <top-navigation-bar></top-navigation-bar>
-    <div layout="row" layout-fill>
-        <md-sidenav class="md-sidenav-left" md-is-locked-open="true" md-whiteframe="16">
-            <md-content>
-                <!--
-                <md-toolbar class="md-theme-light">
-                    <h4 class="md-toolbar-tools">Invoice Projects between:</h4>
-                </md-toolbar>
-                -->
-
-                <md-toolbar class="md-theme-light">
-                    <h4 class="md-toolbar-tools">Invoice Selected Projects</h4>
-                </md-toolbar>
-                <md-button ng-disabled="$ctrl.selectedProjectIds.length==0" class="md-raised md-primary" ng-click="$ctrl.invoiceProjects()"> Invoice Projects </md-button>
-
-                <md-toolbar class="md-theme-light">
-                    <h4 class="md-toolbar-tools">Search By:</h4>
-                </md-toolbar>
-                <md-list flex >
-                    <md-list-item class="md-list-item-inner" >
-                        <md-input-container class="md-block" flex-gt-xs>
-                            <label>Global Search:</label>
-                            <input type="text" ng-model="searchProjectsForInvoice.$"/>
-                        </md-input-container>
-                    </md-list-item>
-                    <md-list-item class="md-list-item-inner">
-                        <md-input-container class="md-block" flex-gt-xs>
-                            <label>Project Id:</label>
-                            <input type="text" ng-model="searchProjectsForInvoice.project_id"/>
-                        </md-input-container>
-                    </md-list-item>
-                    <md-list-item class="md-list-item-inner">
-                        <md-input-container class="md-block" flex-gt-xs>
-                            <label>Project Title:</label>
-                            <input type="text" ng-model="searchProjectsForInvoice.project_title"/>
-                        </md-input-container>
-                    </md-list-item>
-                    <md-list-item class="md-list-item-inner">
-                        <md-input-container class="md-block" flex-gt-xs>
-                            <label>Client Name:</label>
-                            <input type="text" ng-model="searchProjectsForInvoice.primary_client"/>
-                        </md-input-container>
-                    </md-list-item>
-                </md-list>
-            </md-content>
-        </md-sidenav>
+    <div layout="column" layout-fill>
         <div layout="column" layout-fill>
-            <div layout="row">
-
+            <div layout="row" layout-align="start start">
                 <md-input-container class="md-block" flex-gt-xs>
                     <label>From Date</label>
                     <md-datepicker ng-model="$ctrl.invoicePeriodStartDate" md-placeholder="Enter date"></md-datepicker>
@@ -57,8 +12,27 @@
                     <md-datepicker ng-model="$ctrl.invoicePeriodEndDate" md-placeholder="Enter date"></md-datepicker>
                 </md-input-container>
                 <md-button ng-disabled="$ctrl.invoicePeriodStartDate=='' || $ctrl.invoicePeriodEndDate==''" class="md-raised md-primary" ng-click="$ctrl.getInvoiceProjectList()"> List Projects </md-button>
-
+                <md-button ng-disabled="$ctrl.selectedProjectIds.length==0" class="md-raised md-primary" ng-click="$ctrl.invoiceProjects()"> Invoice Selected Projects </md-button>
             </div>
+            <div layout="row" layout-align="start start">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Global Search:</label>
+                    <input type="text" ng-model="searchProjectsForInvoice.$"/>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Project Id:</label>
+                    <input type="text" ng-model="searchProjectsForInvoice.project_id"/>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Project Title:</label>
+                    <input type="text" ng-model="searchProjectsForInvoice.project_title"/>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Client Name:</label>
+                    <input type="text" ng-model="searchProjectsForInvoice.primary_client"/>
+                </md-input-container>
+            </div>
+
             <md-table-pagination
                     md-limit="$ctrl.tableQuery.limit"
                     md-page="$ctrl.tableQuery.page"

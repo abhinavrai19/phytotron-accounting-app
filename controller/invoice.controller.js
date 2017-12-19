@@ -273,6 +273,7 @@ exports.invoiceProjects = function(req, res){
                                 client_first_name: accountEntry.client_first_name,
                                 client_last_name: accountEntry.client_last_name,
                                 account_number: accountEntry.client_account_number,
+                                percent_share: accountEntry.percent_share,
                                 // Percent Share of the bill amount
                                 share_amount: shareAmount
                             }
