@@ -51,7 +51,7 @@ exports.createChamber = function(req, res){
 };
 
 exports.updateChamber = function(req,res){
-    Chamber.findOne({chamber_name: req.body.chamber_name}, function(err,chamber){
+    Chamber.findOne({_id: req.body._id}, function(err,chamber){
         if(err){
             res.status(500);
             res.send('Cannot find chamber to update');

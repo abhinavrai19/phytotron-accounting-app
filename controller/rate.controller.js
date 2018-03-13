@@ -47,7 +47,7 @@ exports.createRate = function(req, res){
 
 // Update Rate
 exports.updateRate = function(req,res){
-    Rate.findOne({rate_type: req.body.rate_type}, function(err, rate){
+    Rate.findOne({_id: req.body._id}, function(err, rate){
         if(err){
             res.status(500);
             res.send('Cannot find rate to update');

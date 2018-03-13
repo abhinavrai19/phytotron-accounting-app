@@ -50,7 +50,7 @@ exports.createChamberType = function(req, res){
 // Update Chamber Type Details
 exports.updateChamberType = function(req,res){
 
-    ChamberType.findOne({chamber_type_name: req.body.chamber_type_name}, function(err,chamberType){
+    ChamberType.findOne({_id: req.body._id}, function(err,chamberType){
         if(err){
             res.status(500);
             res.send('Cannot find chamber type to update');

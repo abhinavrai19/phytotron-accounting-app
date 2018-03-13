@@ -18,10 +18,10 @@ module.exports = function(passport) {
                     return done(err);
                 }
                 if(!user){
-                    return done(null, false, {message: 'Incorrect Username'});
+                    return done(null, false, {message: 'Incorrect Username/Password'});
                 }
                 if(!user.validPassword(password)){
-                    return done(null, false, { message: 'Incorrect password.' });
+                    return done(null, false, { message: 'Incorrect Username/Password'});
                 }
             })
         }));

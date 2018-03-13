@@ -47,7 +47,7 @@ exports.createResource = function(req, res){
 
 // update Resource
 exports.updateResource = function(req, res){
-    Resource.findOne({resource_name: req.body.resource_name},function(err, resource){
+    Resource.findOne({_id: req.body._id},function(err, resource){
         if(err){
             res.status(500);
             res.send('Cannot find the resource to update: '+err);

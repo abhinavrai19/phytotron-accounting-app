@@ -47,7 +47,7 @@ exports.createCrop = function(req, res){
 
 // Update Crop
 exports.updateCrop = function(req,res){
-    Crop.findOne({scientific_name: req.body.scientific_name}, function(err, crop){
+    Crop.findOne({_id: req.body._id}, function(err, crop){
         if(err){
             res.status(500);
             res.send('Cannot find crop to update');

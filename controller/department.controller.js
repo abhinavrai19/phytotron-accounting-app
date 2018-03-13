@@ -47,7 +47,7 @@ exports.createDepartment = function(req, res){
 
 // update Department
 exports.updateDepartment = function(req, res){
-    Department.findOne({department_id: req.body.department_id},function(err, department){
+    Department.findOne({_id: req.body._id},function(err, department){
        if(err){
            res.status(500);
            res.send('Cannot find the department to update: '+err);
