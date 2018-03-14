@@ -7,14 +7,15 @@ var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var helmet = require('helmet');
 
-// get passport and pass it for configuration: -Abhinav
-//var passport = require('passport');
-//require('./config/passport')(passport);
+// get passport and pass it for configuration: Configuration is done in passport.js
+var passport = require('passport');
+require('./config/passport')(passport);
 
 //routes
 var index = require('./routes/index');
-//var authenticate = require('./routes/authenticate')
-
+var protectedRoutes = require('./routes/protectedRoutes');
+var AuthenticateController = require('./controller/authenticate.controller');
+// ------------------------------------------------------------------------------------------------------------------
 var app = express();
 
 app.use(helmet());
@@ -36,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator()); // Hello Future Coder: This must be added after bodyParser
 app.use(cookieParser());
 
-/*
+
 // User authentication code
 app.use(require('express-session')({
     secret: 'the lion king',
@@ -45,15 +46,14 @@ app.use(require('express-session')({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-*/
+
 
 // Host public content
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Call respective ROUTERS
 app.use('/', index);
-//app.use('/authenticate', authenticate);
-
+app.use('/', AuthenticateController.isLoggedIn, protectedRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
