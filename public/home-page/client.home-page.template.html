@@ -18,20 +18,20 @@
             md-boundary-links="true"
             md-page-select="true">
     </md-table-pagination>
-    <md-table-container>
-        <table md-table md-order="$ctrl.tableQuery.order">
-            <thead md-head>
-            <th md-column md-order-by="content">Note Content</th>
-            <th md-column  md-order-by="created_by">Created By</th>
-            <th md-column  md-order-by="created_on">Created On</th>
+    <md-table-container flex="100">
+        <table md-table>
+            <thead md-head md-order="$ctrl.tableQuery.order">
             <th md-column>Remove</th>
+            <th md-column  md-order-by="created_on">Created On</th>
+            <th md-column  md-order-by="created_by">Created By</th>
+            <th md-column md-order-by="content">Note Content</th>
             </thead>
             <tbody md-body>
             <tr md-row ng-repeat="note in $ctrl.noteList track by $index">
-                <td md-cell><p>{{note.content}}</p></td>
-                <td md-cell><p>{{note.created_by}}</p></td>
-                <td md-cell><p>{{note.created_on.format('L')}}</p></td>
                 <td md-cell><md-button class="md-raised md-warn" ng-click="$ctrl.deleteNote(note)"><md-icon>remove</md-icon></md-button></td>
+                <td md-cell><p>{{note.created_on.format('L')}}</p></td>
+                <td md-cell><p>{{note.created_by}}</p></td>
+                <td md-cell><p>{{note.content}}</p></td>
             </tr>
             </tbody>
         </table>
