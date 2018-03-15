@@ -17,7 +17,9 @@ exports.getNoteList = function (req, res) {
 
 // Create a new note
 exports.addNote = function (req, res) {
-    var noteInstance = new Note(req.body);
+    var user = req.body;
+    user.created_by = req.user.username;
+    var noteInstance = new Note(user);
 
     noteInstance.save(function (err) {
         if(err){
@@ -31,12 +33,13 @@ exports.addNote = function (req, res) {
 
 // Update and existing note
 exports.updateNote = function (req, res) {
-    Note.findOne({_id: req.body._id},function(err, note){
+    var note = req.body;
+    Note.findOne({_id: note._id},function(err, note){
         if(err){
             res.status(500);
             res.send('Cannot find note to update'+err);
         }else{
-            note.set(req.body);
+            note.set(note);
             note.save(function(err){
                 if(err){
                     res.status(500);

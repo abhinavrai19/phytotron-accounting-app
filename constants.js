@@ -5,7 +5,9 @@ module.exports = {
     AUTHENTICATION_SECRET_KEY: 'HowDoYouTurnThisOn',
 
     // Path to connect to database
-    MONGO_DB_PATH: 'mongodb://127.0.0.1/phytotron_accounting_database',
+    MONGO_DB_IP: '127.0.0.1',
+
+    MONGO_DB_PATH: 'mongodb://'+this.MONGO_DB_IP+'/phytotron_accounting_database',
 
     MONGO_DB_USER_NAME: 'joe',
 

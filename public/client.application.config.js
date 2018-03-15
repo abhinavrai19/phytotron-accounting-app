@@ -106,11 +106,13 @@ angular.module('phytotronAccountingApp')
         FlashProvider.setShowClose(true);
 });
 
+/*
 // Configure Global Values
 angular.module('phytotronAccountingApp')
     .value('user',{
         username:''
     });
+*/
 
 // Configure the HttpProvider by injecting with interceptor
 angular.module('phytotronAccountingApp')

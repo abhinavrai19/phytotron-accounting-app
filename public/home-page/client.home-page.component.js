@@ -5,8 +5,7 @@ angular.module('phytotronAccountingApp').
         controller: function HomePageController(
             NoteService,
             moment,
-            Flash,
-            user
+            Flash
         ){
             var ctrl = this;
 
@@ -45,7 +44,7 @@ angular.module('phytotronAccountingApp').
 
                     ctrl.newNote = {
                         content: ctrl.note_content,
-                        created_by: user.username,
+                        created_by: '',
                         created_on: moment()
                     };
 

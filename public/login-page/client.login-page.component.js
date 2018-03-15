@@ -1,7 +1,7 @@
 angular.module('phytotronAccountingApp').
     component('loginPage',{
         templateUrl: 'login-page/client.login-page.template.html',
-        controller: function LoginFormController(UserService, Flash, $location, user) {
+        controller: function LoginFormController(UserService, Flash, $location) {
             var ctrl = this;
 
             ctrl.user = {
@@ -12,7 +12,6 @@ angular.module('phytotronAccountingApp').
             ctrl.userLogin = function(){
                 UserService.loginUser(ctrl.user)
                     .then(function success(res){
-                        user.username = ctrl.user.username;
                         Flash.create('success',res.data);
                         $location.path( '/home' );
                     }, function failure(res){
