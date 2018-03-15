@@ -2,7 +2,7 @@
 module.exports = {
 
     // Key used by Authentication
-    SECRET: 'TheLionKing',
+    AUTHENTICATION_SECRET_KEY: 'HowDoYouTurnThisOn',
 
     // Path to connect to database
     MONGO_DB_PATH: 'mongodb://127.0.0.1/phytotron_accounting_database',

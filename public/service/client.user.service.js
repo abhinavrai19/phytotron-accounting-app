@@ -10,6 +10,18 @@ angular.module('phytotronAccountingApp')
 
             logoutUser: function(user){
                 return $http.post('/logout',user);
+            },
+            
+            setCurrentUser: function(user){
+                
+            },
+            
+            getCurrentUser: function () {
+
+            },
+
+            clearCurrentUser: function(){
+
             }
         };
     }]);

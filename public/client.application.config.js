@@ -112,3 +112,8 @@ angular.module('phytotronAccountingApp')
         username:''
     });
 
+// Configure the HttpProvider by injecting with interceptor
+angular.module('phytotronAccountingApp')
+    .config(['$httpProvider',function ($httpProvider) {
+        $httpProvider.interceptors.push('AuthenticationInterceptor');
+    }]);

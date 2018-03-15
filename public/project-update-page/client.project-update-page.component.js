@@ -62,18 +62,23 @@ angular.module('phytotronAccountingApp')
             ctrl.getProjectById = function(){
                 ProjectService.getProjectById($routeParams.id)
                     .then(function success(res){
-                        ctrl.project = res.data;
-                        // parse chamber start/end dates and resource start/end dates
-                        //chamber dates
-                        ctrl.project.chambers.forEach(function (chamber) {
-                            chamber.chamber_allocation_date = moment(chamber.chamber_allocation_date);
-                            chamber.chamber_deallocation_date = moment(chamber.chamber_deallocation_date);
-                        });
-                        //resources
-                        ctrl.project.additional_resources.forEach(function (resource) {
-                            resource.resource_allocation_date = moment(resource.resource_allocation_date);
-                            resource.resource_deallocation_date = moment(resource.resource_deallocation_date);
-                        });
+                        if(res.status === 200){
+                            ctrl.project = res.data;
+                            // parse chamber start/end dates and resource start/end dates
+                            //chamber dates
+                            ctrl.project.chambers.forEach(function (chamber) {
+                                chamber.chamber_allocation_date = moment(chamber.chamber_allocation_date);
+                                chamber.chamber_deallocation_date = moment(chamber.chamber_deallocation_date);
+                            });
+                            //resources
+                            ctrl.project.additional_resources.forEach(function (resource) {
+                                resource.resource_allocation_date = moment(resource.resource_allocation_date);
+                                resource.resource_deallocation_date = moment(resource.resource_deallocation_date);
+                            });
+                        }else{
+                            ctrl.project = {};
+                        }
+
                     },function failure(res){
                         Flash.create('danger',res.data);
                     });
@@ -115,7 +120,11 @@ angular.module('phytotronAccountingApp')
             ctrl.getAvailableClients = function(){
                 ClientService.getClientList()
                     .then(function success(res){
-                        ctrl.availableClients = res.data;
+                        if(res.status===200){
+                            ctrl.availableClients = res.data;
+                        }else{
+                            ctrl.availableClients = [];
+                        }
                     }, function failure(res){
                         Flash.create('danger', res.data);
                     });

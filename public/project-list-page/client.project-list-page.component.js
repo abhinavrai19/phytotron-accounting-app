@@ -53,22 +53,28 @@ angular.module('phytotronAccountingApp')
             ctrl.getProjectList = function(){
                 ProjectService.getProjectList()
                     .then(function success(res){
-                        ctrl.projectList = res.data;
-                        // format display dates in the table
-                        ctrl.projectList.forEach(function(project){
-                            project.project_start_date = moment(project.project_start_date);
-                            project.project_end_date = moment(project.project_end_date);
-                            if(project.last_invoice_date!=null){
-                                project.last_invoice_date = moment(project.last_invoice_date);
-                            }
+                        if(res.status===200){
+                            ctrl.projectList = res.data;
+                            // format display dates in the table
+                            ctrl.projectList.forEach(function(project){
+                                project.project_start_date = moment(project.project_start_date);
+                                project.project_end_date = moment(project.project_end_date);
+                                if(project.last_invoice_date!=null){
+                                    project.last_invoice_date = moment(project.last_invoice_date);
+                                }
 
-                            // if project is active then push the project to running project list.
-                            if(project.project_status == 'ACTIVE'){
-                                ctrl.activeProjectList.push(project);
-                            }
+                                // if project is active then push the project to running project list.
+                                if(project.project_status == 'ACTIVE'){
+                                    ctrl.activeProjectList.push(project);
+                                }
 
-                            // push
-                        });
+                                // push
+                            });
+
+                        }else{
+                            ctrl.projectList = [];
+                        }
+
                     },function failure(res){
                         Flash.create('danger',res.data);
                     });

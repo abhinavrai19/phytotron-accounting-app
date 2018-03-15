@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
+var NoteController = require('../controller/note.controller');
 var ProjectController = require('../controller/project.controller');
 var ClientController = require('../controller/client.controller');
 
@@ -13,6 +14,19 @@ var DepartmentController = require('../controller/department.controller');
 var CropController = require('../controller/crop.controller');
 var ResourceController = require('../controller/resource.controller');
 var ChamberUsageReportController = require('../controller/chamber-usage-report.controller');
+
+// Home Route //-------------------------------------------------
+// Get All the Notes
+router.get('/notes', NoteController.getNoteList);
+
+// Create a Note
+router.post('/note/create', NoteController.addNote);
+
+// Update an existing note
+router.post('/note/update', NoteController.updateNote);
+
+// Delete a note
+router.post('/note/delete', NoteController.deleteNote);
 
 // Project Routes //-------------------------------------------------
 

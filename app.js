@@ -11,10 +11,13 @@ var helmet = require('helmet');
 var passport = require('passport');
 require('./config/passport')(passport);
 
+var AuthenticateController = require('./controller/authenticate.controller');
+
 //routes
 var index = require('./routes/index');
 var protectedRoutes = require('./routes/protectedRoutes');
-var AuthenticateController = require('./controller/authenticate.controller');
+var Constants = require('./constants');
+
 // ------------------------------------------------------------------------------------------------------------------
 var app = express();
 
@@ -40,7 +43,7 @@ app.use(cookieParser());
 
 // User authentication code
 app.use(require('express-session')({
-    secret: 'the lion king',
+    secret: Constants.AUTHENTICATION_SECRET_KEY,
     resave: false,
     saveUninitialized: false
 }));

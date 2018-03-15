@@ -13,7 +13,6 @@ angular.module('phytotronAccountingApp').
                 UserService.loginUser(ctrl.user)
                     .then(function success(res){
                         user.username = ctrl.user.username;
-                        console.log("Login Successful");
                         Flash.create('success',res.data);
                         $location.path( '/home' );
                     }, function failure(res){
