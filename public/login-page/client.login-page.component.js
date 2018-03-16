@@ -9,6 +9,17 @@ angular.module('phytotronAccountingApp').
                 password:""
             };
 
+            ctrl.$onInit = function () {
+                UserService.getLoginStatus()
+                    .then(function success(res){
+                        if(res.data.isLoggedIn === true){
+                            $location.path('/home');
+                        }
+                    }, function failure(res) {
+                        Flash.create('danger',res.data);
+                    });
+            };
+
             ctrl.userLogin = function(){
                 UserService.loginUser(ctrl.user)
                     .then(function success(res){
@@ -17,8 +28,6 @@ angular.module('phytotronAccountingApp').
                     }, function failure(res){
                         Flash.create('danger',res.data);
                     });
-
-
             };
         }
     });

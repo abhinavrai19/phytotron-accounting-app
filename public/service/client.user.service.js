@@ -5,23 +5,15 @@ angular.module('phytotronAccountingApp')
         return {
 
             loginUser: function(user){
-              return $http.post('/login',user);
+                return $http.post('/login',user);
             },
 
             logoutUser: function(user){
                 return $http.post('/logout',user);
             },
-            
-            setCurrentUser: function(user){
-                
-            },
-            
-            getCurrentUser: function () {
 
-            },
-
-            clearCurrentUser: function(){
-
+            getLoginStatus: function(){
+                return $http.get('/getLoginStatus');
             }
         };
     }]);
