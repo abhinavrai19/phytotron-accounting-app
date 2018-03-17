@@ -27,6 +27,9 @@ app.use(helmet());
 var mongoose = require('./config/mongoose');
 mongoose();
 
+// Set up invoice PDF template on server start up
+var utilityGeneratePDF = require('./controller/utility.generatePDF');
+utilityGeneratePDF.compileReportTemplate();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

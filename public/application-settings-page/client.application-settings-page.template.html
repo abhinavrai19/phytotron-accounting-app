@@ -1,0 +1,18 @@
+<div layout="column">
+    <top-navigation-bar></top-navigation-bar>
+    <div layout="column">
+        <h3>Application Settings</h3>
+        <md-button class="md-raised md-primary" ng-click="$ctrl.setApplicationSettings()"> Save Current Settings </md-button>
+    </div>
+
+    <md-list>
+        <md-list-item>
+            <md-input-container class="md-block" flex-gt-xs>
+                <label>Invoice Save Direcotry Path:</label>
+                <input type="text" ng-model="$ctrl.invoiceSaveDirectoryPath"/>
+            </md-input-container>
+        </md-list-item>
+    </md-list>
+    <flash-message></flash-message>
+</div>
+

@@ -89,6 +89,12 @@ angular.module('phytotronAccountingApp')
             .when('/chamber-usage',{
                 template:'<chamber-usage-page></chamber-usage-page>'
             });
+
+        // URL_Component mappings: Settings
+        $routeProvider
+            .when('/application-settings',{
+                template:'<application-settings-page></application-settings-page>'
+            });
 }]);
 
 // Configure the theme of the application
@@ -102,7 +108,7 @@ angular.module('phytotronAccountingApp')
 // Configure Flash Message
 angular.module('phytotronAccountingApp')
     .config( function(FlashProvider) {
-        FlashProvider.setTimeout(5000);
+        FlashProvider.setTimeout(Constants.FLASH_MESSAGES_TIMEOUT);
         FlashProvider.setShowClose(true);
 });
 

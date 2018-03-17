@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var NoteController = require('../controller/note.controller');
+
 var ProjectController = require('../controller/project.controller');
 var ClientController = require('../controller/client.controller');
 
@@ -14,6 +15,8 @@ var DepartmentController = require('../controller/department.controller');
 var CropController = require('../controller/crop.controller');
 var ResourceController = require('../controller/resource.controller');
 var ChamberUsageReportController = require('../controller/chamber-usage-report.controller');
+
+var ApplicationSettingsController = require('../controller/application-settings.controller');
 
 // Home Route //-------------------------------------------------
 // Get All the Notes
@@ -174,5 +177,12 @@ router.post('/resource/update', ResourceController.updateResource);
 // Get Chamber Usage Report between Dates
 router.post('/usageReport/chamber/byDate', ChamberUsageReportController.getChamberUsageReportByDate);
 
+// Settings Routes //-------------------------------------------------
+
+// Get Application Settings
+router.get('/applicationSettings', ApplicationSettingsController.getApplicationSettings);
+
+// Set Application Settings
+router.post('/applicationSettings', ApplicationSettingsController.setApplicationSettings);
 
 module.exports = router;

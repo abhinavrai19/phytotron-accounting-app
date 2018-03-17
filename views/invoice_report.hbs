@@ -58,7 +58,7 @@
     <table class="table">
         <thead>
         <th><b>Phytotron ID:</b> {{selectedInvoice.phytotron_id}}</th>
-        <th><b>Invoice #:</b> {{selectedInvoice.invoice_id}}</th>
+        <th><b>Statement #:</b> {{selectedInvoice.invoice_id}}</th>
         </thead>
         <tbody>
         <tr>
@@ -67,10 +67,10 @@
         </tr>
         <tr>
             <td><b>Project ID:</b> {{selectedInvoice.project_id}}</td>
-            <td><b>Project Title:</b> {{selectedInvoice.project_title}}</td>
+            <td><b>Project Duration:</b> {{selectedInvoice.project_start_date}} - {{selectedInvoice.project_end_date}}<br></td>
         </tr>
         <tr>
-            <td><b>Project Duration:</b> {{selectedInvoice.project_start_date}} - {{selectedInvoice.project_end_date}}<br></td>
+            <td><b>Project Title:</b> {{selectedInvoice.project_title}}</td>
             <td></td>
         </tr>
         </tbody>
@@ -200,6 +200,7 @@
 
     <br>
     <!--Footer-->
+    <!--
     <div class="text-center">
         Please make check payable to: <b>North Carolina State University</b><br>
         Remit with one (1) copy of this invoice to:<br>
@@ -212,6 +213,7 @@
         Deposit Check to: North Carolina Agricultural Research Service<br>
         Misc. Rec. -- Phytotron Revenue Code No. 4-16952-0791
     </div>
+    -->
 </div>
 <!--Invoice Page END-->
 </body>

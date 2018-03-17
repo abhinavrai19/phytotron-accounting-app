@@ -23,6 +23,8 @@ module.exports = {
     // Invoice Template path
     INVOICE_REPORT_TEMPLATE_PATH: __dirname+'/views/'+'invoice_report.hbs',
 
+    INVOICE_REPORT_TEMPLATE_NAME: 'invoice_report.hbs',
+
     // Directory path to store the invoice reports in
     INVOICE_SAVE_DIRECTORY_PATH: '/Users/abhinavrai/Desktop/Phytotron/',
 

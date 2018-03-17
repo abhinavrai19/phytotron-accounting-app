@@ -11,6 +11,10 @@ angular.module('phytotronAccountingApp').
                 username: ''
             };
 
+            ctrl.navigateTo = function(locationPath){
+                $location.path(locationPath);
+            };
+
             ctrl.logoutCurrentUser = function (){
                 UserService.logoutUser(ctrl.user)
                     .then(function success(res) {

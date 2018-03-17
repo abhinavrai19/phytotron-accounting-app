@@ -1,3 +1,4 @@
+'use strict'
 // print utilities
 var moment = require('moment');
 var CONSTANTS = require('../constants');
@@ -6,18 +7,8 @@ var hbs = require('hbs');
 var fs = require('fs');
 
 //PARSE INVOICE REPORT TEMPLATE ON SERVER START--------------------------------
-var emptyReportTemplate = '<h1>MISSING INVOICE TEMPLATE</h1>';
-var invoiceReportTemplate;
 
-fs.readFile(CONSTANTS.INVOICE_REPORT_TEMPLATE_PATH,'utf8', function(err,data){
-    if(err){
-        console.log('Error Reading Invoice Report template file (invoice_report.hbs) '+err);
-        invoiceReportTemplate = hbs.compile(emptyReportTemplate);
-    }else{
-        console.log('Invoice Report Template successfully compiled');
-        invoiceReportTemplate = hbs.compile(data);
-    }
-});
+var invoiceReportTemplate;
 
 // Utility function to generate a PDF for one report
 var generateInvoicePDF = function (invoice) {
@@ -52,6 +43,18 @@ var generateInvoicePDF = function (invoice) {
 };
 
 // EXPORTS----------------------------------------------------------------------
+exports.compileReportTemplate = function () {
+    fs.readFile(CONSTANTS.INVOICE_REPORT_TEMPLATE_PATH,'utf8', function(err,data){
+        var emptyReportTemplate = '<h1>MISSING INVOICE TEMPLATE</h1>';
+        if(err){
+            console.log('Error Reading Invoice Report template file (invoice_report.hbs) '+err);
+            invoiceReportTemplate = hbs.compile(emptyReportTemplate);
+        }else{
+            console.log('Invoice Report Template successfully compiled');
+            invoiceReportTemplate = hbs.compile(data);
+        }
+    });
+};
 
 // generate PDF for all invoices in the parameter array
 exports.generateMultipleInvoicePDFs = function(invoices){
@@ -65,4 +68,5 @@ exports.generateSingleInvoicePDF = function (invoice) {
     generateInvoicePDF(invoice);
     
 };
+
 

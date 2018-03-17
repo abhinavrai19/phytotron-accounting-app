@@ -58,7 +58,7 @@
     <table class="table">
         <thead>
         <th><b>Phytotron ID:</b> {{selectedInvoice.phytotron_id}}</th>
-        <th><b>Invoice #:</b> {{selectedInvoice.invoice_id}}</th>
+        <th><b>Statement #:</b> {{selectedInvoice.invoice_id}}</th>
         </thead>
         <tbody>
         <tr>
@@ -67,10 +67,10 @@
         </tr>
         <tr>
             <td><b>Project ID:</b> {{selectedInvoice.project_id}}</td>
-            <td><b>Project Title:</b> {{selectedInvoice.project_title}}</td>
+            <td><b>Project Duration:</b> {{selectedInvoice.project_start_date}} - {{selectedInvoice.project_end_date}}<br></td>
         </tr>
         <tr>
-            <td><b>Project Duration:</b> {{selectedInvoice.project_start_date}} - {{selectedInvoice.project_end_date}}<br></td>
+            <td><b>Project Title:</b> {{selectedInvoice.project_title}}</td>
             <td></td>
         </tr>
         </tbody>

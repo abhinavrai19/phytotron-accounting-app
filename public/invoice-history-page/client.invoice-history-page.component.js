@@ -15,7 +15,7 @@ angular.module('phytotronAccountingApp')
             };
 
             ctrl.$onInit = function(){
-                ctrl.phytotronId = PHYTOTRON_ID;
+                ctrl.phytotronId = Constants.PHYTOTRON_ID;
                 ctrl.invoiceHistoryStartDate='';
                 ctrl.invoiceHistoryEndDate = '';
                 ctrl.invoiceList = '';

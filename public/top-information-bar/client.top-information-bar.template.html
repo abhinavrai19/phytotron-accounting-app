@@ -1,7 +1,6 @@
 <md-toolbar layout="row" layout-align="end start">
     <div layout="row">
-        <md-icon>account_circle</md-icon>
-
+        <md-button ng-click="$ctrl.navigateTo('/application-settings')"><md-icon>settings</md-icon></md-button>
         <md-button ng-click="$ctrl.logoutCurrentUser()">Log Out</md-button>
     </div>
 </md-toolbar>
