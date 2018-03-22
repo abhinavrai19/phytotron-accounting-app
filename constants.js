@@ -9,9 +9,11 @@ module.exports = {
 
     MONGO_DB_PATH: 'mongodb://'+this.MONGO_DB_IP+'/phytotron_accounting_database',
 
-    MONGO_DB_USER_NAME: 'joe',
+    MONGO_DB_USER_NAME: 'phyto_admin',
+    //MONGO_DB_USER_NAME: 'joe',
 
-    MONGO_DB_USER_PASSWORD: 'phytomongo',
+    MONGO_DB_USER_PASSWORD: 'phytotron1968',
+    //MONGO_DB_USER_PASSWORD: 'phytomongo',
 
     MONGO_DB_USER_ROLE: 'admin',
 
@@ -31,5 +33,7 @@ module.exports = {
     //INVOICE_SAVE_DIRECTORY_PATH: '/datadrive/phyto_accounting/Phyto_Invoices/',
 
     // Decimals to round off to while doing invoice amount calculations
-    ROUND_OFF_AMOUNT_TO_VALUE: 2
+    ROUND_OFF_AMOUNT_TO_VALUE: 2,
+
+    PRINT_PAGE_SIZE: 'Letter'
 };

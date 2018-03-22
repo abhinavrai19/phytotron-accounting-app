@@ -32,7 +32,7 @@ var generateInvoicePDF = function (invoice) {
     var pdfFileName = invoice.invoice_id+'.pdf';
     var options = {
         //output: pdfFileName, // Commented out as the output now is done through write stream
-        pageSize: 'A4'
+        pageSize: CONSTANTS.PRINT_PAGE_SIZE
     };
 
     // Create Write Stream to the output file.
