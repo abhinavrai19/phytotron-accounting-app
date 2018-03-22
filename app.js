@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var helmet = require('helmet');
+var cookieSession = require('cookie-session');
 
 // get passport and pass it for configuration: Configuration is done in passport.js
 var passport = require('passport');
@@ -45,10 +46,24 @@ app.use(cookieParser());
 
 
 // User authentication code
+// Development environment use.
+/*
 app.use(require('express-session')({
     secret: Constants.AUTHENTICATION_SECRET_KEY,
     resave: false,
     saveUninitialized: false
+}));
+
+*/
+
+// Production Environment use.
+app.use(cookieSession({
+    name: 'session',
+    secret: Constants.AUTHENTICATION_SECRET_KEY,
+    //keys: [/* secret keys */],
+
+    // Cookie Options
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
 app.use(passport.initialize());
 app.use(passport.session());

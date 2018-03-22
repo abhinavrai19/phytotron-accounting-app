@@ -26,9 +26,9 @@ module.exports = {
     INVOICE_REPORT_TEMPLATE_NAME: 'invoice_report.hbs',
 
     // Directory path to store the invoice reports in
-    INVOICE_SAVE_DIRECTORY_PATH: '/Users/abhinavrai/Desktop/Phytotron/',
+    INVOICE_SAVE_DIRECTORY_PATH: '/Users/abhinavrai/Desktop/datadrive/phyto_accounting/Phyto_Invoices/',
 
-    //INVOICE_SAVE_DIRECTORY_PATH: 'C:\\PhytotronInvoiceReports\\',
+    //INVOICE_SAVE_DIRECTORY_PATH: '/datadrive/phyto_accounting/Phyto_Invoices/',
 
     // Decimals to round off to while doing invoice amount calculations
     ROUND_OFF_AMOUNT_TO_VALUE: 2

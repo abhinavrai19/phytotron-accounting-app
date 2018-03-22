@@ -107,18 +107,29 @@
         </md-grid-list>
         <br>
         <!--Invoice and Project Details-->
-        <md-grid-list md-cols="2" md-gutter="1em" md-row-height="12px">
-            <md-grid-tile><p><b>Phytotron ID:</b> {{$ctrl.phytotronId}}</p></md-grid-tile>
-            <md-grid-tile><b>Invoice #:</b> {{$ctrl.selectedInvoice.invoice_id}}</md-grid-tile>
+        <div layout="row" flex="100">
+            <div layout-align="left center" flex="50">
+                <md-list>
+                    <md-list-item><b>Phytotron ID:</b> {{$ctrl.phytotronId}}</md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item><b>Preparation Date:</b> {{$ctrl.selectedInvoice.generation_date}}</md-list-item>
+                    <md-list-item><b>Project ID:</b> {{$ctrl.selectedInvoice.project_id}}</md-list-item>
 
-            <md-grid-tile><p><b>Preparation Date:</b> {{$ctrl.selectedInvoice.generation_date}}</p></md-grid-tile>
-            <md-grid-tile><p><b>Billing Interval:</b> {{$ctrl.selectedInvoice.bill_start_date}}    -    {{$ctrl.selectedInvoice.bill_end_date}}</p></md-grid-tile>
+                </md-list>
+            </div>
+            <div layout-align="center center" flex="50">
+                <md-list>
+                    <md-list-item><b>Statement #:</b> {{$ctrl.selectedInvoice.invoice_id}}</md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item><b>Billing Interval:</b> {{$ctrl.selectedInvoice.bill_start_date}}    -    {{$ctrl.selectedInvoice.bill_end_date}}</md-list-item>
+                    <md-list-item><b>Project Duration:</b> {{$ctrl.selectedInvoice.project_start_date}}    -    {{$ctrl.selectedInvoice.project_end_date}}</md-list-item>
 
-            <md-grid-tile><p><b>Project ID:</b> {{$ctrl.selectedInvoice.project_id}} </p></md-grid-tile>
-            <md-grid-tile><p><b>Project Title:</b> {{$ctrl.selectedInvoice.project_title}} </p></md-grid-tile>
-
-            <md-grid-tile md-colspan="1"><p><b>Project Duration:</b> {{$ctrl.selectedInvoice.project_start_date}}    -    {{$ctrl.selectedInvoice.project_end_date}}</p></md-grid-tile>
-        </md-grid-list>
+                </md-list>
+            </div>
+        </div>
+        <md-list>
+            <md-list-item><b>Project Title:</b> {{$ctrl.selectedInvoice.project_title}}</md-list-item>
+        </md-list>
         <br>
 
         <!-- Client Details-->
@@ -129,13 +140,14 @@
             <th md-column >Address</th>
             </thead>
             <tbody md-body>
-            <tr md-row ng-repeat="client in $ctrl.selectedInvoice.clients">
+            <tr ng-repeat="client in $ctrl.selectedInvoice.clients">
                 <td md-cell>{{client.first_name}} {{client.last_name}}</td>
                 <td md-cell>{{client.department}}</td>
                 <td md-cell>{{client.address}}</td>
             </tr>
             </tbody>
         </table>
+        <br>
         <br>
 
         <!-- Chamber Bill Cost Details -->
@@ -151,7 +163,7 @@
                 <th md-column >Chamber Cost</th>
                 </thead>
                 <tbody md-body>
-                <tr md-row ng-repeat="chamberUsageCost in $ctrl.selectedInvoice.chamber_usage_cost">
+                <tr ng-repeat="chamberUsageCost in $ctrl.selectedInvoice.chamber_usage_cost">
                     <td md-cell>{{chamberUsageCost.chamber_name}}</td>
                     <td md-cell>{{chamberUsageCost.carts_allocated}}</td>
                     <td md-cell>{{chamberUsageCost.start_date}}</td>
@@ -162,6 +174,7 @@
                 </tr>
                 </tbody>
             </table>
+            <br>
             <br>
         </div>
 
@@ -183,7 +196,7 @@
                 <th md-column >Resource Cost</th>
                 </thead>
                 <tbody md-body>
-                <tr md-row ng-repeat="additionalResource in $ctrl.selectedInvoice.additional_resource_cost">
+                <tr ng-repeat="additionalResource in $ctrl.selectedInvoice.additional_resource_cost">
                     <td md-cell>{{additionalResource.resource_name}}</td>
                     <td md-cell>{{additionalResource.unit_rate}}</td>
                     <td md-cell>{{additionalResource.units_consumed}}</td>
@@ -199,6 +212,7 @@
                 </tbody>
             </table>
             <br>
+            <br>
         </div>
 
         <!--Invoice Amount Distribution-->
@@ -210,7 +224,7 @@
             <th md-column >Amount</th>
             </thead>
             <tbody md-body>
-            <tr md-row ng-repeat="accountEntry in $ctrl.selectedInvoice.invoice_amount_distribution">
+            <tr ng-repeat="accountEntry in $ctrl.selectedInvoice.invoice_amount_distribution">
                 <td md-cell>{{accountEntry.client_first_name}} {{accountEntry.client_last_name}}</td>
                 <td md-cell>{{accountEntry.account_number}}</td>
                 <td md-cell>{{accountEntry.percent_share}}</td>
@@ -219,20 +233,28 @@
             </tbody>
         </table>
         <br>
+        <br>
 
         <!--Cost Split -->
-        <md-grid-list md-cols="4" md-gutter="1em" md-row-height="10px">
-            <md-grid-tile><p>Bill Amount: {{$ctrl.selectedInvoice.bill_amount}}</p></md-grid-tile>
-            <md-grid-tile><p>Adjustments: {{$ctrl.selectedInvoice.adjustments}}</p></md-grid-tile>
-            <md-grid-tile><p>Discounts: {{$ctrl.selectedInvoice.discounts}}</p></md-grid-tile>
-            <md-grid-tile><p>Total Amount: {{$ctrl.selectedInvoice.total_amount}}</p></md-grid-tile>
-        </md-grid-list>
-        <br>
-
-        <md-divider></md-divider>
-        <br>
+        <table md-table>
+            <thead md-head>
+            <th md-column >Bill Amount</th>
+            <th md-column >Adjustments</th>
+            <th md-column >Discounts</th>
+            <th md-column >Total Amount</th>
+            </thead>
+            <tbody md-body>
+            <tr>
+                <td md-cell>{{$ctrl.selectedInvoice.bill_amount}}</td>
+                <td md-cell>+ {{$ctrl.selectedInvoice.adjustments}}</td>
+                <td md-cell>- {{$ctrl.selectedInvoice.discounts}}</td>
+                <td md-cell>= {{$ctrl.selectedInvoice.total_amount}}</td>
+            </tr>
+            </tbody>
+        </table>
 
         <!--Footer-->
+        <!--
         <md-grid-list md-cols="2" md-gutter="1em" md-row-height="10px">
             <md-grid-tile>Please make check payable to: <b>North Carolina State University</b></md-grid-tile>
             <md-grid-tile></md-grid-tile>
@@ -250,6 +272,7 @@
             <md-grid-tile md-colspan="2">Deposit Check to: North Carolina Agricultural Research Service</md-grid-tile>
             <md-grid-tile md-colspan="2">Misc. Rec. -- Phytotron Revenue Code No. 4-16952-0791</md-grid-tile>
         </md-grid-list>
+        -->
 
     </div>
     <!--Invoice Page END-->
