@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="phytotronAccountingApp">
+<html lang="en-US" ng-app="phytotronAccountingApp">
 <head>
     <meta charset="UTF-8">
+    <meta name="author" content="Abhinav Rai">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <title>Phytotron Accounting Application</title>
 
     <!--STYLE-SHEETS-->
@@ -14,6 +16,10 @@
 
     <!--Material Icons-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+    <div ng-view></div>
 
     <!--SCRIPTS-->
 
@@ -105,10 +111,5 @@
 
     <!--Application Settings Page-->
     <script src="application-settings-page/client.application-settings-page.component.js"></script>
-
-
-</head>
-<body>
-    <div ng-view></div>
 </body>
 </html>

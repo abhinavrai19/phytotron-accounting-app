@@ -9,11 +9,11 @@ module.exports = {
 
     MONGO_DB_PATH: 'mongodb://'+this.MONGO_DB_IP+'/phytotron_accounting_database',
 
-    MONGO_DB_USER_NAME: 'phyto_admin',
-    //MONGO_DB_USER_NAME: 'joe',
+    //MONGO_DB_USER_NAME: 'phyto_admin',
+    MONGO_DB_USER_NAME: 'joe',
 
-    MONGO_DB_USER_PASSWORD: 'phytotron1968',
-    //MONGO_DB_USER_PASSWORD: 'phytomongo',
+    //MONGO_DB_USER_PASSWORD: 'phytotron1968',
+    MONGO_DB_USER_PASSWORD: 'phytomongo',
 
     MONGO_DB_USER_ROLE: 'admin',
 
